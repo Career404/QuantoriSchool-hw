@@ -221,7 +221,7 @@ body {
 	border-radius: 50%;
 	width: 50vh;
 	height: 50vh;
-	box-shadow: 0 0 50px 10px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 0 50px 10px rgba(0, 0, 0, 0.03);
 }
 .blur {
 	backdrop-filter: blur(1px);
