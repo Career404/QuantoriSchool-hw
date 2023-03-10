@@ -1,0 +1,13 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+}
+html {
+	height: 100%;
+}
+body {
+	height: auto;
+	min-height: 100vh;
+	background-color: #a16a4d;
+	background-image: url('./assets/wood-pattern.png');
+}
