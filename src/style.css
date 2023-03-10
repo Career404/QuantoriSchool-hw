@@ -37,6 +37,56 @@ body {
 	background-color: rgb(241, 246, 253);
 	border: 2px solid silver;
 }
+.sideElement {
+	width: 2px;
+	border-radius: 10px;
+	background-color: silver;
+	box-shadow: 0 0 1px black;
+}
+#volSwitch {
+	position: absolute;
+	top: 55px;
+	left: -3px;
+	height: 15px;
+}
+.sideButton {
+	position: absolute;
+	height: 30px;
+}
+#volUp {
+	top: 90px;
+	left: -3px;
+}
+#volDown {
+	top: 130px;
+	left: -3px;
+}
+#lock {
+	top: 7vh;
+	right: -3px;
+}
+@media (min-height: 1265px) {
+	.sideElement {
+		min-width: 2px;
+		width: 0.2vw;
+	}
+	#volSwitch {
+		height: 1.2vh;
+		top: 4.5vh;
+	}
+	.sideButton {
+		height: 2.3vh;
+	}
+	#volUp {
+		top: 7vh;
+	}
+	#volDown {
+		top: 10.5vh;
+	}
+	#lock {
+		top: 7vh;
+	}
+}
 #screen {
 	height: 80%;
 	aspect-ratio: 9/16;
