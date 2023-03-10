@@ -5,9 +5,12 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="./src/style.css" />
+		<script src="./src/focus.js" defer></script>
 		<title>Layout</title>
 	</head>
 	<body>
+		<div id="key"></div>
+		<div id="disk"></div>
 		<div id="phone">
 			<div id="sideButtons">
 				<div class="sideElement" id="volSwitch"></div>
@@ -22,10 +25,28 @@
 					<div id="speaker"></div>
 				</div>
 			</div>
-			<div id="screen"></div>
+			<div id="screen">
+				<div id="topbar"></div>
+				<div id="clock"></div>
+			</div>
 			<div id="centerButton"><div id="square"></div></div>
 			<div id="glass"></div>
 		</div>
-		<div id="lightContainer"><div id="light"></div></div>
+		<div id="overlayContainer">
+			<div id="light"></div>
+			<div id="focus">
+				<div class="horizontalFocus">
+					<div class="blur"></div>
+				</div>
+				<div class="horizontalFocus">
+					<div class="blur"></div>
+					<div class="clear"></div>
+					<div class="blur"></div>
+				</div>
+				<div class="horizontalFocus">
+					<div class="blur"></div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
