@@ -5,6 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="./src/style.css" />
+		<script src="./src/clock.js" defer></script>
 		<title>Layout</title>
 	</head>
 	<body>
@@ -35,14 +36,22 @@
 						<div id="provider">Team</div>
 						<div id="wi-fi"></div>
 					</div>
-
-					<div id="battery"></div>
+					<div id="battery">
+						<div id="battery_percent">100</div>
+						<div id="battery_box">
+							<div id="battery_status"></div>
+						</div>
+					</div>
+				</div>
+				<div id="clock">
+					<div id="time">10:10</div>
+					<div id="date"></div>
 				</div>
 			</div>
-			<div id="centerButton"><div id="square"></div></div>
+			<div id="centerButton"><div id="centerButton_square"></div></div>
 			<div id="glass"></div>
 		</div>
 
-		<div id="lightContainer"><div id="light"></div></div>
+		<!-- <div id="lightContainer"><div id="light"></div></div> -->
 	</body>
 </html>
