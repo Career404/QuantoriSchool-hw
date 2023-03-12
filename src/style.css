@@ -184,9 +184,9 @@ body {
 #light::before {
 	content: '';
 	display: block;
-	width: 50vw;
+	width: 90vw;
 	height: 150vh;
-	transform: rotate(25deg) translate(-50%, -20%);
+	transform: rotate(25deg) translate(-80%, -20%);
 	background: rgba(255, 255, 255, 0.18);
 	filter: blur(15px);
 }
@@ -225,18 +225,19 @@ body {
 	justify-content: space-around;
 	align-items: center;
 }
-#battery_percent {
-}
-#battery_percent:after {
+#batteryPercent:after {
 	content: '%';
 }
-#battery_box {
+#batteryBox {
 	position: relative;
 	height: 80%;
 	width: 35%;
+	display: flex;
+	justify-content: start;
+	align-items: center;
 	border: max(1px, 0.1vh) solid white;
 }
-#battery_box::after {
+#batteryBox::after {
 	content: '';
 	position: absolute;
 	right: -15%;
@@ -245,10 +246,10 @@ body {
 	width: 12%;
 	background-color: white;
 }
-#battery_status {
-	margin: 5% auto;
+#batteryStatus {
 	height: 80%;
 	width: 90%;
+	margin: 0 1px;
 	background-color: white;
 }
 #clock {
