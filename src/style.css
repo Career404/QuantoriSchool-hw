@@ -1,3 +1,8 @@
+@font-face {
+	font-family: 'San Francisco';
+	font-weight: 400;
+	src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff');
+}
 * {
 	box-sizing: border-box;
 	margin: 0;
@@ -25,6 +30,9 @@ body {
 	justify-content: center;
 	align-items: center;
 	gap: 50vh;
+	color: white;
+	font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI',
+		sans-serif;
 }
 #phone {
 	position: relative;
@@ -173,4 +181,37 @@ body {
 	transform: rotate(25deg) translate(-50%, -20%);
 	background: rgba(255, 255, 255, 0.18);
 	filter: blur(15px);
+}
+#statusBar {
+	width: 100%;
+	min-height: 10px;
+	height: 0.8vh;
+	background-color: rgba(0, 0, 0, 0.463);
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: baseline;
+	font-size: max(5px, 0.7vh);
+}
+#signal,
+#signalStrength {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+}
+#signalStrength > div {
+	margin: 0 max(1px, 0.05vh);
+	min-height: 4px;
+	height: 0.3vh;
+	min-width: 4px;
+	width: 0.3vh;
+	aspect-ratio: 1/1;
+	border-radius: 50%;
+	background-color: white;
+}
+
+#battery {
+	width: 60px;
+	height: 10px;
 }
