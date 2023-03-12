@@ -39,27 +39,6 @@ body {
 	font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI',
 		sans-serif;
 }
-#key {
-	position: absolute;
-	top: -20px;
-	left: -20px;
-	width: 250px;
-	height: 250px;
-	background-image: url(./assets/key.png);
-	background-size: contain;
-	background-repeat: no-repeat;
-	transform: rotate(120deg);
-}
-#disk {
-	position: absolute;
-	top: -80px;
-	left: -40px;
-	width: 300px;
-	height: 300px;
-	background-image: url(./assets/disk.png);
-	background-size: contain;
-	background-repeat: no-repeat;
-}
 #phone {
 	position: relative;
 	min-height: 500px;
@@ -194,7 +173,7 @@ body {
 	border: 1px solid rgba(211, 211, 211, 0.568);
 	border-radius: 8px;
 }
-#overlayContainer {
+#lightContainer {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -327,37 +306,4 @@ body {
 	background-image: url(./assets/arrow-right.png);
 	background-size: contain;
 	filter: brightness(90%);
-}
-#focus {
-	width: 100vw;
-	height: 100vh;
-	transform: translate(-50%, -50%);
-	position: absolute;
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-	border-radius: 50%;
-}
-.horizontalFocus {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: center;
-	align-items: center;
-}
-.horizontalFocus * {
-	height: 300vh;
-	width: 300vh;
-}
-.horizontalFocus:has(.clear) {
-	height: 50vh;
-}
-.clear {
-	border-radius: 50%;
-	width: 50vh;
-	height: 50vh;
-	box-shadow: 0 0 50px 10px rgba(0, 0, 0, 0.03);
-}
-.blur {
-	backdrop-filter: blur(1px);
 }
