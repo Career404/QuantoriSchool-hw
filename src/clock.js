@@ -27,7 +27,8 @@ const monthLookup = [
 function displayDate() {
 	const date = new Date()
 
-	timeTarget.textContent = date.getHours() + ':' + date.getMinutes()
+	timeTarget.textContent =
+		date.getHours() + ':' + date.getMinutes().toString().padStart(2, '0')
 
 	dateTarget.textContent =
 		weekDayLookup[date.getDay()] +
