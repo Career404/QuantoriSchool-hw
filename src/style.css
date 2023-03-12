@@ -47,13 +47,16 @@ body {
 	align-items: center;
 	background-color: rgb(253, 253, 241);
 	border: 2px solid var(--goldenSilver);
-	overflow: hidden;
 }
 .sideElement {
 	width: 2px;
 	border-radius: 10px;
 	background-color: var(--goldenSilver);
 	box-shadow: 0 0 1px black;
+	z-index: -1;
+}
+.sideElement:last-child {
+	box-shadow: 0 0 1px white;
 }
 #volSwitch {
 	position: absolute;
@@ -79,8 +82,7 @@ body {
 }
 @media (min-height: 1265px) {
 	.sideElement {
-		min-width: 2px;
-		width: 0.2vw;
+		width: max(2px, 0.5vh);
 	}
 	#volSwitch {
 		height: 1.2vh;
