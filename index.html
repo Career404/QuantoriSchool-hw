@@ -4,20 +4,19 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/phone.png" />
 		<link rel="stylesheet" href="./src/style.css" />
-		<script src="./src/clock.js" defer></script>
-		<script src="./src/battery.js" defer></script>
 		<title>Layout</title>
 	</head>
 	<body>
 		<div id="clutter">
-			<div id="charger"></div>
+			<!-- <div id="charger"></div> -->
 		</div>
-		<div id="chargerOn">
+		<!-- <div id="chargerOn">
 			<div id="coCable"></div>
 			<div id="coBlock"><div id="charger-icon"></div></div>
 			<div id="coConnector"></div>
-		</div>
+		</div> -->
 		<div id="phone">
 			<div id="sideButtons">
 				<div class="sideElement" id="volSwitch"></div>
@@ -32,37 +31,12 @@
 					<div id="speaker"></div>
 				</div>
 			</div>
-			<div id="screen">
-				<div id="statusBar">
-					<div id="signal">
-						<div id="signalStrength">
-							<div></div>
-							<div></div>
-							<div></div>
-							<div></div>
-							<div></div>
-						</div>
-						<div id="provider">Team</div>
-						<div id="wi-fi"></div>
-					</div>
-					<div id="battery">
-						<div id="batteryPercent">100</div>
-						<div id="batteryBox">
-							<div id="batteryStatus"></div>
-						</div>
-					</div>
-				</div>
-				<div id="clock">
-					<div id="time">10:10</div>
-					<div id="date"></div>
-				</div>
-				<div id="swipeLock">
-					<p id="swipeText">Slide to unlock</p>
-				</div>
-			</div>
+			<div id="screen"></div>
 			<div id="centerButton"><div id="centerButton_square"></div></div>
 			<div id="glass"></div>
 		</div>
 		<div id="lightContainer"><div id="light"></div></div>
 	</body>
+	<!--
+	<script type="module" src="/src/main.tsx"></script> -->
 </html>
