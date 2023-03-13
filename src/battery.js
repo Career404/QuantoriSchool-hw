@@ -16,8 +16,12 @@ function batteryDead() {
 }
 
 setBattery(batteryStatus)
-setInterval(() => {
+
+let batteryInterval = setInterval(() => {
 	batteryStatus -= 1
-	if (batteryStatus === 0) batteryDead()
-	else setBattery(batteryStatus)
+	if (batteryStatus === 0) {
+		batteryDead()
+		clearInterval(batteryInterval)
+	} else setBattery(batteryStatus)
+	console.log(batteryStatus)
 }, 15000)
