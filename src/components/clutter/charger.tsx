@@ -1,4 +1,4 @@
-import React, { Ref, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import chargerURL from '../../assets/charger.png'
 import USBURL from '../../assets/usb.png'
@@ -44,11 +44,11 @@ const cableAnimation = keyframes`
 
 const ChargerOn = styled.div`
 	position: absolute;
-	bottom: 0;
+	bottom: -50px;
 	top: calc(50% + max(250px, 20vh) - max(20px, 1vh));
 	left: 50%;
 	transform: translate(-50%);
-	width: max(20px, 4vh);
+	width: max(40px, 4vh);
 	cursor: pointer;
 	pointer-events: initial;
 	animation: ${cableAnimation} 1s;
@@ -95,21 +95,26 @@ const CoConnector = styled.div`
 	background-size: 10%;
 `
 
-export default function Charger() {
-	const [isCharging, setIsCharging] = useState(false)
-
+interface ChargerProps {
+	isCharging: boolean
+	setIsChargingcallback: Function
+}
+export default function Charger({
+	isCharging,
+	setIsChargingcallback,
+}: ChargerProps) {
 	function plugCharger(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 		e.currentTarget.style.bottom = '-100vh'
 		setTimeout(() => {
-			setIsCharging(true)
+			setIsChargingcallback(true)
 		}, 1000)
 	}
 
 	function unplugCharger(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 		e.currentTarget.style.top = '100vh'
 		setTimeout(() => {
-			setIsCharging(false)
-		}, 800)
+			setIsChargingcallback(false)
+		}, 50)
 	}
 	return (
 		<FullscreenClutter>
