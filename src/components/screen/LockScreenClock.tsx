@@ -2,6 +2,7 @@ import React, { PropsWithChildren, useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 const ClockWindow = styled.div`
+	user-select: none;
 	height: 30%;
 	width: 100%;
 	display: flex;

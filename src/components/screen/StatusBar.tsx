@@ -26,6 +26,7 @@ function getBrowserName(userAgent: string) {
 const browserName = getBrowserName(navigator.userAgent)
 
 const Bar = styled.div`
+	user-select: none;
 	position: absolute;
 	top: 0;
 	width: 100%;
