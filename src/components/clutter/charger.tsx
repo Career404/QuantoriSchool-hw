@@ -48,7 +48,7 @@ const ChargerOn = styled.div`
 	top: calc(50% + max(250px, 20vh) - max(20px, 1vh));
 	left: 50%;
 	transform: translate(-50%);
-	width: max(20px, 4vh);
+	width: max(40px, 4vh);
 	cursor: pointer;
 	pointer-events: initial;
 	animation: ${cableAnimation} 1s;
@@ -114,7 +114,7 @@ export default function Charger({
 		e.currentTarget.style.top = '100vh'
 		setTimeout(() => {
 			setIsChargingcallback(false)
-		}, 800)
+		}, 50)
 	}
 	return (
 		<FullscreenClutter>
