@@ -74,8 +74,8 @@ const BatteryIconContent = styled.div`
 	position: absolute;
 	top: 15%;
 	bottom: 15%;
-	left: 8%;
-	right: 10%;
+	left: 5%;
+	right: 5%;
 `
 
 interface SBarProps {
@@ -131,8 +131,12 @@ export default function StatusBar({
 				<BatteryIcon>
 					<BatteryIconContent
 						style={{
-							right: 100 - battery - 10 + '%',
-							backgroundColor: battery === 100 ? 'green' : 'white',
+							right: 100 - battery + 10 + '%',
+							backgroundColor: isCharging
+								? battery === 100
+									? 'green'
+									: 'yellow'
+								: 'white',
 						}}
 					/>
 				</BatteryIcon>
