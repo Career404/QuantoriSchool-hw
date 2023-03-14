@@ -1,5 +1,7 @@
-import React, { PropsWithChildren } from 'react'
+
+import React, { PropsWithChildren, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
+import Slider from 'react-touch-drag-slider'
 import lockBG from '../../assets/diagmonds.png'
 import lockIcon from '../../assets/arrow-right.png'
 
@@ -13,6 +15,10 @@ const LockDiv = styled.div`
 	left: 0;
 	right: 0;
 	height: 30%;
+`
+const LockItemsContainer = styled.div`
+	height: 100%;
+	width: 100%;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: center;
@@ -27,7 +33,9 @@ const swipeTextAnim = keyframes`
 	}
 `
 const LockText = styled.div`
+	position: relative;
 	user-select: none;
+	transition: ease-out 800ms;
 	color: #ffffff;
 	background: linear-gradient(to right, #4d4d4d 0, white 10%, #4d4d4d 20%);
 	background-position: 0;
@@ -56,12 +64,40 @@ export default function LockedScreen({
 	bgColor = 'rgb(178, 151, 0) ',
 	children,
 }: LockProps) {
+	const [swipeTextAnim, setSwipeTextAnim] = useState(false)
 	return (
-		<Full style={{ backgroundImage: bg, backgroundColor: bgColor }}>
+		<Full
+			style={{ backgroundImage: bg, backgroundColor: bgColor }}
+			onMouseUp={() => {
+				setSwipeTextAnim(false)
+				console.log('up')
+			}}
+		>
 			{children}
 			<LockDiv>
-				<LockIcon />
-				<LockText>Swipe to unlock</LockText>
+				<Slider
+					activeIndex={1}
+					onSlideComplete={() => setIsLockedCallback(false)}
+				>
+					<div key={'empty'}></div>
+					<LockItemsContainer
+						key={'LockItems'}
+						onMouseDown={() => {
+							setSwipeTextAnim(true)
+							console.log('down')
+						}}
+					>
+						<LockIcon />
+						<LockText
+							style={{
+								bottom: swipeTextAnim ? '-500%' : '0',
+								outline: '1px solid red',
+							}}
+						>
+							Swipe to unlock
+						</LockText>
+					</LockItemsContainer>
+				</Slider>
 			</LockDiv>
 		</Full>
 	)
