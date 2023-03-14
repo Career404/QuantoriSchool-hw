@@ -7,11 +7,15 @@ const Full = styled.div`
 	width: 100%;
 `
 interface LockProps extends PropsWithChildren {
+	isLocked: boolean
+	setIsLockedCallback: Function
 	bg?: React.CSSProperties['backgroundImage']
 	bgColor?: React.CSSProperties['backgroundColor']
 }
 
 export default function LockedScreen({
+	isLocked = true,
+	setIsLockedCallback,
 	bg = `url(${lockBG})`,
 	bgColor = 'rgb(178, 151, 0) ',
 	children,

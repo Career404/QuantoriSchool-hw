@@ -168,21 +168,6 @@ body {
 	border-radius: 8px;
 }
 
-#clock {
-	height: 30%;
-	width: 100%;
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-}
-#time {
-	font-size: max(50px, 5vh);
-	font-weight: 200;
-}
-#date {
-	font-size: max(14px, 1.4vh);
-}
 #swipeLock {
 	position: absolute;
 	bottom: 0;

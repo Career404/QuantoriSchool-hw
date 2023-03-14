@@ -7,6 +7,7 @@ import LockedScreen from './components/screen/Locked'
 import StatusBar from './components/screen/StatusBar'
 
 import './style.css'
+import LockScreenClock from './components/screen/LockScreenClock'
 
 export default function App() {
 	const [isCharging, setIsCharging] = useState(false)
@@ -60,7 +61,16 @@ export default function App() {
 						{!hideStatus && (
 							<StatusBar isCharging={isCharging} battery={batteryPercent} />
 						)}
-						{isLocked && <LockedScreen />}
+						{isLocked && (
+							<LockedScreen
+								isLocked={isLocked}
+								setIsLockedCallback={setIsLocked}
+							>
+								<>
+									<LockScreenClock />
+								</>
+							</LockedScreen>
+						)}
 					</>
 				</Screen>
 				<div id="centerButton">
