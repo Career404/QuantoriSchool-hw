@@ -1,4 +1,4 @@
-import React, { Ref, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import chargerURL from '../../assets/charger.png'
 import USBURL from '../../assets/usb.png'
@@ -95,20 +95,25 @@ const CoConnector = styled.div`
 	background-size: 10%;
 `
 
-export default function Charger() {
-	const [isCharging, setIsCharging] = useState(false)
-
+interface ChargerProps {
+	isCharging: boolean
+	setIsChargingcallback: Function
+}
+export default function Charger({
+	isCharging,
+	setIsChargingcallback,
+}: ChargerProps) {
 	function plugCharger(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 		e.currentTarget.style.bottom = '-100vh'
 		setTimeout(() => {
-			setIsCharging(true)
+			setIsChargingcallback(true)
 		}, 1000)
 	}
 
 	function unplugCharger(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 		e.currentTarget.style.top = '100vh'
 		setTimeout(() => {
-			setIsCharging(false)
+			setIsChargingcallback(false)
 		}, 800)
 	}
 	return (
