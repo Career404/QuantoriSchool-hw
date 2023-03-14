@@ -4,6 +4,7 @@ import LightGlare from './components/LightGlare'
 import Charger from './components/clutter/charger'
 
 import './style.css'
+import LockedScreen from './components/screen/Locked'
 ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
 	<React.StrictMode>
 		<Charger />
@@ -21,7 +22,9 @@ ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
 					<div id="speaker"></div>
 				</div>
 			</div>
-			<div id="screen"></div>
+			<div id="screen">
+				<LockedScreen />
+			</div>
 			<div id="centerButton">
 				<div id="centerButton_square"></div>
 			</div>
