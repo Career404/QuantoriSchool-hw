@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import lockBG from '../../assets/diagmonds.png'
 
@@ -6,10 +6,9 @@ const Full = styled.div`
 	height: 100%;
 	width: 100%;
 `
-interface LockProps {
+interface LockProps extends PropsWithChildren {
 	bg?: React.CSSProperties['backgroundImage']
 	bgColor?: React.CSSProperties['backgroundColor']
-	children?: React.ReactNode
 }
 
 export default function LockedScreen({

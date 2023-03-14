@@ -4,6 +4,7 @@ import LightGlare from './components/LightGlare'
 import Charger from './components/clutter/charger'
 import Screen from './components/screen/Screen'
 import LockedScreen from './components/screen/Locked'
+import StatusBar from './components/screen/StatusBar'
 
 import './style.css'
 
@@ -54,7 +55,14 @@ export default function App() {
 						<div id="speaker"></div>
 					</div>
 				</div>
-				<Screen isOn={isOn}>{isLocked && <LockedScreen />}</Screen>
+				<Screen isOn={isOn}>
+					<>
+						{!hideStatus && (
+							<StatusBar isCharging={isCharging} battery={batteryPercent} />
+						)}
+						{isLocked && <LockedScreen />}
+					</>
+				</Screen>
 				<div id="centerButton">
 					<div id="centerButton_square"></div>
 				</div>
