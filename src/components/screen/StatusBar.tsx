@@ -59,6 +59,7 @@ const BatteryIcon = styled.div`
 	display: flex;
 	justify-content: start;
 	align-items: center;
+	padding: 0 2%;
 	border: max(1px, 0.1vh) solid white;
 	&:after {
 		content: '';
@@ -71,11 +72,8 @@ const BatteryIcon = styled.div`
 	}
 `
 const BatteryIconContent = styled.div`
-	position: absolute;
-	top: 15%;
-	bottom: 15%;
-	left: 5%;
-	right: 5%;
+	position: relative;
+	height: 80%;
 `
 
 interface SBarProps {
@@ -131,11 +129,13 @@ export default function StatusBar({
 				<BatteryIcon>
 					<BatteryIconContent
 						style={{
-							right: 100 - battery + 10 + '%',
+							width: battery + '%',
 							backgroundColor: isCharging
 								? battery === 100
 									? 'green'
 									: 'yellow'
+								: battery <= 20
+								? 'red'
 								: 'white',
 						}}
 					/>
