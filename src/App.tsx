@@ -18,17 +18,16 @@ export default function App() {
 		if (isCharging) {
 			if (batteryPercent >= 100) {
 				null
-				console.log(batteryPercent)
 			} else
-				intervalId = setInterval(() => {
-					setBatteryPercent(batteryPercent + 1)
-					console.log(batteryPercent + ' charge')
-				}, 100)
+				intervalId = setInterval(
+					() => setBatteryPercent(batteryPercent + 1),
+					10000
+				)
 		} else if (isOn)
-			intervalId = setInterval(() => {
-				setBatteryPercent(batteryPercent - 1)
-				console.log(batteryPercent + ' discharge')
-			}, 150)
+			intervalId = setInterval(
+				() => setBatteryPercent(batteryPercent - 1),
+				15000
+			)
 		return () => clearInterval(intervalId)
 	}, [isCharging, isOn, batteryPercent])
 
