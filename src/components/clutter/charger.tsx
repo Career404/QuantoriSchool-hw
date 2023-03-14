@@ -44,7 +44,7 @@ const cableAnimation = keyframes`
 
 const ChargerOn = styled.div`
 	position: absolute;
-	bottom: 0;
+	bottom: -50px;
 	top: calc(50% + max(250px, 20vh) - max(20px, 1vh));
 	left: 50%;
 	transform: translate(-50%);
