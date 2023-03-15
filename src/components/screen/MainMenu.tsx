@@ -1,5 +1,7 @@
-import React, { PropsWithChildren, useRef } from 'react'
+import React, { PropsWithChildren, useEffect, useRef } from 'react'
 import { useDraggable } from 'react-use-draggable-scroll'
+
+import BG from '../../assets/diagmonds.png'
 
 import styled from 'styled-components'
 
@@ -11,7 +13,6 @@ const MenuScreen = styled.div`
 	grid-template-columns: repeat(4, 21%);
 	gap: 5%;
 	grid-auto-rows: 45px;
-	background-color: rgb(178, 151, 0);
 	overflow: auto;
 	&::-webkit-scrollbar {
 		display: none;
@@ -36,16 +37,26 @@ const PinnedDiv = styled.div`
 
 interface MainMenuProps extends PropsWithChildren {
 	pinned: React.ReactNode[]
+	menuBackground?: React.CSSProperties['background']
 }
 
-export default function MainMenu({ pinned, children }: MainMenuProps) {
+export default function MainMenu({
+	pinned,
+	menuBackground = `rgb(178, 151, 0) url(${BG})`,
+	children,
+}: MainMenuProps) {
 	const menuRef =
 		useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>
 	const { events } = useDraggable(menuRef) // Now we pass the reference to the useDraggable hook:
 
+	useEffect(() => console.log(BG), [])
 	return (
 		<>
-			<MenuScreen {...events} ref={menuRef}>
+			<MenuScreen
+				{...events}
+				ref={menuRef}
+				style={{ background: menuBackground }}
+			>
 				{children}
 			</MenuScreen>
 			<PinnedDiv>{pinned}</PinnedDiv>
