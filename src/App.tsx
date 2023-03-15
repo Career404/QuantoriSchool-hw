@@ -9,11 +9,18 @@ import StatusBar from './components/screen/StatusBar'
 import './style.css'
 import LockScreenClock from './components/screen/LockScreenClock'
 import MainMenu from './components/screen/MainMenu'
+import UI from './components/UI'
+import AppIcon from './components/screen/AppIcon'
 
 
 export default function App() {
+	const [fullscreen, setFullscreen] = useState(false)
+
+	useEffect(() => {}, [fullscreen])
+
 	const [isCharging, setIsCharging] = useState(false)
 	const [batteryPercent, setBatteryPercent] = useState(100)
+	const [isWiFiConnected, setIsWiFiConnected] = useState(false)
 
 	const isOn = batteryPercent > 0 ? true : false
 
@@ -41,10 +48,21 @@ export default function App() {
 	useEffect(() => {
 		console.log('charging? ' + isCharging)
 	}, [isCharging])
+	const pinnedAppsArr = [
+		<AppIcon key={1} />,
+		<AppIcon key={2} />,
+		<AppIcon key={3} />,
+		<AppIcon key={4} />,
+	]
 	return (
 		<>
-			<Charger isCharging={isCharging} setIsChargingcallback={setIsCharging} />
-			<div id="phone">
+			{!fullscreen && (
+				<Charger
+					isCharging={isCharging}
+					setIsChargingcallback={setIsCharging}
+				/>
+			)}
+			<div id="phone" style={{ height: fullscreen ? '100vh' : '40vh' }}>
 				<div id="sideButtons">
 					<div className="sideElement" id="volSwitch"></div>
 					<div className="sideElement sideButton" id="volUp"></div>
@@ -61,7 +79,11 @@ export default function App() {
 				<Screen isOn={isOn}>
 					<>
 						{!hideStatus && (
-							<StatusBar isCharging={isCharging} battery={batteryPercent} />
+							<StatusBar
+								isCharging={isCharging}
+								battery={batteryPercent}
+								wifi={isWiFiConnected}
+							/>
 						)}
 						{isLocked ? (
 
@@ -74,7 +96,41 @@ export default function App() {
 								</>
 							</LockedScreen>
 						) : (
-							<MainMenu />
+							<MainMenu pinned={pinnedAppsArr}>
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+							</MainMenu>
 
 						)}
 					</>
@@ -84,7 +140,17 @@ export default function App() {
 				</div>
 				<div id="glass"></div>
 			</div>
-			<LightGlare />
+			{!fullscreen && <LightGlare />}
+			<UI
+				fullscreen={fullscreen}
+				setFullscreenCallback={setFullscreen}
+				isLocked={isLocked}
+				setisLockedCallback={setIsLocked}
+				isCharging={isCharging}
+				setIsChargingCallback={setIsCharging}
+				isWiFiConnected={isWiFiConnected}
+				setIsWiFiConnectedCallback={setIsWiFiConnected}
+			/>
 		</>
 	)
 }
