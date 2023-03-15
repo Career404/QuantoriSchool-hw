@@ -9,6 +9,7 @@ import StatusBar from './components/screen/StatusBar'
 import './style.css'
 import LockScreenClock from './components/screen/LockScreenClock'
 import MainMenu from './components/screen/MainMenu'
+import UI from './components/UI'
 
 export default function App() {
 	const [isCharging, setIsCharging] = useState(false)
@@ -82,6 +83,12 @@ export default function App() {
 				<div id="glass"></div>
 			</div>
 			<LightGlare />
+			<UI
+				isLocked={isLocked}
+				setisLockedCallback={setIsLocked}
+				isCharging={isCharging}
+				setIsChargingCallback={setIsCharging}
+			/>
 		</>
 	)
 }
