@@ -31,13 +31,13 @@ const Bar = styled.div`
 	position: absolute;
 	top: 0;
 	width: 100%;
-	height: max(15px, 1vh);
+	height: 3%;
 	background-color: rgba(0, 0, 0, 0.463);
 	padding: 0 max(5px, 0.5vh);
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
-	font-size: max(9px, 0.7vh);
+	font-size: max(10px, 1vh);
 `
 const Signal = styled.div`
 	display: flex;

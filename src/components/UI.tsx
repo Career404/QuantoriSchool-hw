@@ -1,6 +1,8 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {
+	BsArrowsFullscreen,
+	BsFullscreenExit,
 	BsFillLockFill,
 	BsFillUnlockFill,
 	BsWifi,
@@ -37,6 +39,8 @@ const UIButton = styled.div`
 `
 
 interface UIProps extends PropsWithChildren {
+	fullscreen: boolean
+	setFullscreenCallback: Function
 	isLocked: boolean
 	setisLockedCallback: Function
 	isCharging: boolean
@@ -46,6 +50,8 @@ interface UIProps extends PropsWithChildren {
 }
 
 export default function UI({
+	fullscreen,
+	setFullscreenCallback,
 	isLocked,
 	setisLockedCallback,
 	isCharging,
@@ -55,14 +61,17 @@ export default function UI({
 }: UIProps) {
 	return (
 		<UIBar>
+			<UIButton onClick={() => setFullscreenCallback(!fullscreen)}>
+				{fullscreen ? <BsFullscreenExit /> : <BsArrowsFullscreen />}
+			</UIButton>
 			<UIButton onClick={() => setisLockedCallback(!isLocked)}>
 				{isLocked ? <BsFillUnlockFill /> : <BsFillLockFill />}
 			</UIButton>
 			<UIButton onClick={() => setIsChargingCallback(!isCharging)}>
-				{isCharging ? <RiBatteryChargeFill /> : <RiBatteryChargeLine />}
+				{isCharging ? <RiBatteryChargeLine /> : <RiBatteryChargeFill />}
 			</UIButton>
 			<UIButton onClick={() => setIsWiFiConnectedCallback(!isWiFiConnected)}>
-				{isWiFiConnected ? <BsWifi /> : <BsWifiOff />}
+				{isWiFiConnected ? <BsWifiOff /> : <BsWifi />}
 			</UIButton>
 		</UIBar>
 	)
