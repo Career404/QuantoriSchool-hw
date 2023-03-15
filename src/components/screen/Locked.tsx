@@ -91,7 +91,6 @@ export default function LockedScreen({
 						<LockText
 							style={{
 								bottom: swipeTextAnim ? '-500%' : '0',
-								outline: '1px solid red',
 							}}
 						>
 							Swipe to unlock
