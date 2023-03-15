@@ -30,13 +30,13 @@ const Bar = styled.div`
 	position: absolute;
 	top: 0;
 	width: 100%;
-	height: max(10px, 0.8vh);
+	height: max(15px, 1vh);
 	background-color: rgba(0, 0, 0, 0.463);
 	padding: 0 max(5px, 0.5vh);
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
-	font-size: max(8px, 0.7vh);
+	font-size: max(9px, 0.7vh);
 `
 const Signal = styled.div`
 	display: flex;
@@ -46,21 +46,21 @@ const Signal = styled.div`
 	gap: max(2px, 0.1vh);
 `
 const BatteryBlock = styled.div`
-	width: 20%;
+	width: 22.5%;
 	height: 90%;
 	display: flex;
 	flex-flow: row nowrap;
-	justify-content: space-around;
+	justify-content: flex-end;
 	align-items: center;
+	gap: 5%;
 `
 const BatteryIcon = styled.div`
 	position: relative;
-	height: 80%;
+	height: 75%;
 	width: 35%;
 	display: flex;
-	justify-content: start;
 	align-items: center;
-	padding: 0 2%;
+	padding: 1% 2.5%;
 	border: max(1px, 0.1vh) solid white;
 	&:after {
 		content: '';
@@ -74,7 +74,7 @@ const BatteryIcon = styled.div`
 `
 const BatteryIconContent = styled.div`
 	position: relative;
-	height: 80%;
+	height: 75%;
 `
 
 interface SBarProps {
