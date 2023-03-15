@@ -56,7 +56,7 @@ body {
 	border: 2px solid var(--goldenSilver);
 }
 .sideElement {
-	width: 2px;
+	width: max(2px, 3%);
 	border-radius: 10px;
 	background-color: var(--goldenSilver);
 	box-shadow: 0 0 1px black;
@@ -67,46 +67,25 @@ body {
 }
 #volSwitch {
 	position: absolute;
-	top: 55px;
-	left: -3px;
-	height: 15px;
+	top: 14%;
+	left: min(-1.5%, -3px);
+	height: max(15px, 4%);
 }
 .sideButton {
 	position: absolute;
-	height: 30px;
+	height: max(30px, 8%);
 }
 #volUp {
-	top: 90px;
-	left: -3px;
+	top: calc(16% + max(15px, 4%));
+	left: min(-1.5%, -3px);
 }
 #volDown {
-	top: 130px;
-	left: -3px;
+	top: calc(22% + max(30px, 8%));
+	left: min(-1.5%, -3px);
 }
 #lock {
-	top: 90px;
-	right: -3px;
-}
-@media (min-height: 1265px) {
-	.sideElement {
-		width: max(2px, 0.5vh);
-	}
-	#volSwitch {
-		height: 1.2vh;
-		top: 4.5vh;
-	}
-	.sideButton {
-		height: 2.3vh;
-	}
-	#volUp {
-		top: 7vh;
-	}
-	#volDown {
-		top: 10.5vh;
-	}
-	#lock {
-		top: 7vh;
-	}
+	top: calc(16% + max(15px, 4%));
+	right: min(-1.5%, -3px);
 }
 #elements {
 	margin: 0 0 5%;
