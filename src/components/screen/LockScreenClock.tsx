@@ -5,13 +5,14 @@ const ClockWindow = styled.div`
 	user-select: none;
 	height: 30%;
 	width: 100%;
+	padding-top: 10%;
 	display: flex;
 	flex-flow: column nowrap;
 	justify-content: center;
 	align-items: center;
 `
 const TimeDiv = styled.div`
-	font-size: max(50px, 5vh);
+	font-size: max(50px, 6vh);
 	font-weight: 200;
 `
 const DateDiv = styled.div`

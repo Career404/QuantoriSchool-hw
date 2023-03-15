@@ -15,6 +15,9 @@ const LockDiv = styled.div`
 	left: 0;
 	right: 0;
 	height: 30%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `
 const LockItemsContainer = styled.div`
 	height: 100%;
@@ -37,6 +40,7 @@ const LockText = styled.div`
 	user-select: none;
 	transition: ease-out 800ms;
 	color: #ffffff;
+	font-size: max(22px, 2vh);
 	background: linear-gradient(to right, #4d4d4d 0, white 10%, #4d4d4d 20%);
 	background-position: 0;
 	-webkit-background-clip: text;
@@ -45,8 +49,8 @@ const LockText = styled.div`
 	animation: ${swipeTextAnim} 6s infinite linear;
 `
 const LockIcon = styled.div`
-	height: 1.5rem;
-	width: 1.5rem;
+	height: 20%;
+	aspect-ratio: 1/1;
 	background-image: url(${lockIcon});
 	background-size: contain;
 `
@@ -68,24 +72,20 @@ export default function LockedScreen({
 	return (
 		<Full
 			style={{ backgroundImage: bg, backgroundColor: bgColor }}
-			onMouseUp={() => {
-				setSwipeTextAnim(false)
-				console.log('up')
-			}}
+			onMouseUp={() => setSwipeTextAnim(false)}
 		>
 			{children}
 			<LockDiv>
 				<Slider
 					activeIndex={1}
-					onSlideComplete={() => setIsLockedCallback(false)}
+					onSlideComplete={(i) => {
+						if (i === 0) setIsLockedCallback(false)
+					}}
 				>
 					<div key={'empty'}></div>
 					<LockItemsContainer
 						key={'LockItems'}
-						onMouseDown={() => {
-							setSwipeTextAnim(true)
-							console.log('down')
-						}}
+						onMouseDown={() => setSwipeTextAnim(true)}
 					>
 						<LockIcon />
 						<LockText

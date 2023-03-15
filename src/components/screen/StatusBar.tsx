@@ -4,6 +4,7 @@ import {
 	BsFillCircleFill,
 	BsCircle,
 	BsLightningChargeFill,
+	BsWifi,
 } from 'react-icons/bs'
 
 function getBrowserName(userAgent: string) {
@@ -30,18 +31,18 @@ const Bar = styled.div`
 	position: absolute;
 	top: 0;
 	width: 100%;
-	height: max(15px, 1vh);
+	height: 3%;
 	background-color: rgba(0, 0, 0, 0.463);
 	padding: 0 max(5px, 0.5vh);
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
-	font-size: max(9px, 0.7vh);
+	font-size: max(10px, 1vh);
 `
 const Signal = styled.div`
 	display: flex;
 	flex-flow: row nowrap;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	gap: max(2px, 0.1vh);
 `
@@ -83,6 +84,7 @@ interface SBarProps {
 	provider?: string
 	isCharging?: boolean
 	battery?: number
+	wifi?: boolean
 }
 export default function StatusBar({
 	network = 5,
@@ -90,6 +92,7 @@ export default function StatusBar({
 	provider = browserName,
 	isCharging = false,
 	battery = 100,
+	wifi = false,
 }: SBarProps) {
 	const [networkQuality, setNetworkQuality] = useState<0 | 1 | 2 | 3 | 4 | 5>(
 		network
@@ -121,6 +124,7 @@ export default function StatusBar({
 					)
 				)}
 				{provider}
+				{wifi && <BsWifi />}
 			</Signal>
 
 			<BatteryBlock>

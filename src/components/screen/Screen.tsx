@@ -7,6 +7,7 @@ const MainScreen = styled.div`
 	aspect-ratio: 9/16;
 	box-shadow: inset 0 0 2px black;
 	background-color: rgb(30, 30, 30);
+	overflow: hidden;
 `
 
 interface ScreenProps extends PropsWithChildren {
