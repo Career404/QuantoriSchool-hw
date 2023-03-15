@@ -1,6 +1,11 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { BsFillLockFill, BsFillUnlockFill } from 'react-icons/bs'
+import {
+	BsFillLockFill,
+	BsFillUnlockFill,
+	BsWifi,
+	BsWifiOff,
+} from 'react-icons/bs'
 import { RiBatteryChargeFill, RiBatteryChargeLine } from 'react-icons/ri'
 
 const UIBar = styled.div`
@@ -36,6 +41,8 @@ interface UIProps extends PropsWithChildren {
 	setisLockedCallback: Function
 	isCharging: boolean
 	setIsChargingCallback: Function
+	isWiFiConnected: boolean
+	setIsWiFiConnectedCallback: Function
 }
 
 export default function UI({
@@ -43,6 +50,8 @@ export default function UI({
 	setisLockedCallback,
 	isCharging,
 	setIsChargingCallback,
+	isWiFiConnected,
+	setIsWiFiConnectedCallback,
 }: UIProps) {
 	return (
 		<UIBar>
@@ -51,6 +60,9 @@ export default function UI({
 			</UIButton>
 			<UIButton onClick={() => setIsChargingCallback(!isCharging)}>
 				{isCharging ? <RiBatteryChargeFill /> : <RiBatteryChargeLine />}
+			</UIButton>
+			<UIButton onClick={() => setIsWiFiConnectedCallback(!isWiFiConnected)}>
+				{isWiFiConnected ? <BsWifi /> : <BsWifiOff />}
 			</UIButton>
 		</UIBar>
 	)

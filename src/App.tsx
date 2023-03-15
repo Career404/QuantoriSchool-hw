@@ -14,6 +14,7 @@ import UI from './components/UI'
 export default function App() {
 	const [isCharging, setIsCharging] = useState(false)
 	const [batteryPercent, setBatteryPercent] = useState(100)
+	const [isWiFiConnected, setIsWiFiConnected] = useState(false)
 
 	const isOn = batteryPercent > 0 ? true : false
 
@@ -61,7 +62,11 @@ export default function App() {
 				<Screen isOn={isOn}>
 					<>
 						{!hideStatus && (
-							<StatusBar isCharging={isCharging} battery={batteryPercent} />
+							<StatusBar
+								isCharging={isCharging}
+								battery={batteryPercent}
+								wifi={isWiFiConnected}
+							/>
 						)}
 						{isLocked ? (
 							<LockedScreen
@@ -88,6 +93,8 @@ export default function App() {
 				setisLockedCallback={setIsLocked}
 				isCharging={isCharging}
 				setIsChargingCallback={setIsCharging}
+				isWiFiConnected={isWiFiConnected}
+				setIsWiFiConnectedCallback={setIsWiFiConnected}
 			/>
 		</>
 	)
