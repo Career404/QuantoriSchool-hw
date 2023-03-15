@@ -67,10 +67,7 @@ export default function LockedScreen({
 	return (
 		<Full
 			style={{ backgroundImage: bg, backgroundColor: bgColor }}
-			onMouseUp={() => {
-				setSwipeTextAnim(false)
-				console.log('up')
-			}}
+			onMouseUp={() => setSwipeTextAnim(false)}
 		>
 			{children}
 			<LockDiv>
@@ -81,10 +78,7 @@ export default function LockedScreen({
 					<div key={'empty'}></div>
 					<LockItemsContainer
 						key={'LockItems'}
-						onMouseDown={() => {
-							setSwipeTextAnim(true)
-							console.log('down')
-						}}
+						onMouseDown={() => setSwipeTextAnim(true)}
 					>
 						<LockIcon />
 						<LockText
