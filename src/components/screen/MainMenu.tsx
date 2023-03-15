@@ -5,14 +5,18 @@ import BG from '../../assets/diagmonds.png'
 
 import styled from 'styled-components'
 
+const Full = styled.div`
+	height: 100%;
+	width: 100%;
+`
 const MenuScreen = styled.div`
 	height: 100%;
 	width: 100%;
 	padding: 10% 5% 35%;
 	display: grid;
 	grid-template-columns: repeat(4, 21%);
-	gap: 5%;
-	grid-auto-rows: 45px;
+	column-gap: 5%;
+	row-gap: 5%;
 	overflow: auto;
 	&::-webkit-scrollbar {
 		display: none;
@@ -51,15 +55,11 @@ export default function MainMenu({
 
 	useEffect(() => console.log(BG), [])
 	return (
-		<>
-			<MenuScreen
-				{...events}
-				ref={menuRef}
-				style={{ background: menuBackground }}
-			>
+		<Full style={{ background: menuBackground }}>
+			<MenuScreen {...events} ref={menuRef}>
 				{children}
 			</MenuScreen>
 			<PinnedDiv>{pinned}</PinnedDiv>
-		</>
+		</Full>
 	)
 }

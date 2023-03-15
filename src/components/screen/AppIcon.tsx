@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 
 const AppIconDiv = styled.div`
+	min-width: 45px;
 	width: 100%;
 	aspect-ratio: 1/1;
 	border-radius: 5px;

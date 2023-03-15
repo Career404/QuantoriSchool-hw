@@ -13,6 +13,10 @@ import UI from './components/UI'
 import AppIcon from './components/screen/AppIcon'
 
 export default function App() {
+	const [fullscreen, setFullscreen] = useState(false)
+
+	useEffect(() => {}, [fullscreen])
+
 	const [isCharging, setIsCharging] = useState(false)
 	const [batteryPercent, setBatteryPercent] = useState(100)
 	const [isWiFiConnected, setIsWiFiConnected] = useState(false)
@@ -51,8 +55,13 @@ export default function App() {
 	]
 	return (
 		<>
-			<Charger isCharging={isCharging} setIsChargingcallback={setIsCharging} />
-			<div id="phone">
+			{!fullscreen && (
+				<Charger
+					isCharging={isCharging}
+					setIsChargingcallback={setIsCharging}
+				/>
+			)}
+			<div id="phone" style={{ height: fullscreen ? '100vh' : '40vh' }}>
 				<div id="sideButtons">
 					<div className="sideElement" id="volSwitch"></div>
 					<div className="sideElement sideButton" id="volUp"></div>
@@ -128,8 +137,10 @@ export default function App() {
 				</div>
 				<div id="glass"></div>
 			</div>
-			<LightGlare />
+			{!fullscreen && <LightGlare />}
 			<UI
+				fullscreen={fullscreen}
+				setFullscreenCallback={setFullscreen}
 				isLocked={isLocked}
 				setisLockedCallback={setIsLocked}
 				isCharging={isCharging}
