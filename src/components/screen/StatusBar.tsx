@@ -57,7 +57,7 @@ const BatteryBlock = styled.div`
 const BatteryIcon = styled.div`
 	position: relative;
 	height: 75%;
-	width: 40%;
+	width: 35%;
 	display: flex;
 	align-items: center;
 	padding: 1% 2.5%;
@@ -74,7 +74,7 @@ const BatteryIcon = styled.div`
 `
 const BatteryIconContent = styled.div`
 	position: relative;
-	height: 72.5%;
+	height: 75%;
 `
 
 interface SBarProps {
