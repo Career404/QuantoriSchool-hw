@@ -89,13 +89,25 @@ export default function App() {
 								<AppIcon />
 								<AppIcon />
 								<AppIcon />
-								<AppIcon /> <AppIcon />
 								<AppIcon />
 								<AppIcon />
-								<AppIcon /> <AppIcon />
 								<AppIcon />
 								<AppIcon />
-								<AppIcon /> <AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
 								<AppIcon />
 								<AppIcon />
 								<AppIcon />
