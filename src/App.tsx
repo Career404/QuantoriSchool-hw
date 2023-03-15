@@ -10,6 +10,7 @@ import './style.css'
 import LockScreenClock from './components/screen/LockScreenClock'
 import MainMenu from './components/screen/MainMenu'
 import UI from './components/UI'
+import AppIcon from './components/screen/AppIcon'
 
 export default function App() {
 	const [isCharging, setIsCharging] = useState(false)
@@ -42,6 +43,12 @@ export default function App() {
 	useEffect(() => {
 		console.log('charging? ' + isCharging)
 	}, [isCharging])
+	const pinnedAppsArr = [
+		<AppIcon key={1} />,
+		<AppIcon key={2} />,
+		<AppIcon key={3} />,
+		<AppIcon key={4} />,
+	]
 	return (
 		<>
 			<Charger isCharging={isCharging} setIsChargingcallback={setIsCharging} />
@@ -78,7 +85,29 @@ export default function App() {
 								</>
 							</LockedScreen>
 						) : (
-							<MainMenu />
+							<MainMenu pinned={pinnedAppsArr}>
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon /> <AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon /> <AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon /> <AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+								<AppIcon />
+							</MainMenu>
 						)}
 					</>
 				</Screen>
