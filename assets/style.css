@@ -1,0 +1,118 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+}
+html {
+	height: 100%;
+	--violet: invert(46%) sepia(12%) saturate(2394%) hue-rotate(238deg)
+		brightness(90%) contrast(90%);
+	--pink: invert(17%) sepia(74%) saturate(5331%) hue-rotate(303deg)
+		brightness(105%) contrast(118%);
+	--red: invert(30%) sepia(43%) saturate(7009%) hue-rotate(359deg)
+		brightness(100%) contrast(110%);
+	--orange: invert(36%) sepia(61%) saturate(5221%) hue-rotate(20deg)
+		brightness(99%) contrast(101%);
+	--blue: invert(54%) sepia(65%) saturate(644%) hue-rotate(188deg)
+		brightness(95%) contrast(95%);
+	--aquaMarine: invert(73%) sepia(12%) saturate(427%) hue-rotate(119deg)
+		brightness(93%) contrast(96%);
+	--neonYellow: invert(90%) sepia(76%) saturate(3948%) hue-rotate(12deg)
+		brightness(104%) contrast(109%);
+	--yellow: invert(70%) sepia(65%) saturate(1321%) hue-rotate(2deg)
+		brightness(109%) contrast(89%);
+	--green: invert(55%) sepia(55%) saturate(586%) hue-rotate(93deg)
+		brightness(91%) contrast(87%);
+	--dirt: invert(100%) sepia(55%) saturate(1586%) hue-rotate(193deg)
+		brightness(91%) contrast(87%);
+}
+body {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(0, 0, 0, 0.854);
+	filter: brightness(100%) contrast(150%);
+}
+body::-webkit-scrollbar {
+	display: none;
+}
+
+.container {
+	position: relative;
+
+	animation: colorCycle 34s steps(1) infinite alternate-reverse,
+		moveY 3.4s linear infinite alternate;
+}
+.DVDLogo {
+	position: absolute;
+	width: 238px;
+	height: 121px;
+
+	animation: colorCycle 20s steps(1) infinite,
+		moveX 2s linear infinite alternate;
+}
+/* #laser {
+	position: absolute;
+	left: 50%;
+	right: 50%;
+	transform: translate(-50%);
+	opacity: 0.4;
+	width: 150px;
+} */
+@keyframes ScreenSaverStartBodyAnim {
+}
+
+@keyframes moveX {
+	0% {
+		left: 0%;
+	}
+	100% {
+		left: calc(100% - 238px);
+	}
+}
+
+@keyframes moveY {
+	0% {
+		top: 0%;
+	}
+	100% {
+		top: calc(100% - 121px);
+	}
+}
+
+@keyframes colorCycle {
+	0% {
+		filter: var(--blue);
+	}
+	10% {
+		filter: var(--green);
+	}
+	20% {
+		filter: var(--pink);
+	}
+	30% {
+		filter: var(--neonYellow);
+	}
+	40% {
+		filter: var(--aquaMarine);
+	}
+	50% {
+		filter: var(--yellow);
+	}
+	60% {
+		filter: var(--red);
+	}
+	70% {
+		filter: var(--aquaMarine);
+	}
+	80% {
+		filter: var(--dirt);
+	}
+	90% {
+		filter: var(--orange);
+	}
+	100% {
+		filter: var(--violet);
+	}
+}
