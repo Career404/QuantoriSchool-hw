@@ -37,12 +37,25 @@ body {
 body::-webkit-scrollbar {
 	display: none;
 }
-
+a.start-link {
+	padding-top: 50vmin;
+	display: block;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	font-size: 15vmin;
+	line-height: 25vmin;
+	color: lightgray;
+	font-family: 'Courier New', Courier, monospace;
+}
+a.start-link:hover {
+	text-shadow: 5px 5px 5px black, -5px -5px 5px black;
+}
 .container {
 	position: relative;
 
-	animation: colorCycle 34s steps(1) infinite alternate-reverse,
-		moveY 3.4s linear infinite alternate;
+	animation: colorCycle 28s steps(1) infinite,
+		moveY 2.8s linear infinite alternate;
 }
 .DVDLogo {
 	position: absolute;
@@ -52,14 +65,7 @@ body::-webkit-scrollbar {
 	animation: colorCycle 20s steps(1) infinite,
 		moveX 2s linear infinite alternate;
 }
-/* #laser {
-	position: absolute;
-	left: 50%;
-	right: 50%;
-	transform: translate(-50%);
-	opacity: 0.4;
-	width: 150px;
-} */
+
 @keyframes ScreenSaverStartBodyAnim {
 }
 
@@ -83,7 +89,7 @@ body::-webkit-scrollbar {
 
 @keyframes colorCycle {
 	0% {
-		filter: var(--blue);
+		filter: invert(100%);
 	}
 	10% {
 		filter: var(--green);
@@ -92,27 +98,27 @@ body::-webkit-scrollbar {
 		filter: var(--pink);
 	}
 	30% {
-		filter: var(--neonYellow);
+		filter: var(--blue);
 	}
 	40% {
-		filter: var(--aquaMarine);
+		filter: var(--orange);
 	}
 	50% {
-		filter: var(--yellow);
+		filter: var(--neonYellow);
 	}
 	60% {
-		filter: var(--red);
+		filter: var(--aquaMarine);
 	}
 	70% {
-		filter: var(--aquaMarine);
+		filter: var(--red);
 	}
 	80% {
 		filter: var(--dirt);
 	}
 	90% {
-		filter: var(--orange);
+		filter: var(--violet);
 	}
 	100% {
-		filter: var(--violet);
+		filter: var(--yellow);
 	}
 }
