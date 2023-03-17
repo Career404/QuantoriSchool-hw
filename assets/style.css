@@ -23,6 +23,8 @@ body {
 	right: 0;
 	background-color: rgba(0, 0, 0, 0.854);
 	filter: brightness(100%) contrast(150%);
+	font-family: 'Courier New', Courier, monospace;
+	font-weight: bold;
 }
 body::-webkit-scrollbar {
 	display: none;
@@ -35,6 +37,13 @@ body:active .thanks {
 }
 .hide,
 .thanks {
+}
+.hide {
+	bottom: 20%;
+	animation: fadein 3.3s reverse;
+	opacity: 0;
+}
+.text {
 	position: absolute;
 	bottom: 10%;
 	height: 50px;
@@ -45,12 +54,8 @@ body:active .thanks {
 	color: rgba(255, 255, 255, 0.749);
 	text-align: center;
 }
-.hide {
-	bottom: 20%;
-	animation: fadein 3.3s reverse;
-	opacity: 0;
-}
 .container {
+	user-select: none;
 	position: relative;
 
 	animation: moveY 3.3s linear infinite alternate,
