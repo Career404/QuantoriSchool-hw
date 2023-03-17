@@ -15,8 +15,6 @@ import AppIcon from './components/screen/AppIcon'
 export default function App() {
 	const [fullscreen, setFullscreen] = useState(false)
 
-	useEffect(() => {}, [fullscreen])
-
 	const [isCharging, setIsCharging] = useState(false)
 	const [batteryPercent, setBatteryPercent] = useState(100)
 	const [isWiFiConnected, setIsWiFiConnected] = useState(false)
