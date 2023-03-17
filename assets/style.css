@@ -4,16 +4,16 @@
 }
 html {
 	height: 100%;
-	--violet: invert(46%) sepia(12%) saturate(2394%) hue-rotate(238deg);
-	--pink: sepia(74%) saturate(3331%) hue-rotate(303deg);
-	--red: invert(30%) sepia(43%) saturate(7009%) hue-rotate(359deg);
-	--orange: invert(36%) sepia(61%) saturate(5221%) hue-rotate(20deg);
-	--blue: invert(54%) sepia(65%) saturate(644%) hue-rotate(188deg);
-	--aquaMarine: invert(73%) sepia(12%) saturate(427%) hue-rotate(119deg);
-	--neonYellow: invert(90%) sepia(76%) saturate(3948%) hue-rotate(12deg);
-	--yellow: invert(70%) sepia(65%) saturate(1321%) hue-rotate(2deg);
-	--green: invert(55%) sepia(10%) saturate(986%) hue-rotate(103deg);
-	--dirt: invert(100%) sepia(55%) saturate(1586%) hue-rotate(193deg);
+	--violet: invert(46%) sepia(12%) saturate(2394%) hue-rotate(0deg);
+	--pink: invert(17%) sepia(74%) saturate(5331%) hue-rotate(36deg);
+	--red: invert(30%) sepia(43%) saturate(7009%) hue-rotate(72deg);
+	--orange: invert(36%) sepia(61%) saturate(5221%) hue-rotate(108deg);
+	--yellow: invert(70%) sepia(65%) saturate(1321%) hue-rotate(144deg);
+	--neonYellow: invert(90%) sepia(76%) saturate(3948%) hue-rotate(180deg);
+	--green: invert(55%) sepia(55%) saturate(586%) hue-rotate(216deg);
+	--aquaMarine: invert(73%) sepia(62%) saturate(427%) hue-rotate(252deg);
+	--blue: invert(54%) sepia(65%) saturate(644%) hue-rotate(288deg);
+	--dirt: invert(100%) sepia(65%) saturate(644%) hue-rotate(288deg);
 }
 body {
 	position: absolute;
@@ -25,6 +25,7 @@ body {
 	filter: brightness(100%) contrast(150%);
 	font-family: 'Courier New', Courier, monospace;
 	font-weight: bold;
+	animation: fadein 0.5s;
 }
 body::-webkit-scrollbar {
 	display: none;
@@ -44,12 +45,13 @@ body:active .thanks {
 	opacity: 0;
 }
 .text {
+	user-select: none;
 	position: absolute;
-	bottom: 10%;
+	bottom: 25%;
 	height: 50px;
 	left: 0;
 	width: 100%;
-	font-size: min(10vmin, 20px);
+	font-size: min(5.5vmin, 50px);
 	line-height: 50px;
 	color: rgba(255, 255, 255, 0.749);
 	text-align: center;
@@ -58,16 +60,16 @@ body:active .thanks {
 	user-select: none;
 	position: relative;
 
-	animation: moveY 3.3s linear infinite alternate,
-		colorCycle 33s steps(1) infinite;
+	animation: moveY 2s 0.52s linear infinite alternate,
+		colorCycle 20s 0.52s steps(1) infinite;
 }
 .DVDLogo {
 	position: absolute;
 	width: 238px;
 	height: 121px;
 
-	animation: moveX 2s linear infinite alternate,
-		colorCycle 20s steps(1) infinite reverse;
+	animation: moveX 3.2s 0.5s linear infinite alternate,
+		colorCycle 32s 0.5s steps(1) infinite reverse;
 }
 
 @keyframes ScreenSaverStartBodyAnim {
@@ -93,37 +95,37 @@ body:active .thanks {
 
 @keyframes colorCycle {
 	0% {
-		filter: invert(100%);
+		filter: invert(100%) hue-rotate(15%);
 	}
 	10% {
-		filter: var(--green);
+		filter: var(--violet);
 	}
 	20% {
 		filter: var(--pink);
 	}
 	30% {
-		filter: var(--blue);
+		filter: var(--green);
 	}
 	40% {
 		filter: var(--orange);
 	}
 	50% {
-		filter: var(--neonYellow);
+		filter: var(--yellow);
 	}
 	60% {
-		filter: var(--aquaMarine);
+		filter: var(--neonYellow);
 	}
 	70% {
 		filter: var(--red);
 	}
 	80% {
-		filter: var(--dirt);
+		filter: var(--aquaMarine);
 	}
 	90% {
-		filter: var(--violet);
+		filter: var(--blue);
 	}
 	100% {
-		filter: var(--yellow);
+		filter: var(--dirt);
 	}
 }
 @keyframes fadein {
