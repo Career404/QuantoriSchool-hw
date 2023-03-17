@@ -27,25 +27,34 @@ body {
 body::-webkit-scrollbar {
 	display: none;
 }
-a.start-link {
-	padding-top: 50vmin;
+body:active .thanks {
 	display: block;
-	height: 100%;
-	width: 100%;
-	text-align: center;
-	font-size: 15vmin;
-	line-height: 25vmin;
-	color: lightgray;
-	font-family: 'Courier New', Courier, monospace;
 }
-a.start-link:hover {
-	text-shadow: 5px 5px 5px black, -5px -5px 5px black;
+.thanks {
+	display: none;
+}
+.hide,
+.thanks {
+	position: absolute;
+	bottom: 10%;
+	height: 50px;
+	left: 0;
+	width: 100%;
+	font-size: min(10vmin, 20px);
+	line-height: 50px;
+	color: rgba(255, 255, 255, 0.749);
+	text-align: center;
+}
+.hide {
+	bottom: 20%;
+	animation: fadein 3.3s reverse;
+	opacity: 0;
 }
 .container {
 	position: relative;
 
-	animation: moveY 15s linear infinite alternate,
-		colorCycle 150s steps(1) infinite;
+	animation: moveY 3.3s linear infinite alternate,
+		colorCycle 33s steps(1) infinite;
 }
 .DVDLogo {
 	position: absolute;
@@ -110,5 +119,13 @@ a.start-link:hover {
 	}
 	100% {
 		filter: var(--yellow);
+	}
+}
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
 	}
 }

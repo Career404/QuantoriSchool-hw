@@ -4,12 +4,39 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<!--
-   <meta http-equiv="refresh" content="0; URL=./assets/audio/laser.mp3"/> -->
 		<title>DVD Screensaver</title>
 		<link rel="stylesheet" href="./assets/style.css" />
 	</head>
 	<body>
-		<a class="start-link" href="./DVD.html">Click to start</a>
+		<div class="hide">Click anywhere to enable the sound effect</div>
+		<div class="thanks">Thank you!</div>
+		<audio id="playerX">
+			<source src="./assets/audio/laser.mp3" type="audio/mp3" />
+		</audio>
+		<audio id="playerY">
+			<source src="./assets/audio/laser.mp3" type="audio/mp3" />
+		</audio>
+		<div class="container" id="vert">
+			<img
+				class="DVDLogo"
+				id="hor"
+				src="./assets/img/DVDLogo.png"
+				alt="DVD logo"
+			/>
+		</div>
+		<script>
+			;[
+				document.getElementById('vert'),
+				document.getElementById('hor'),
+			].forEach((el) => {
+				el.addEventListener('animationiteration', (event) => {
+					event.animationName === 'moveX'
+						? document.getElementById('playerX').play()
+						: event.animationName === 'moveY'
+						? document.getElementById('playerY').play()
+						: null
+				})
+			})
+		</script>
 	</body>
 </html>
