@@ -10,11 +10,33 @@
 		<link rel="stylesheet" href="./assets/style.css" />
 	</head>
 	<body>
-		<audio id="player" autoplay loop>
+		<audio id="playerX">
 			<source src="./assets/audio/laser.mp3" type="audio/mp3" />
 		</audio>
-		<div class="container">
-			<img class="DVDLogo" src="./assets/img/DVDLogo.png" alt="DVD logo" />
+		<audio id="playerY">
+			<source src="./assets/audio/laser.mp3" type="audio/mp3" />
+		</audio>
+		<div class="container" id="vert">
+			<img
+				class="DVDLogo"
+				id="hor"
+				src="./assets/img/DVDLogo.png"
+				alt="DVD logo"
+			/>
 		</div>
+		<script>
+			;[
+				document.getElementById('vert'),
+				document.getElementById('hor'),
+			].forEach((el) => {
+				el.addEventListener('animationiteration', (event) => {
+					event.animationName === 'moveX'
+						? document.getElementById('playerX').play()
+						: event.animationName === 'moveY'
+						? document.getElementById('playerY').play()
+						: null
+				})
+			})
+		</script>
 	</body>
 </html>

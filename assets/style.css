@@ -4,26 +4,16 @@
 }
 html {
 	height: 100%;
-	--violet: invert(46%) sepia(12%) saturate(2394%) hue-rotate(238deg)
-		brightness(90%) contrast(90%);
-	--pink: invert(17%) sepia(74%) saturate(5331%) hue-rotate(303deg)
-		brightness(105%) contrast(118%);
-	--red: invert(30%) sepia(43%) saturate(7009%) hue-rotate(359deg)
-		brightness(100%) contrast(110%);
-	--orange: invert(36%) sepia(61%) saturate(5221%) hue-rotate(20deg)
-		brightness(99%) contrast(101%);
-	--blue: invert(54%) sepia(65%) saturate(644%) hue-rotate(188deg)
-		brightness(95%) contrast(95%);
-	--aquaMarine: invert(73%) sepia(12%) saturate(427%) hue-rotate(119deg)
-		brightness(93%) contrast(96%);
-	--neonYellow: invert(90%) sepia(76%) saturate(3948%) hue-rotate(12deg)
-		brightness(104%) contrast(109%);
-	--yellow: invert(70%) sepia(65%) saturate(1321%) hue-rotate(2deg)
-		brightness(109%) contrast(89%);
-	--green: invert(55%) sepia(55%) saturate(586%) hue-rotate(93deg)
-		brightness(91%) contrast(87%);
-	--dirt: invert(100%) sepia(55%) saturate(1586%) hue-rotate(193deg)
-		brightness(91%) contrast(87%);
+	--violet: invert(46%) sepia(12%) saturate(2394%) hue-rotate(238deg);
+	--pink: sepia(74%) saturate(3331%) hue-rotate(303deg);
+	--red: invert(30%) sepia(43%) saturate(7009%) hue-rotate(359deg);
+	--orange: invert(36%) sepia(61%) saturate(5221%) hue-rotate(20deg);
+	--blue: invert(54%) sepia(65%) saturate(644%) hue-rotate(188deg);
+	--aquaMarine: invert(73%) sepia(12%) saturate(427%) hue-rotate(119deg);
+	--neonYellow: invert(90%) sepia(76%) saturate(3948%) hue-rotate(12deg);
+	--yellow: invert(70%) sepia(65%) saturate(1321%) hue-rotate(2deg);
+	--green: invert(55%) sepia(10%) saturate(986%) hue-rotate(103deg);
+	--dirt: invert(100%) sepia(55%) saturate(1586%) hue-rotate(193deg);
 }
 body {
 	position: absolute;
@@ -54,16 +44,16 @@ a.start-link:hover {
 .container {
 	position: relative;
 
-	animation: colorCycle 28s steps(1) infinite,
-		moveY 2.8s linear infinite alternate;
+	animation: moveY 15s linear infinite alternate,
+		colorCycle 150s steps(1) infinite;
 }
 .DVDLogo {
 	position: absolute;
 	width: 238px;
 	height: 121px;
 
-	animation: colorCycle 20s steps(1) infinite,
-		moveX 2s linear infinite alternate;
+	animation: moveX 2s linear infinite alternate,
+		colorCycle 20s steps(1) infinite reverse;
 }
 
 @keyframes ScreenSaverStartBodyAnim {
