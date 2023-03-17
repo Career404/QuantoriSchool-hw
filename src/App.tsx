@@ -12,6 +12,7 @@ import MainMenu from './components/screen/MainMenu'
 import UI from './components/UI'
 import AppIcon from './components/screen/AppIcon'
 
+
 export default function App() {
 	const [fullscreen, setFullscreen] = useState(false)
 
@@ -83,6 +84,7 @@ export default function App() {
 							/>
 						)}
 						{isLocked ? (
+
 							<LockedScreen
 								isLocked={isLocked}
 								setIsLockedCallback={setIsLocked}
@@ -127,6 +129,7 @@ export default function App() {
 								<AppIcon />
 								<AppIcon />
 							</MainMenu>
+
 						)}
 					</>
 				</Screen>
