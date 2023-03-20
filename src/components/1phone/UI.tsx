@@ -74,7 +74,7 @@ export default function UI({
 			<UIButton onClick={() => setIsWiFiConnectedCallback(!isWiFiConnected)}>
 				{isWiFiConnected ? <BsWifiOff /> : <BsWifi />}
 			</UIButton>
-			<UIButton onClick={() => (window.location.href = '/')}>
+			<UIButton onClick={() => (window.location.href = '/QuantoriSchool-hw/')}>
 				<MdOutlineDoorBack />
 			</UIButton>
 		</UIBar>

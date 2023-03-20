@@ -12,6 +12,8 @@ export default defineConfig({
 				main: resolve(__dirname, 'index.html'),
 				phone: resolve(__dirname, 'src/pages/1phone/1phone.html'),
 				DVD: resolve(__dirname, 'src/pages/2DVD/2DVD.html'),
+				DVDNoJs: resolve(__dirname, 'src/pages/2DVD/NoJs.html'),
+				DVDJs: resolve(__dirname, 'src/pages/2DVD/Js.html'),
 			},
 		},
 	},
