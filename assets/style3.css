@@ -26,9 +26,15 @@ body {
 	filter: brightness(100%) contrast(150%);
 	font-family: 'Courier New', Courier, monospace;
 	font-weight: bold;
+	animation: fadein 0.5s;
 }
 body::-webkit-scrollbar {
 	display: none;
+}
+.text {
+	margin: 50px;
+	font-size: 30px;
+	color: whitesmoke;
 }
 .fullscreen {
 	position: absolute;
@@ -37,54 +43,48 @@ body::-webkit-scrollbar {
 	left: 0;
 	right: 0;
 }
-body:active .thanks {
-	display: block;
-}
-.thanks {
-	display: none;
-}
-.hide,
-.thanks {
-}
-.hide {
-	bottom: 20%;
-	animation: fadein 3.3s reverse;
-	opacity: 0;
-}
-.text {
-	user-select: none;
-	margin-top: 50px;
-	width: 100%;
-	font-size: min(5.5vmin, 50px);
-	line-height: 50px;
-	color: rgba(255, 255, 255, 0.749);
-	text-align: center;
-}
-a {
-	font-size: min(5vmin, 35px);
-	color: white;
-	text-shadow: 0 0 5px rgb(28, 35, 28);
-}
-a:hover {
-	font-weight: normal;
-	color: lightcoral;
-}
 .container {
+	--height: 121px;
+	--length: 238px;
 	user-select: none;
 	position: relative;
 
-	animation: moveY 3.16s linear infinite alternate,
-		colorCycle 31.6s steps(1) infinite;
+	animation: moveY 2s 0.52s linear infinite alternate,
+		colorCycle 20s 0.52s steps(1) infinite;
 }
-.DVDLogo {
+.logo {
 	position: absolute;
 	width: 238px;
 	height: 121px;
 
-	animation: moveX 0.79s linear infinite alternate-reverse,
-		colorCycle 7.9s steps(1) infinite reverse;
+	animation: moveX 3.2s 0.5s linear infinite alternate,
+		colorCycle 32s 0.5s steps(1) infinite reverse;
 }
 
+.container_medium {
+	--length: 119px;
+	--height: 60.5px;
+	animation: moveY 9.1s 0.51s linear infinite alternate-reverse,
+		colorCycle 91s 0.51s steps(1) infinite;
+}
+.logo_medium {
+	width: 119px;
+	height: 60.5px;
+	animation: moveX 4s 0.35s linear infinite alternate,
+		colorCycle 40s 0.35s steps(1) infinite reverse;
+}
+.container_tiny {
+	--length: 87px;
+	--height: 44px;
+	animation: moveY 3s 0.35s linear infinite alternate-reverse,
+		colorCycle 30s 0.35s steps(1) infinite alternate;
+}
+.logo_tiny {
+	width: 87px;
+	height: 44px;
+	animation: moveX 5.2s 0.5s linear infinite alternate-reverse,
+		colorCycle 52s 0.5s steps(1) infinite alternate;
+}
 @keyframes ScreenSaverStartBodyAnim {
 }
 
@@ -93,7 +93,7 @@ a:hover {
 		left: 0%;
 	}
 	100% {
-		left: calc(100% - 238px);
+		left: calc(100% - var(--length));
 	}
 }
 
@@ -102,7 +102,7 @@ a:hover {
 		top: 0%;
 	}
 	100% {
-		top: calc(100% - 121px);
+		top: calc(100% - var(--height));
 	}
 }
 
@@ -139,5 +139,13 @@ a:hover {
 	}
 	100% {
 		filter: var(--dirt);
+	}
+}
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
 	}
 }
