@@ -1,9 +1,8 @@
-
 import React, { PropsWithChildren, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import Slider from 'react-touch-drag-slider'
-import lockBG from '../../assets/diagmonds.png'
-import lockIcon from '../../assets/arrow-right.png'
+import lockBG from '../../../assets/diagmonds.png'
+import lockIcon from '../../../assets/arrow-right.png'
 
 const Full = styled.div`
 	height: 100%;

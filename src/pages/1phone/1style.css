@@ -30,8 +30,9 @@ html {
 body {
 	height: auto;
 	min-height: 100vh;
+	padding: 10px 0;
 	background-color: #664330;
-	background-image: url('./assets/wood-pattern.png');
+	background-image: url('../../assets/wood-pattern.png');
 	display: flex;
 	flex-flow: column-reverse nowrap;
 	justify-content: center;
@@ -55,7 +56,7 @@ body {
 	border: 2px solid var(--goldenSilver);
 }
 .sideElement {
-	width: 2px;
+	width: max(2px, 3%);
 	border-radius: 10px;
 	background-color: var(--goldenSilver);
 	box-shadow: 0 0 1px black;
@@ -66,46 +67,25 @@ body {
 }
 #volSwitch {
 	position: absolute;
-	top: 55px;
-	left: -3px;
-	height: 15px;
+	top: 14%;
+	left: min(-1.5%, -3px);
+	height: max(15px, 4%);
 }
 .sideButton {
 	position: absolute;
-	height: 30px;
+	height: max(30px, 8%);
 }
 #volUp {
-	top: 90px;
-	left: -3px;
+	top: calc(16% + max(15px, 4%));
+	left: min(-1.5%, -3px);
 }
 #volDown {
-	top: 130px;
-	left: -3px;
+	top: calc(22% + max(30px, 8%));
+	left: min(-1.5%, -3px);
 }
 #lock {
-	top: 90px;
-	right: -3px;
-}
-@media (min-height: 1265px) {
-	.sideElement {
-		width: max(2px, 0.5vh);
-	}
-	#volSwitch {
-		height: 1.2vh;
-		top: 4.5vh;
-	}
-	.sideButton {
-		height: 2.3vh;
-	}
-	#volUp {
-		top: 7vh;
-	}
-	#volDown {
-		top: 10.5vh;
-	}
-	#lock {
-		top: 7vh;
-	}
+	top: calc(16% + max(15px, 4%));
+	right: min(-1.5%, -3px);
 }
 #elements {
 	margin: 0 0 5%;
@@ -149,13 +129,6 @@ body {
 	height: 60%;
 	background-color: black;
 }
-#screen {
-	position: relative;
-	height: 80%;
-	aspect-ratio: 9/16;
-	box-shadow: inset 0 0 2px black;
-	background: rgb(178, 151, 0) url('./assets/diagmonds.png');
-}
 #centerButton {
 	min-height: 35px;
 	height: 3vh;
@@ -172,121 +145,4 @@ body {
 	aspect-ratio: 1/1;
 	border: 1px solid rgba(211, 211, 211, 0.568);
 	border-radius: 8px;
-}
-#statusBar {
-	width: 100%;
-	min-height: 10px;
-	height: 0.8vh;
-	background-color: rgba(0, 0, 0, 0.463);
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-between;
-	font-size: max(8px, 0.7vh);
-}
-#signal,
-#signalStrength {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: center;
-	align-items: center;
-}
-#signalStrength > div {
-	margin: 0 max(1px, 0.05vh);
-	min-height: 4px;
-	height: 0.3vh;
-	min-width: 4px;
-	width: 0.3vh;
-	aspect-ratio: 1/1;
-	border-radius: 50%;
-	background-color: white;
-}
-#battery {
-	width: 20%;
-	height: 100%;
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-around;
-	align-items: center;
-}
-#batteryPercent:after {
-	content: '%';
-}
-#batteryBox {
-	position: relative;
-	height: 80%;
-	width: 35%;
-	display: flex;
-	justify-content: start;
-	align-items: center;
-	border: max(1px, 0.1vh) solid white;
-}
-#batteryBox::after {
-	content: '';
-	position: absolute;
-	right: -15%;
-	top: 33%;
-	bottom: 33%;
-	width: 12%;
-	background-color: white;
-}
-#batteryStatus {
-	height: 80%;
-	width: 90%;
-	margin: 0 1px;
-	background-color: white;
-}
-#clock {
-	height: 30%;
-	width: 100%;
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-}
-#time {
-	font-size: max(50px, 5vh);
-	font-weight: 200;
-}
-#date {
-	font-size: max(14px, 1.4vh);
-}
-#swipeLock {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 30%;
-}
-#swipeLock > #swipeText {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	line-height: 100%;
-	color: #ffffff;
-	background: linear-gradient(to right, #4d4d4d 0, white 10%, #4d4d4d 20%);
-	background-position: 0;
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	animation: text-shine 6s infinite linear;
-}
-@keyframes text-shine {
-	0% {
-		background-position: 0;
-	}
-	100% {
-		background-position: 100px;
-	}
-}
-#swipeLock > #swipeText::before {
-	content: '';
-	position: absolute;
-	left: -15%;
-	display: block;
-	height: 1rem;
-	width: 1rem;
-	background-image: url(./assets/arrow-right.png);
-	background-size: contain;
-	filter: brightness(90%);
 }

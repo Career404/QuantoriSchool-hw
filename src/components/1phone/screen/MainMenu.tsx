@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useEffect, useRef } from 'react'
 import { useDraggable } from 'react-use-draggable-scroll'
 
-import BG from '../../assets/diagmonds.png'
+import BG from '../../../assets/diagmonds.png'
 
 import styled from 'styled-components'
 
