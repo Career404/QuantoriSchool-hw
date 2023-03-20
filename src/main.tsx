@@ -11,6 +11,9 @@ function Main() {
 				<li>
 					<a href="src\pages\1phone\1phone.html">Smartphone</a>
 				</li>
+				<li>
+					<a href="src\pages\2DVD\2DVD.html">DVD Screensaver</a>
+				</li>
 			</ol>
 		</main>
 	)
