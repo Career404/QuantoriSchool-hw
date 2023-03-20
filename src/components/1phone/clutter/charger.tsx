@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled, { keyframes } from 'styled-components'
-import chargerURL from '../../assets/charger.png'
-import USBURL from '../../assets/usb.png'
+import chargerURL from '../../../assets/charger.png'
+import USBURL from '../../../assets/usb.png'
 
 const FullscreenClutter = styled.div`
 	pointer-events: none;

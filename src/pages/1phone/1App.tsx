@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
 
-import LightGlare from './components/LightGlare'
-import Charger from './components/clutter/charger'
-import Screen from './components/screen/Screen'
-import LockedScreen from './components/screen/Locked'
-import StatusBar from './components/screen/StatusBar'
+import LightGlare from '../../components/1phone/LightGlare'
+import Charger from '../../components/1phone/clutter/charger'
+import Screen from '../../components/1phone/screen/Screen'
+import LockedScreen from '../../components/1phone/screen/Locked'
+import StatusBar from '../../components/1phone/screen/StatusBar'
 
-import './style.css'
-import LockScreenClock from './components/screen/LockScreenClock'
-import MainMenu from './components/screen/MainMenu'
-import UI from './components/UI'
-import AppIcon from './components/screen/AppIcon'
-
+import './1style.css'
+import LockScreenClock from '../../components/1phone/screen/LockScreenClock'
+import MainMenu from '../../components/1phone/screen/MainMenu'
+import UI from '../../components/1phone/UI'
+import AppIcon from '../../components/1phone/screen/AppIcon'
 
 export default function App() {
 	const [fullscreen, setFullscreen] = useState(false)
@@ -25,7 +24,7 @@ export default function App() {
 	const isOn = batteryPercent > 0 ? true : false
 
 	useEffect(() => {
-		let intervalId: number | undefined
+		let intervalId: number | ReturnType<typeof setInterval> | undefined
 		if (isCharging) {
 			if (batteryPercent >= 100) {
 				null
@@ -86,7 +85,6 @@ export default function App() {
 							/>
 						)}
 						{isLocked ? (
-
 							<LockedScreen
 								isLocked={isLocked}
 								setIsLockedCallback={setIsLocked}
@@ -131,7 +129,6 @@ export default function App() {
 								<AppIcon />
 								<AppIcon />
 							</MainMenu>
-
 						)}
 					</>
 				</Screen>

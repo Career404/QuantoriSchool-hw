@@ -8,6 +8,7 @@ import {
 	BsWifi,
 	BsWifiOff,
 } from 'react-icons/bs'
+import { MdOutlineDoorBack } from 'react-icons/md'
 import { RiBatteryChargeFill, RiBatteryChargeLine } from 'react-icons/ri'
 
 const UIBar = styled.div`
@@ -72,6 +73,9 @@ export default function UI({
 			</UIButton>
 			<UIButton onClick={() => setIsWiFiConnectedCallback(!isWiFiConnected)}>
 				{isWiFiConnected ? <BsWifiOff /> : <BsWifi />}
+			</UIButton>
+			<UIButton onClick={() => (window.location.href = '/')}>
+				<MdOutlineDoorBack />
 			</UIButton>
 		</UIBar>
 	)
