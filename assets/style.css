@@ -1,6 +1,7 @@
 * {
 	box-sizing: border-box;
 	margin: 0;
+	transition: 150ms;
 }
 html {
 	height: 100%;
@@ -30,6 +31,13 @@ body {
 body::-webkit-scrollbar {
 	display: none;
 }
+.fullscreen {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
 body:active .thanks {
 	display: block;
 }
@@ -55,6 +63,15 @@ body:active .thanks {
 	line-height: 50px;
 	color: rgba(255, 255, 255, 0.749);
 	text-align: center;
+}
+a {
+	font-size: min(5vmin, 35px);
+	color: white;
+	text-shadow: 0 0 5px rgb(28, 35, 28);
+}
+a:hover {
+	font-weight: normal;
+	color: lightcoral;
 }
 .container {
 	user-select: none;

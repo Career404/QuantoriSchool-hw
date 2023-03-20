@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!--
+		<meta http-equiv="refresh" content="0; URL=./assets/audio/laser.mp3" /> -->
+		<title>DVD Screensaver</title>
+		<link rel="stylesheet" href="./assets/style.css" />
+		<style>
+			body {
+				animation: none;
+			}
+			.container {
+				animation: moveY 3.16s linear infinite alternate,
+					colorCycle 31.6s steps(1) infinite;
+			}
+			.DVDLogo {
+				animation: moveX 0.79s linear infinite alternate-reverse,
+					colorCycle 7.9s steps(1) infinite reverse;
+			}
+		</style>
+	</head>
+	<body>
+		<audio autoplay loop>
+			<source src="./assets/audio/laser.mp3" type="audio/mp3" />
+		</audio>
+		<div class="container" id="vert">
+			<img
+				class="DVDLogo"
+				id="hor"
+				src="./assets/img/DVDLogo.png"
+				alt="DVD logo"
+			/>
+		</div>
+	</body>
+</html>
