@@ -26,66 +26,25 @@ body {
 	filter: brightness(100%) contrast(150%);
 	font-family: 'Courier New', Courier, monospace;
 	font-weight: bold;
+	animation: fadein 0.5s;
 }
 body::-webkit-scrollbar {
 	display: none;
-}
-.fullscreen {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-}
-body:active .thanks {
-	display: block;
-}
-.thanks {
-	display: none;
-}
-.hide,
-.thanks {
-}
-.hide {
-	bottom: 20%;
-	animation: fadein 3.3s reverse;
-	opacity: 0;
-}
-.text {
-	user-select: none;
-	position: absolute;
-	top: 50%;
-	height: 50px;
-	left: 0;
-	width: 100%;
-	font-size: min(5.5vmin, 50px);
-	line-height: 50px;
-	color: rgba(255, 255, 255, 0.749);
-	text-align: center;
-}
-a {
-	font-size: min(5vmin, 35px);
-	color: white;
-	text-shadow: 0 0 5px rgb(28, 35, 28);
-}
-a:hover {
-	font-weight: normal;
-	color: lightcoral;
 }
 .container {
 	user-select: none;
 	position: relative;
 
-	animation: moveY 3.16s linear infinite alternate,
-		colorCycle 31.6s steps(1) infinite;
+	animation: moveY 2s 0.52s linear infinite alternate,
+		colorCycle 20s 0.52s steps(1) infinite;
 }
 .DVDLogo {
 	position: absolute;
 	width: 238px;
 	height: 121px;
 
-	animation: moveX 0.79s linear infinite alternate-reverse,
-		colorCycle 7.9s steps(1) infinite reverse;
+	animation: moveX 3.2s 0.5s linear infinite alternate,
+		colorCycle 32s 0.5s steps(1) infinite reverse;
 }
 
 @keyframes ScreenSaverStartBodyAnim {
@@ -142,5 +101,13 @@ a:hover {
 	}
 	100% {
 		filter: var(--dirt);
+	}
+}
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
 	}
 }
