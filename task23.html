@@ -8,8 +8,6 @@
 		<link rel="stylesheet" href="./assets/style3.css" />
 	</head>
 	<body>
-		<div class="fullscreen bgLogo"></div>
-		<div class="logo3d"></div>
 		<div class="text"></div>
 		<div class="fullscreen">
 			<div class="animatedElem container" id="vert1">
@@ -47,10 +45,16 @@
 				/>
 			</div>
 		</div>
+		<div class="scene3d">
+			<div class="card">
+				<div class="card__face card__face_front">D</div>
+				<div class="card__face card__face_back">V</div>
+			</div>
+		</div>
 		<script>
-			const animatedElements = document.querySelectorAll('.animatedElem')
+			/*
 			const textTarget = document.querySelector('.text')
-			animatedElements.forEach((el) => {
+			document.querySelectorAll('.animatedElem').forEach((el) => {
 				el.addEventListener('animationiteration', (event) => {
 					const laserSound = new Audio('./assets/audio/laser.mp3')
 					laserSound.play().catch((e) => {
@@ -62,18 +66,19 @@
 							textTarget.textContent =
 								'click anywhere on the page to enable sound'
 							setTimeout(() => (textTarget.textContent = ''), 10000)
+
+							document.body.addEventListener(
+								'click',
+								() => {
+									textTarget.textContent = 'Thanks!'
+									setTimeout(() => (textTarget.textContent = ''), 3000)
+								},
+								{ once: true }
+							)
 						}
 					})
 				})
-			})
-			document.body.addEventListener(
-				'click',
-				() => {
-					textTarget.textContent = 'Thanks!'
-					setTimeout(() => (textTarget.textContent = ''), 3000)
-				},
-				{ once: true }
-			)
+			})*/
 		</script>
 	</body>
 </html>
