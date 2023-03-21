@@ -44,10 +44,12 @@ body::-webkit-scrollbar {
 	left: 0;
 	right: 0;
 }
-body:active .logo3d {
+body:active .scene3d,
+body:active .card {
 	animation-play-state: paused;
 }
 .scene3d {
+	user-select: none;
 	--length: 250px;
 	--height: 250px;
 	position: absolute;
