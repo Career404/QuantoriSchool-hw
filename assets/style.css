@@ -26,6 +26,7 @@ body {
 	filter: brightness(100%) contrast(150%);
 	font-family: 'Courier New', Courier, monospace;
 	font-weight: bold;
+	animation: fadein 3s;
 }
 body::-webkit-scrollbar {
 	display: none;
@@ -73,16 +74,16 @@ a:hover {
 	user-select: none;
 	position: relative;
 
-	animation: moveY 3.16s linear infinite alternate,
-		colorCycle 31.6s steps(1) infinite;
+	animation: moveY 1.479s linear infinite alternate,
+		colorCycle 14.79s steps(1) infinite;
 }
 .DVDLogo {
 	position: absolute;
 	width: 238px;
 	height: 121px;
 
-	animation: moveX 0.79s linear infinite alternate-reverse,
-		colorCycle 7.9s steps(1) infinite reverse;
+	animation: moveX 1.48s 0.33s linear infinite alternate-reverse,
+		colorCycle 14.8s 0.33s steps(1) infinite reverse;
 }
 
 @keyframes ScreenSaverStartBodyAnim {
@@ -139,5 +140,14 @@ a:hover {
 	}
 	100% {
 		filter: var(--dirt);
+	}
+}
+
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
 	}
 }
