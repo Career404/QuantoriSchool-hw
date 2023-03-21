@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>DVD Screensaver</title>
+		<link rel="stylesheet" href="./assets/style3.css" />
+	</head>
+	<body>
+		<div class="fullscreen bgLogo"></div>
+		<div class="logo3d"></div>
+		<div class="text"></div>
+		<div class="fullscreen">
+			<div class="animatedElem container" id="vert1">
+				<img
+					class="animatedElem logo"
+					id="hor1"
+					src="./assets/img/DVDlogo.png"
+					alt="DVD animatedElem logo"
+				/>
+			</div>
+		</div>
+		<div class="fullscreen">
+			<div
+				class="animatedElem container animatedElem container_medium"
+				id="vert2"
+			>
+				<img
+					class="animatedElem logo animatedElem logo_medium"
+					id="hor2"
+					src="./assets/img/DVDlogo.png"
+					alt="DVD animatedElem logo"
+				/>
+			</div>
+		</div>
+		<div class="fullscreen">
+			<div
+				class="animatedElem container animatedElem container_tiny"
+				id="vert3"
+			>
+				<img
+					class="animatedElem logo animatedElem logo_tiny"
+					id="hor3"
+					src="./assets/img/DVDlogo.png"
+					alt="DVD animatedElem logo"
+				/>
+			</div>
+		</div>
+		<script>
+			const animatedElements = document.querySelectorAll('.animatedElem')
+			const textTarget = document.querySelector('.text')
+			animatedElements.forEach((el) => {
+				el.addEventListener('animationiteration', (event) => {
+					const laserSound = new Audio('./assets/audio/laser.mp3')
+					laserSound.play().catch((e) => {
+						if (
+							e
+								.toString()
+								.includes("the user didn't interact with the document first")
+						) {
+							textTarget.textContent =
+								'click anywhere on the page to enable sound'
+							setTimeout(() => (textTarget.textContent = ''), 10000)
+						}
+					})
+				})
+			})
+			document.body.addEventListener(
+				'click',
+				() => {
+					textTarget.textContent = 'Thanks!'
+					setTimeout(() => (textTarget.textContent = ''), 3000)
+				},
+				{ once: true }
+			)
+		</script>
+	</body>
+</html>

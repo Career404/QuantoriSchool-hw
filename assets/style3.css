@@ -1,0 +1,209 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	transition: 500ms;
+}
+html {
+	height: 100%;
+	--violet: invert(46%) sepia(12%) saturate(2394%) hue-rotate(0deg);
+	--pink: invert(17%) sepia(74%) saturate(5331%) hue-rotate(36deg);
+	--red: invert(30%) sepia(43%) saturate(7009%) hue-rotate(72deg);
+	--orange: invert(36%) sepia(61%) saturate(5221%) hue-rotate(108deg);
+	--yellow: invert(70%) sepia(65%) saturate(1321%) hue-rotate(144deg);
+	--neonYellow: invert(90%) sepia(76%) saturate(3948%) hue-rotate(180deg);
+	--green: invert(55%) sepia(55%) saturate(586%) hue-rotate(216deg);
+	--aquaMarine: invert(73%) sepia(62%) saturate(427%) hue-rotate(252deg);
+	--blue: invert(54%) sepia(65%) saturate(644%) hue-rotate(288deg);
+	--dirt: invert(100%) sepia(65%) saturate(644%) hue-rotate(288deg);
+}
+body {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(0, 0, 0, 0.854);
+	font-family: 'Courier New', Courier, monospace;
+	font-weight: bold;
+	animation: fadein 1.4s;
+	overflow: hidden;
+}
+body::-webkit-scrollbar {
+	display: none;
+}
+.text {
+	position: relative;
+	margin: 50px;
+	font-size: 30px;
+	color: whitesmoke;
+}
+.fullscreen {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.bgLogo {
+	background: transparent url(./img/DVDLogo.png) no-repeat center;
+	opacity: 0.3;
+	background-size: contain;
+	animation: ltr2 8s linear infinite alternate;
+}
+body:active .bgLogo,
+body:active .logo3d {
+	animation-play-state: paused;
+}
+.logo3d {
+	position: absolute;
+	bottom: 25px;
+	left: 50%;
+	right: 50%;
+	height: 25%;
+	aspect-ratio: 1/0.51;
+	background: transparent url(./img/DVDLogo.png) no-repeat center;
+	background-size: contain;
+	animation: ltr 8s linear infinite alternate;
+}
+.container {
+	--height: 121px;
+	--length: 238px;
+	user-select: none;
+	position: relative;
+
+	animation: moveY 2s 0.52s linear infinite alternate,
+		colorCycle 20s 0.52s steps(1) infinite;
+}
+.logo {
+	position: absolute;
+	width: 238px;
+	height: 121px;
+
+	animation: moveX 3.2s 1s linear infinite alternate,
+		colorCycle 32s 1s steps(1) infinite reverse;
+}
+
+.container_medium {
+	--length: 119px;
+	--height: 60.5px;
+	animation: moveY 9.1s 0.61s linear infinite alternate-reverse,
+		colorCycle 91s 0.61s steps(1) infinite;
+}
+.logo_medium {
+	width: 119px;
+	height: 60.5px;
+	animation: moveX 4s 0.35s linear infinite alternate,
+		colorCycle 40s 0.35s steps(1) infinite reverse;
+}
+.container_tiny {
+	--length: 87px;
+	--height: 44px;
+	animation: moveY 3s 0.25s linear infinite alternate-reverse,
+		colorCycle 30s 0.25s steps(1) infinite alternate;
+}
+.logo_tiny {
+	width: 87px;
+	height: 44px;
+	animation: moveX 5.2s 0.5s linear infinite alternate-reverse,
+		colorCycle 52s 0.5s steps(1) infinite alternate;
+}
+@keyframes ScreenSaverStartBodyAnim {
+}
+
+@keyframes moveX {
+	0% {
+		left: 0%;
+	}
+	100% {
+		left: calc(100% - var(--length));
+	}
+}
+
+@keyframes moveY {
+	0% {
+		top: 0%;
+	}
+	100% {
+		top: calc(100% - var(--height));
+	}
+}
+
+@keyframes colorCycle {
+	0% {
+		filter: invert(100%) hue-rotate(15%);
+	}
+	10% {
+		filter: var(--violet);
+	}
+	20% {
+		filter: var(--pink);
+	}
+	30% {
+		filter: var(--green);
+	}
+	40% {
+		filter: var(--orange);
+	}
+	50% {
+		filter: var(--yellow);
+	}
+	60% {
+		filter: var(--neonYellow);
+	}
+	70% {
+		filter: var(--red);
+	}
+	80% {
+		filter: var(--aquaMarine);
+	}
+	90% {
+		filter: var(--blue);
+	}
+	100% {
+		filter: var(--dirt);
+	}
+}
+@keyframes fadein {
+	from {
+		filter: brightness(0);
+		background-color: black;
+		opacity: 0;
+	}
+	to {
+		filter: brightness(100%) contrast(150%);
+		background-color: rgba(0, 0, 0, 0.854);
+		opacity: 1;
+	}
+}
+
+@keyframes ltr2 {
+	0% {
+		transform: scale(0.9) rotate(-5deg) skew(-30deg);
+	}
+	20% {
+		transform: translate(5%) scale(1) rotate(-4deg) skew(-25deg);
+	}
+	80% {
+		transform: translate(40%) scale(1.2) perspective(80px) skew(9deg);
+	}
+	100% {
+		transform: translate(40%) scale(1.2) perspective(100px) skew(10deg);
+	}
+}
+@keyframes ltr {
+	0% {
+		transform: perspective(200px) rotateY(25deg) scale(0.9) rotateX(10deg);
+	}
+	20% {
+		transform: perspective(220px) rotateY(22deg) scale(0.95) rotateX(9deg);
+		filter: invert(20%);
+	}
+	80% {
+		transform: translate(18%) perspective(280px) rotateY(-9deg) rotateX(9deg)
+			scale(1.2);
+	}
+	100% {
+		transform: translate(20%) perspective(300px) rotateY(-10deg) rotateX(10deg)
+			scale(1.2);
+	}
+}
