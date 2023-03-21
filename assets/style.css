@@ -74,16 +74,16 @@ a:hover {
 	user-select: none;
 	position: relative;
 
-	animation: moveY 1.479s linear infinite alternate,
-		colorCycle 14.79s steps(1) infinite;
+	animation: moveY 1.46s linear infinite alternate,
+		colorCycle 14.6s steps(1) infinite;
 }
 .DVDLogo {
 	position: absolute;
 	width: 238px;
 	height: 121px;
 
-	animation: moveX 1.48s 0.33s linear infinite alternate-reverse,
-		colorCycle 14.8s 0.33s steps(1) infinite reverse;
+	animation: moveX 1.46s 0.33s linear infinite alternate-reverse,
+		colorCycle 14.6s 0.33s steps(1) infinite reverse;
 }
 
 @keyframes ScreenSaverStartBodyAnim {
