@@ -1,0 +1,35 @@
+.cList * {
+	text-decoration: none;
+	display: block;
+	cursor: pointer;
+}
+.cList__item {
+	padding: 12px 20px;
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 12px;
+}
+.cList__thumbnail {
+	color: #5f6980;
+	margin: 4px 0;
+} /* looks bad without js and animation
+.cList__thumbnail:hover ~ .cList__subitem {
+	display: block;
+} */
+.cList__thumbnail_active {
+	color: #282828;
+}
+.cList__thumbnail_active ~ .cList__subitem {
+	display: block;
+}
+.cList__subitem {
+	display: none;
+	color: #5f6980;
+}
+.cList__subitem_active {
+	display: block;
+	color: #282828;
+}
+.cList__thumbnail:hover .cList__subitem {
+	display: block;
+}

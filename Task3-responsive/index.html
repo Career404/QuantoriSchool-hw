@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Clonify dashboard</title>
+		<link rel="stylesheet" href="./assets/style.css" />
+		<link rel="stylesheet" href="./blocks/collapsibleList/cList.css" />
+	</head>
+	<body>
+		<nav class="navigation">
+			<div class="logo"></div>
+			<div class="navigation__header">Dashboard</div>
+			<div class="cList">
+				<div class="cList__item">
+					<div
+						class="cList__thumbnail cList__thumbnail_active list-logo list-logo_active dashboard-logo"
+					>
+						Dashboard
+					</div>
+					<a href="/" class="cList__subitem cList__subitem_active">Analitycs</a>
+					<a href="/" class="cList__subitem">Finance</a>
+					<a href="/" class="cList__subitem">Job board</a>
+				</div>
+				<div class="cList__item">
+					<div class="cList__thumbnail list-logo messages-logo">Messages</div>
+					<a href="/" class="cList__subitem">All</a>
+					<a href="/" class="cList__subitem">Important</a>
+					<a href="/" class="cList__subitem">Drafts</a>
+					<a href="/" class="cList__subitem">Deleted</a>
+				</div>
+				<div class="cList__item">
+					<div class="cList__thumbnail list-logo friends-logo">Friends</div>
+					<a href="/" class="cList__subitem">Recent</a>
+					<a href="/" class="cList__subitem">All</a>
+				</div>
+				<div class="cList__item">
+					<div class="cList__thumbnail list-logo apps-logo">Apps</div>
+					<a href="/" class="cList__subitem">Zepplin</a>
+					<a href="/" class="cList__subitem">Figma</a>
+					<a href="/" class="cList__subitem">Meta</a>
+				</div>
+			</div>
+			<div class="navigation__header">Pages</div>
+			<div class="cList">
+				<div class="cList__item">
+					<div class="cList__thumbnail list-logo help-center-logo">
+						Help Center
+					</div>
+					<a href="/" class="cList__subitem">Contact support</a>
+					<a href="/" class="cList__subitem">FAQ</a>
+				</div>
+				<div class="cList__item">
+					<div class="cList__thumbnail list-logo file-manager-logo">
+						File Manager
+					</div>
+					<a href="/" class="cList__subitem">My files</a>
+					<a href="/" class="cList__subitem">Shared files</a>
+				</div>
+			</div>
+			<div class="mini-menu">
+				<a href="/" class="mini-menu__icon settings-icon"></a>
+				<a href="/" class="mini-menu__icon logout-icon"></a>
+				<a href="/" class="mini-menu__icon globe-icon"></a>
+			</div>
+		</nav>
+		<main>
+			<div class="elements">
+				<div class="logo_mobile"></div>
+				<input type="text" name="search" id="search" class="header__search" />
+			</div>
+			<div class="offer card">Unlock</div>
+			<div class="quick-data">
+				<div class="revenue card">Revenue</div>
+				<div class="users card">Users</div>
+				<div class="new-signups card">New signups</div>
+				<div class="retention card">Retention</div>
+			</div>
+			<div class="performance card">Performance</div>
+			<div class="installed-apps card">Installed apps</div>
+		</main>
+	</body>
+</html>

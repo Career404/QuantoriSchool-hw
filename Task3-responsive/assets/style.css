@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+* {
+	box-sizing: border-box;
+	margin: 0;
+}
+html {
+	height: 100%;
+	font-size: 14px;
+	font-family: 'Inter', sans-serif;
+	font-weight: 600;
+}
+body {
+	height: auto;
+	min-height: 100vh;
+	display: flex;
+	flex-flow: row nowrap;
+	background-color: #f2f4f7;
+}
+main {
+	width: 100%;
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 32px;
+}
+.card {
+	position: relative;
+	margin: 0 32px;
+	padding: 24px;
+	background-color: white;
+	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.06);
+	border-radius: 12px;
+}
+
+.navigation {
+	position: relative;
+	padding: 18px 20px 0;
+	width: 232px;
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 16px;
+	border-right: 1px solid #eaecf0;
+	background-color: white;
+	font-size: 12px;
+	line-height: 20px;
+}
+.logo,
+.logo_mobile {
+	width: 99px;
+	height: 30px;
+	background: transparent url(./img/logo.svg) center no-repeat;
+}
+.logo_mobile {
+	display: none;
+}
+.logo {
+	margin-bottom: 22px;
+}
+.navigation__header {
+	margin-top: 16px;
+	color: #9d9fa2;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+.list-logo {
+	position: relative;
+}
+.list-logo::after {
+	content: '';
+	position: absolute;
+	right: -20px;
+	height: 20px;
+	width: 20px;
+	background: transparent url(./img/chevron-up.svg) center no-repeat;
+}
+.list-logo_active::after {
+	background: transparent url(./img/chevron-down.svg) center no-repeat;
+}
+.dashboard-logo::before {
+	content: '';
+	background: transparent url(./img/stats.svg) center no-repeat;
+}
+
+.mini-menu {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 12px 20px;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	border-top: 1px solid #eaecf0;
+}
+.mini-menu__icon {
+	height: 20px;
+	width: 20px;
+	background-size: contain;
+}
+.mini-menu__icon:hover {
+	scale: 1.2;
+}
+.settings-icon {
+	background: transparent url(./img/settings.svg) center no-repeat;
+}
+.logout-icon {
+	background: transparent url(./img/logout.svg) center no-repeat;
+}
+.globe-icon {
+	background: transparent url(./img/globe.svg) center no-repeat;
+}
+
+.elements {
+	height: 66px;
+	padding: 32px;
+	background-color: white;
+	border-bottom: 1px solid #eaecf0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.offer {
+	background-color: #282828;
+	color: white;
+}
+.quick-data {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+}
+@media (max-width: 768px) {
+	.navigation {
+		display: none;
+	}
+	.logo {
+		display: none;
+	}
+	.logo_mobile {
+		display: block;
+	}
+}
