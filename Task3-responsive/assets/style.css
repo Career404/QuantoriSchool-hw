@@ -465,9 +465,6 @@ main {
 	}
 }
 @media (max-width: 555px) {
-	html {
-		font-size: 12px;
-	}
 	.offer {
 		flex-flow: column nowrap;
 		justify-content: center;
