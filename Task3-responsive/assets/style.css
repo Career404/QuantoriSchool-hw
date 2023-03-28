@@ -43,7 +43,6 @@ main {
 	background-color: white;
 	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.06);
 	border-radius: 12px;
-	overflow: auto;
 }
 
 .navigation {
@@ -212,8 +211,10 @@ main {
 	background-color: #282828;
 	color: white;
 	display: flex;
-	flex-flow: row nowrap;
+	flex-flow: row wrap;
 	justify-content: space-between;
+	align-items: center;
+	text-align: center;
 }
 .offer__header {
 	font-size: 2rem;
@@ -342,17 +343,18 @@ main {
 	flex-flow: column nowrap;
 }
 .graph__table {
+	width: 100%;
 	display: grid;
 	grid-template-columns: 3rem repeat(7, 1fr);
 	grid-template-rows: repeat(4, 1fr) 3rem;
 	grid-column-gap: 30px;
 	grid-row-gap: 26px;
+	font-weight: 400;
 }
 
 .graph__image {
-	grid-area: 1 / 2 / 5 / 9;
 	width: 100%;
-	aspect-ratio: 4.35/1;
+	height: 240px;
 }
 .graph__value {
 	font-size: 12px;
@@ -391,7 +393,9 @@ main {
 .div11 {
 	grid-area: 5 / 8 / 6 / 9;
 }
-.graph__image {
+.div12 {
+	grid-area: 1 / 2 / 5 / 9;
+	height: 240px;
 }
 .widget__legend {
 	display: flex;
@@ -455,5 +459,24 @@ main {
 	}
 	main {
 		background-color: white;
+	}
+	.graph__table {
+		grid-column-gap: 10px;
+	}
+}
+@media (max-width: 555px) {
+	html {
+		font-size: 12px;
+	}
+	.offer {
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		gap: 2px;
+	}
+	.offer__header {
+		font-size: 26px;
+		line-height: 2.42rem;
 	}
 }
