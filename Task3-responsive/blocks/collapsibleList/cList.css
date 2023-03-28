@@ -12,7 +12,11 @@
 .cList__thumbnail {
 	color: #5f6980;
 	margin: 4px 0;
-} /* looks bad without js and animation
+}
+.cList__thumbnail:hover {
+	color: #282828;
+}
+/* looks bad without js and animation
 .cList__thumbnail:hover ~ .cList__subitem {
 	display: block;
 } */
@@ -30,6 +34,7 @@
 	display: block;
 	color: #282828;
 }
-.cList__thumbnail:hover .cList__subitem {
-	display: block;
+.cList__subitem:hover {
+	scale: 1.1;
+	letter-spacing: 1px;
 }

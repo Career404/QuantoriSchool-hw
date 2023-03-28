@@ -7,78 +7,278 @@
 		<title>Clonify dashboard</title>
 		<link rel="stylesheet" href="./assets/style.css" />
 		<link rel="stylesheet" href="./blocks/collapsibleList/cList.css" />
+		<link rel="stylesheet" href="./blocks/searchBar/search.css" />
+		<link rel="stylesheet" href="./blocks/table/table.css" />
 	</head>
 	<body>
+		<!-- NAVIGATION -->
 		<nav class="navigation">
-			<div class="logo"></div>
-			<div class="navigation__header">Dashboard</div>
-			<div class="cList">
-				<div class="cList__item">
-					<div
-						class="cList__thumbnail cList__thumbnail_active list-logo list-logo_active dashboard-logo"
-					>
-						Dashboard
+			<div class="navigation__top">
+				<div class="logo"></div>
+				<div class="navigation__header">Dashboard</div>
+				<div class="cList">
+					<div class="cList__item">
+						<div
+							class="cList__thumbnail cList__thumbnail_active list-icon list-icon_active dashboard-icon"
+						>
+							Dashboard
+						</div>
+						<a href="/" class="cList__subitem cList__subitem_active"
+							>Analitycs</a
+						>
+						<a href="/" class="cList__subitem">Finance</a>
+						<a href="/" class="cList__subitem">Job Board</a>
 					</div>
-					<a href="/" class="cList__subitem cList__subitem_active">Analitycs</a>
-					<a href="/" class="cList__subitem">Finance</a>
-					<a href="/" class="cList__subitem">Job Board</a>
+					<div class="cList__item">
+						<div class="cList__thumbnail list-icon messages-icon">Messages</div>
+						<a href="/" class="cList__subitem">All</a>
+						<a href="/" class="cList__subitem">Important</a>
+						<a href="/" class="cList__subitem">Drafts</a>
+						<a href="/" class="cList__subitem">Deleted</a>
+					</div>
+					<div class="cList__item">
+						<div class="cList__thumbnail list-icon friends-icon">Friends</div>
+						<a href="/" class="cList__subitem">Recent</a>
+						<a href="/" class="cList__subitem">All</a>
+					</div>
+					<div class="cList__item">
+						<div class="cList__thumbnail list-icon apps-icon">Apps</div>
+						<a href="/" class="cList__subitem">Zepplin</a>
+						<a href="/" class="cList__subitem">Figma</a>
+						<a href="/" class="cList__subitem">Meta</a>
+					</div>
 				</div>
-				<div class="cList__item">
-					<div class="cList__thumbnail list-logo messages-logo">Messages</div>
-					<a href="/" class="cList__subitem">All</a>
-					<a href="/" class="cList__subitem">Important</a>
-					<a href="/" class="cList__subitem">Drafts</a>
-					<a href="/" class="cList__subitem">Deleted</a>
-				</div>
-				<div class="cList__item">
-					<div class="cList__thumbnail list-logo friends-logo">Friends</div>
-					<a href="/" class="cList__subitem">Recent</a>
-					<a href="/" class="cList__subitem">All</a>
-				</div>
-				<div class="cList__item">
-					<div class="cList__thumbnail list-logo apps-logo">Apps</div>
-					<a href="/" class="cList__subitem">Zepplin</a>
-					<a href="/" class="cList__subitem">Figma</a>
-					<a href="/" class="cList__subitem">Meta</a>
+				<div class="navigation__header">Pages</div>
+				<div class="cList">
+					<div class="cList__item">
+						<div class="cList__thumbnail list-icon help-center-icon">
+							Help Center
+						</div>
+						<a href="/" class="cList__subitem">Contact support</a>
+						<a href="/" class="cList__subitem">FAQ</a>
+					</div>
+					<div class="cList__item">
+						<div class="cList__thumbnail list-icon file-manager-icon">
+							File Manager
+						</div>
+						<a href="/" class="cList__subitem">My files</a>
+						<a href="/" class="cList__subitem">Shared files</a>
+					</div>
 				</div>
 			</div>
-			<div class="navigation__header">Pages</div>
-			<div class="cList">
-				<div class="cList__item">
-					<div class="cList__thumbnail list-logo help-center-logo">
-						Help Center
-					</div>
-					<a href="/" class="cList__subitem">Contact support</a>
-					<a href="/" class="cList__subitem">FAQ</a>
-				</div>
-				<div class="cList__item">
-					<div class="cList__thumbnail list-logo file-manager-logo">
-						File Manager
-					</div>
-					<a href="/" class="cList__subitem">My files</a>
-					<a href="/" class="cList__subitem">Shared files</a>
-				</div>
-			</div>
-			<div class="mini-menu">
+			<div class="navigation__bottom mini-menu">
 				<a href="/" class="mini-menu__icon settings-icon"></a>
 				<a href="/" class="mini-menu__icon logout-icon"></a>
 				<a href="/" class="mini-menu__icon globe-icon"></a>
 			</div>
 		</nav>
 		<main>
+			<!-- ELEMENTS -->
 			<div class="elements">
 				<div class="logo_mobile"></div>
-				<input type="text" name="search" id="search" class="header__search" />
+				<div class="search-bar">
+					<input
+						type="text"
+						name="search"
+						id="search"
+						placeholder="Search..."
+						class="search-bar__input"
+					/>
+				</div>
+				<div class="elements__actions">
+					<div
+						class="elements__logo elements__notification-icon elements__desktop"
+					></div>
+					<div
+						class="elements__logo elements__calendar-icon elements__desktop"
+					></div>
+					<div
+						class="elements__logo elements__apps-icon elements__desktop"
+					></div>
+					<div class="elements__logo elements__user-icon"></div>
+				</div>
 			</div>
-			<div class="offer card">Unlock</div>
+			<!-- OFFER -->
+			<div class="offer card">
+				<div class="offer__text">
+					<h3 class="offer__header">Unlock premium stats</h3>
+					<p class="offer__subtext">
+						Get up to 10TB of storage for a limited time
+					</p>
+				</div>
+				<button class="offer__button">
+					<span class="offer__button-logo"></span> <span> Upgrade</span>
+				</button>
+			</div>
+			<!-- QUICK-DATA -->
 			<div class="quick-data">
-				<div class="revenue card">Revenue</div>
-				<div class="users card">Users</div>
-				<div class="new-signups card">New signups</div>
-				<div class="retention card">Retention</div>
+				<div class="quick-data__wrapper">
+					<div class="quick-data__card card">
+						<div class="quick-data__text">
+							<h3 class="quick-data__header">Revenue</h3>
+							<p class="quick-data__subtext">$56,945</p>
+						</div>
+						<div class="quick-data__dynamic">
+							<div class="badge badge_positive">+45%</div>
+							<div class="quick-data__from">From 4.6%</div>
+						</div>
+					</div>
+					<div class="quick-data__card card">
+						<div class="quick-data__text">
+							<h3 class="quick-data__header">Users</h3>
+							<p class="quick-data__subtext">76.8%</p>
+						</div>
+						<div class="quick-data__dynamic">
+							<div class="badge badge_negative">-1.7%</div>
+							<div class="quick-data__from">From 4.6%</div>
+						</div>
+					</div>
+				</div>
+				<div class="quick-data__wrapper">
+					<div class="quick-data__card card">
+						<div class="quick-data__text">
+							<h3 class="quick-data__header">New signups</h3>
+							<p class="quick-data__subtext">116</p>
+						</div>
+						<div class="quick-data__dynamic">
+							<div class="badge">0.00</div>
+							<div class="quick-data__from"></div>
+						</div>
+					</div>
+					<div class="quick-data__card card">
+						<div class="quick-data__text">
+							<h3 class="quick-data__header">Retention</h3>
+							<p class="quick-data__subtext">12.67%</p>
+						</div>
+						<div class="quick-data__dynamic">
+							<div class="badge badge_positive">+0.6%</div>
+							<div class="quick-data__from">From 4.6%</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="performance card">Performance</div>
-			<div class="installed-apps card">Installed apps</div>
+			<!-- PERFORMANCE -->
+			<div class="performance card widget">
+				<div class="widget__top">
+					<h3 class="widget__header">Performance</h3>
+					<span class="widget__menu"></span>
+				</div>
+				<div class="widget__body">
+					<div class="graph__table">
+						<img
+							class="graph__image"
+							src="./assets/img/LineChart.svg"
+							alt="placeholder graph"
+						/>
+						<div class="graph__value div1">100</div>
+						<div class="graph__value div2">200</div>
+						<div class="graph__value div3">300</div>
+						<div class="graph__value div4">400</div>
+						<div class="graph__value div5">Sun</div>
+						<div class="graph__value div6">Mon</div>
+						<div class="graph__value div7">Tue</div>
+						<div class="graph__value div8">Wed</div>
+						<div class="graph__value div9">Thu</div>
+						<div class="graph__value div10">Fri</div>
+						<div class="graph__value div11">Sat</div>
+					</div>
+					<div class="widget__legend">
+						<span class="legend__element"
+							><span class="legend__icon legend__icon_blue"></span>
+							Instagram</span
+						><span class="legend__element"
+							><span class="legend__icon legend__icon_green"></span
+							>Facebook</span
+						>
+					</div>
+				</div>
+			</div>
+			<!-- INSTALLED APPS -->
+			<div class="installed-apps card widget">
+				<div class="widget__top">
+					<h3 class="widget__header">Installed apps</h3>
+					<span class="widget__menu"></span>
+				</div>
+				<div class="widget__body table">
+					<div class="table_scroll-wrapper">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Source</th>
+									<th>Amount</th>
+									<th>Status</th>
+									<th>User ID</th>
+									<th>Joined</th>
+									<th>Group</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="table__source">
+										<span class="table__app-icon" id="zepplin-icon"></span
+										><span class="table__source-text">Zepplin</span>
+									</td>
+									<td>686.00</td>
+									<td><div class="badge badge_positive">Active</div></td>
+									<td>114423</td>
+									<td>October</td>
+									<td>Design</td>
+								</tr>
+								<tr>
+									<td class="table__source">
+										<span class="table__app-icon" id="figma-icon"></span
+										><span class="table__source-text">Figma</span>
+									</td>
+									<td>864.00</td>
+									<td><div class="badge badge_pending">Pending</div></td>
+									<td>76223</td>
+									<td>June</td>
+									<td>Finance</td>
+								</tr>
+								<tr>
+									<td class="table__source">
+										<span class="table__app-icon" id="meta-icon"></span
+										><span class="table__source-text">Meta</span>
+									</td>
+									<td>176.00</td>
+									<td><div class="badge">Cancelled</div></td>
+									<td>89453</td>
+									<td>March</td>
+									<td>Coding</td>
+								</tr>
+								<tr>
+									<td class="table__source">
+										<span class="table__app-icon" id="angular-icon"></span
+										><span class="table__source-text">Angular</span>
+									</td>
+									<td>49.00</td>
+									<td><div class="badge badge_positive">Active</div></td>
+									<td>11467</td>
+									<td>February</td>
+									<td>Marketing</td>
+								</tr>
+								<tr>
+									<td class="table__source">
+										<span class="table__app-icon" id="vue-icon"></span
+										><span class="table__source-text">Vue</span>
+									</td>
+									<td>999.00</td>
+									<td><div class="badge badge_positive">Active</div></td>
+									<td>67385</td>
+									<td>October</td>
+									<td>Finance</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="table__pagination">
+						<span class="table__pages-icon table__pages-prev"></span>
+						<span class="table__pages-current">1</span> /
+						<span class="table__pages-max">15</span>
+						<span class="table__pages-icon table__pages-next"></span>
+					</div>
+				</div>
+			</div>
 		</main>
 	</body>
 </html>

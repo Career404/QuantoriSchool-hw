@@ -1,0 +1,25 @@
+.search-bar {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+.search-bar__input {
+	width: 100%;
+	height: 46px;
+	padding: 12px 44px;
+	border: 1px solid #eaecf0;
+	border-radius: 6px;
+	font-size: 1.2rem;
+	font-weight: 400;
+}
+.search-bar::after {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 16px;
+	top: 13px;
+	height: 20px;
+	width: 20px;
+	background: url(./search.svg) center no-repeat;
+	background-size: contain;
+}
