@@ -24,10 +24,13 @@
  * [1,2,3,4] => [1,3]
  */
 const getOddValues = (numbers) => {
-	if (numbers === undefined) {
+	if (
+		numbers === undefined ||
+		(Array.isArray(numbers) && numbers.length === 0)
+	) {
 		return 'Please enter an array of numbers'
 	}
-	numbers.filter((num) => num % 2 === 1)
+	return numbers.filter((num) => num % 2 === 1)
 }
 /**
  * Exercise 2
