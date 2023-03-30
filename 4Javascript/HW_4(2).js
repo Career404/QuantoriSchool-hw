@@ -321,9 +321,17 @@ const get2SmallestValues = (numbers) => {
  *}
  * output line with the message 'Name: Petr Ivanovich Vasiliev'
  */
-const getFullName = (user) => {};
-const task13 = getFullName();
-task13;
+const getFullName = (user) => {
+	if (
+		user === undefined ||
+		(user.firstName === undefined &&
+			user.secondName === undefined &&
+			user.patronymic === undefined)
+	) {
+		return 'Please enter a name object';
+	}
+	return `Name: ${user?.firstName} ${user?.patronymic} ${user?.secondName}`;
+};
 /**
  * Exercise 14
  *
