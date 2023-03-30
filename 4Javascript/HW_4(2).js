@@ -113,9 +113,37 @@ const getShorterStrings = (strings, characters = 20) => {
  *
  * Use: map
  */
-const getComputedStrings = (fish) => {};
-const task5 = getComputedStrings();
-task5;
+const getComputedStrings = (fish) => {
+	if (fish === undefined || (Array.isArray(fish) && fish.length === 0)) {
+		return 'Please enter an array of fishy objects';
+	}
+	const returnArray = [];
+	fish.map((species) => {
+		returnArray.push(
+			/*
+      I really want to use
+
+      species[Object.keys(species)[0]] + ' ' + Object.keys(species)[1] + ' ' + species[Object.keys(species)[1]]
+
+      or even
+
+			Object.entries(species).reduce(
+				([par1, val1], [par2, val2]) => `${val1} ${par2} ${val2}`
+			)
+      to have anything to anything anything ([
+    	{ name: 'shark', sees: 'ocean floor' },
+	    { name: 'turtle', 'hides in': 'shell' },
+	    { name: 'otter', likes: 'fish biscuits' },
+    ])
+
+    but it appears to me that it is not the point of this task
+      */
+			species.name + ' likes ' + species.likes
+		);
+	});
+	return returnArray;
+};
+
 /**
  * Exercise 6
  *
