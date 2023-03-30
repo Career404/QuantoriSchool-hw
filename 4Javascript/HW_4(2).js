@@ -28,10 +28,10 @@ const getOddValues = (numbers) => {
 		numbers === undefined ||
 		(Array.isArray(numbers) && numbers.length === 0)
 	) {
-		return 'Please enter an array of numbers'
+		return 'Please enter an array of numbers';
 	}
-	return numbers.filter((num) => num % 2 === 1)
-}
+	return numbers.filter((num) => num % 2 === 1);
+};
 /**
  * Exercise 2
  *
@@ -43,14 +43,14 @@ const getSmallestValue = (numbers) => {
 		numbers === undefined ||
 		(Array.isArray(numbers) && numbers.length === 0)
 	) {
-		return 'Please enter an array of numbers'
+		return 'Please enter an array of numbers';
 	}
-	let smallestNum = Infinity
+	let smallestNum = Infinity;
 	numbers.forEach((num) => {
-		smallestNum < num ? null : (smallestNum = num)
-	})
-	return smallestNum
-}
+		smallestNum < num ? null : (smallestNum = num);
+	});
+	return smallestNum;
+};
 /**
  * Exercise 3
  *
@@ -62,14 +62,14 @@ const getBiggestValue = (numbers) => {
 		numbers === undefined ||
 		(Array.isArray(numbers) && numbers.length === 0)
 	) {
-		return 'Please enter an array of numbers'
+		return 'Please enter an array of numbers';
 	}
-	let largestNum = -Infinity
+	let largestNum = -Infinity;
 	numbers.forEach((num) => {
-		largestNum > num ? null : (largestNum = num)
-	})
-	return largestNum
-}
+		largestNum > num ? null : (largestNum = num);
+	});
+	return largestNum;
+};
 /**
  * Exercise 4
  *
@@ -92,10 +92,10 @@ const getShorterStrings = (strings, characters = 20) => {
 		strings === undefined ||
 		(Array.isArray(strings) && strings.length === 0)
 	) {
-		return 'Please enter an array of strings'
+		return 'Please enter an array of strings';
 	}
-	return strings.filter((string) => string.length < characters)
-}
+	return strings.filter((string) => string.length < characters);
+};
 /**
  * Exercise 5
  *
@@ -113,9 +113,9 @@ const getShorterStrings = (strings, characters = 20) => {
  *
  * Use: map
  */
-const getComputedStrings = (fish) => {}
-const task5 = getComputedStrings()
-task5
+const getComputedStrings = (fish) => {};
+const task5 = getComputedStrings();
+task5;
 /**
  * Exercise 6
  *
@@ -126,9 +126,9 @@ task5
  *
  * We use: ...
  */
-const mergeObjects = (objects) => {}
-const task6 = mergeObjects()
-task6
+const mergeObjects = (objects) => {};
+const task6 = mergeObjects();
+task6;
 /**
  * Exercise 7
  *
@@ -137,9 +137,9 @@ task6
  *
  * Use: operator ... and Math.min
  */
-const getSmallestValue2 = (numbers) => {}
-const task7 = getSmallestValue2()
-task7
+const getSmallestValue2 = (numbers) => {};
+const task7 = getSmallestValue2();
+task7;
 /**
  * Exercise 8
  *
@@ -148,9 +148,9 @@ task7
  *
  * Use: reduce
  */
-const getOddValues2 = (numbers) => {}
-const task8 = getOddValues2()
-task8
+const getOddValues2 = (numbers) => {};
+const task8 = getOddValues2();
+task8;
 /**
  * Exercise 9
  *
@@ -168,9 +168,9 @@ task8
  *
  * Use: reduce
  */
-const calculateTotal = (products) => {}
-const task9 = calculateTotal()
-task9
+const calculateTotal = (products) => {};
+const task9 = calculateTotal();
+task9;
 /**
  * Exercise 10
  *
@@ -179,9 +179,9 @@ task9
  *
  * Use: reduce and indexOf
  */
-const getUniqueValues = (numbers) => {}
-const task10 = getUniqueValues()
-task10
+const getUniqueValues = (numbers) => {};
+const task10 = getUniqueValues();
+task10;
 /**
  * Exercise 11
  *
@@ -194,9 +194,9 @@ task10
  *
  * Use: switch case or object like a map structure
  */
-const getErrorMessage = (code) => {}
-const task11 = getErrorMessage()
-task11
+const getErrorMessage = (code) => {};
+const task11 = getErrorMessage();
+task11;
 /**
  * Exercise 12
  *
@@ -205,9 +205,9 @@ task11
  *
  * Use: .sort()
  */
-const get2SmallestValues = (numbers) => {}
-const task12 = get2SmallestValues()
-task12
+const get2SmallestValues = (numbers) => {};
+const task12 = get2SmallestValues();
+task12;
 /**
  * Exercise 13
  *
@@ -219,9 +219,9 @@ task12
  *}
  * output line with the message 'Name: Petr Ivanovich Vasiliev'
  */
-const getFullName = (user) => {}
-const task13 = getFullName()
-task13
+const getFullName = (user) => {};
+const task13 = getFullName();
+task13;
 /**
  * Exercise 14
  *
@@ -232,9 +232,9 @@ task13
  *
  * Use: map
  */
-const multiplyTo = (numbers, multiplier) => {}
-const task14 = multiplyTo()
-task14
+const multiplyTo = (numbers, multiplier) => {};
+const task14 = multiplyTo();
+task14;
 /**
  * Exercise 15
  *
@@ -252,9 +252,9 @@ task14
  *
  * Use: filter, map, join
  */
-const getСharacterNames = (characters, franchise) => {}
-const task15 = getСharacterNames()
-task15
+const getСharacterNames = (characters, franchise) => {};
+const task15 = getСharacterNames();
+task15;
 
 // ----==== Advanced exercises (8 items) ====----
 /**
@@ -269,9 +269,9 @@ task15
  *]
  * => [1,2,3,4]
  */
-const getSmallestRow = (numbers) => {}
-const task16 = getSmallestRow()
-task16
+const getSmallestRow = (numbers) => {};
+const task16 = getSmallestRow();
+task16;
 /**
  * Exercise 17
  *
@@ -284,18 +284,18 @@ task16
  *]
  * => [1,2,3,4]
  */
-const getSmallestColumn = (numbers) => {}
-const task17 = getSmallestColumn()
-task17
+const getSmallestColumn = (numbers) => {};
+const task17 = getSmallestColumn();
+task17;
 /**
  * Exercise 18
  *
  * Write a function that returns the 2 biggest value of an array
  * [4,3,2,1] => [4,3]
  */
-const get2BiggestValues = (numbers) => {}
-const task18 = get2BiggestValues()
-task18
+const get2BiggestValues = (numbers) => {};
+const task18 = get2BiggestValues();
+task18;
 /**
  * Exercise 19
  *
@@ -304,9 +304,9 @@ task18
  *
  * 'Return the number (count) of vowels in the given string.' => 15
  */
-const getNumberOfVowels = (string) => {}
-const task19 = getNumberOfVowels()
-task19
+const getNumberOfVowels = (string) => {};
+const task19 = getNumberOfVowels();
+task19;
 /**
  * Exercise 20
  *
@@ -315,9 +315,9 @@ task19
  * with capital odd.
  * 'abcdef' => ['AbCdEf', 'aBcDeF']
  */
-const getCapitalizedStrings = (string) => {}
-const task20 = getCapitalizedStrings()
-task20
+const getCapitalizedStrings = (string) => {};
+const task20 = getCapitalizedStrings();
+task20;
 /**
  * Exercise 21
  *
@@ -336,9 +336,9 @@ task20
  * N is an integer in the range [1..200,000]
  * S consists only of lowercase letters [a-z]
  */
-const getCorrectString = (string) => {}
-const task21 = getCorrectString()
-task21
+const getCorrectString = (string) => {};
+const task21 = getCorrectString();
+task21;
 /**
  * Exercise 22
  *
@@ -346,9 +346,9 @@ task21
  * and returns an array of all their elements without nesting.
  * [1, 2, [3, 4], 5, [[6, 7], 8], 9] => [1, 2, 3, 4, 5, 6, 7, 8, 9]
  */
-const getFlattenedArray = (numbers) => {}
-const task22 = getFlattenedArray()
-task22
+const getFlattenedArray = (numbers) => {};
+const task22 = getFlattenedArray();
+task22;
 /**
  * Exercise 23
  *
@@ -356,6 +356,6 @@ task22
  *
  * [1, 2, 2, 4, 5, 5] => [2, 5]
  */
-const getNotUniqueValues = (numbers) => {}
-const task23 = getNotUniqueValues()
-task23
+const getNotUniqueValues = (numbers) => {};
+const task23 = getNotUniqueValues();
+task23;
