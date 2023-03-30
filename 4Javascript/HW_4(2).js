@@ -342,9 +342,19 @@ const getFullName = (user) => {
  *
  * Use: map
  */
-const multiplyTo = (numbers, multiplier) => {};
-const task14 = multiplyTo();
-task14;
+const multiplyTo = (numbers, multiplier) => {
+	if (
+		numbers === undefined ||
+		(Array.isArray(numbers) && numbers.length === 0)
+	) {
+		return 'Please enter a numbers array with at least one number';
+	}
+	if (multiplier === undefined || isNaN(Number(multiplier))) {
+		//Setting a default value of 1 would be a simpler solution
+		return 'Please enter a valid multiplier';
+	}
+	return numbers.map((num) => num * multiplier);
+};
 /**
  * Exercise 15
  *
