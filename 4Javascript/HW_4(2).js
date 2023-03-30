@@ -42,7 +42,7 @@ const getSmallestValue = (numbers) => {
 	) {
 		return 'Please enter an array of numbers'
 	}
-	let smallestNum = Number.POSITIVE_INFINITY
+	let smallestNum = Infinity
 	numbers.forEach((num) => {
 		smallestNum < num ? null : (smallestNum = num)
 	})
@@ -84,9 +84,15 @@ const getBiggestValue = (numbers) => {
  *
  * Use: filter
  */
-const getShorterStrings = (strings, characters = 20) => {}
-const task4 = getShorterStrings()
-task4
+const getShorterStrings = (strings, characters = 20) => {
+	if (
+		strings === undefined ||
+		(Array.isArray(strings) && strings.length === 0)
+	) {
+		return 'Please enter an array of strings'
+	}
+	return strings.filter((string) => string.length < characters)
+}
 /**
  * Exercise 5
  *
