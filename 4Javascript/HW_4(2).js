@@ -219,9 +219,15 @@ const getOddValues2 = (numbers) => {
  *
  * Use: reduce
  */
-const calculateTotal = (products) => {};
-const task9 = calculateTotal();
-task9;
+const calculateTotal = (products) => {
+	if (
+		products === undefined ||
+		(Array.isArray(products) && products.length === 0)
+	) {
+		return 'Please enter an array with product objects';
+	}
+	return products.reduce((acc, curr) => acc + curr.price * curr.count, 0);
+};
 /**
  * Exercise 10
  *
