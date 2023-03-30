@@ -262,9 +262,37 @@ const getUniqueValues = (numbers) => {
  *
  * Use: switch case or object like a map structure
  */
-const getErrorMessage = (code) => {};
-const task11 = getErrorMessage();
-task11;
+const getErrorMessage = (code) => {
+	if (
+		code === undefined ||
+		(typeof code !== 'number' && typeof code !== 'string')
+	) {
+		return 'Please enter the error code';
+	}
+	/* 	switch (code) {
+		case 500:
+			return 'Server Error';
+		case 401:
+			return 'Authorization failed';
+		case 402:
+			return 'Server Error';
+		case 403:
+			return 'Access denied';
+
+		case 404:
+			return 'Not found';
+	} */
+	const errorStore = {
+		500: 'Server Error',
+		401: 'Authorization failed',
+		402: 'Server Error',
+		403: 'Access denied',
+		404: 'Not found',
+	};
+	return errorStore[code] === undefined
+		? 'Sorry, unknown error code'
+		: errorStore[code];
+};
 /**
  * Exercise 12
  *
