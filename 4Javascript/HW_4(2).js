@@ -372,9 +372,19 @@ const multiplyTo = (numbers, multiplier) => {
  *
  * Use: filter, map, join
  */
-const getСharacterNames = (characters, franchise) => {};
-const task15 = getСharacterNames();
-task15;
+const getСharacterNames = (characters, franchise) => {
+	if (characters === undefined || characters.length === 0) {
+		return 'Please enter superhero data array';
+	}
+	const knownFranchises = new Set(characters.map((obj) => obj.franchise));
+	if (!knownFranchises.has(franchise)) {
+		return 'Sorry, unknown franchise';
+	}
+	return characters
+		.filter((character) => character.franchise === franchise)
+		.map((character) => character.name)
+		.join(', ');
+};
 
 // ----==== Advanced exercises (8 items) ====----
 /**
