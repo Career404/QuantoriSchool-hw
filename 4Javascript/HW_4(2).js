@@ -35,7 +35,16 @@ const getOddValues = (numbers) => {
  * Write a function that returns the smallest value of an array
  * [4,2,10,27] => 2
  */
-const getSmallestValue = (numbers) => {}
+const getSmallestValue = (numbers) => {
+	if (numbers === undefined) {
+		return 'Please enter an array of numbers'
+	}
+	let smallestNum = Number.POSITIVE_INFINITY
+	numbers.forEach((num) => {
+		smallestNum < num ? null : (smallestNum = num)
+	})
+	return smallestNum
+}
 const task2 = getSmallestValue()
 task2
 /**
