@@ -176,7 +176,7 @@ const getSmallestValue2 = (numbers) => {
 		numbers === undefined ||
 		(Array.isArray(numbers) && numbers.length === 0)
 	) {
-		return 'Please enter an array with at least one object';
+		return 'Please enter an array with at least one number';
 	}
 	return Math.min(...numbers);
 };
