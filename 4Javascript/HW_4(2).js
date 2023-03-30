@@ -54,7 +54,19 @@ const getSmallestValue = (numbers) => {
  * Write a function that returns the biggest value of an array
  * [5,22,9,43] => 43
  */
-const getBiggestValue = (numbers) => {}
+const getBiggestValue = (numbers) => {
+	if (
+		numbers === undefined ||
+		(Array.isArray(numbers) && numbers.length === 0)
+	) {
+		return 'Please enter an array of numbers'
+	}
+	let largestNum = -Infinity
+	numbers.forEach((num) => {
+		largestNum > num ? null : (largestNum = num)
+	})
+	return largestNum
+}
 /**
  * Exercise 4
  *
