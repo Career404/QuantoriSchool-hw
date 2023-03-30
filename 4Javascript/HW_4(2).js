@@ -154,9 +154,15 @@ const getComputedStrings = (fish) => {
  *
  * We use: ...
  */
-const mergeObjects = (objects) => {};
-const task6 = mergeObjects();
-task6;
+const mergeObjects = (objects) => {
+	if (
+		objects === undefined ||
+		(Array.isArray(objects) && objects.length === 0)
+	) {
+		return 'Please enter an array with at least one object';
+	}
+	return { ...objects[0], ...objects[1] };
+};
 /**
  * Exercise 7
  *
