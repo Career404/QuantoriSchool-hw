@@ -23,9 +23,7 @@
  * Write a function that returns odd array values.
  * [1,2,3,4] => [1,3]
  */
-const getOddValues = (numbers) => {}
-const task1 = getOddValues()
-task1
+const getOddValues = (numbers) => numbers.filter((number) => number % 2 === 1)
 /**
  * Exercise 2
  *
