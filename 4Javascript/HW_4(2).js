@@ -45,8 +45,6 @@ const getSmallestValue = (numbers) => {
 	})
 	return smallestNum
 }
-const task2 = getSmallestValue()
-task2
 /**
  * Exercise 3
  *
