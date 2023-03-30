@@ -36,7 +36,10 @@ const getOddValues = (numbers) => {
  * [4,2,10,27] => 2
  */
 const getSmallestValue = (numbers) => {
-	if (numbers === undefined) {
+	if (
+		numbers === undefined ||
+		(Array.isArray(numbers) && numbers.length === 0)
+	) {
 		return 'Please enter an array of numbers'
 	}
 	let smallestNum = Number.POSITIVE_INFINITY
@@ -52,8 +55,6 @@ const getSmallestValue = (numbers) => {
  * [5,22,9,43] => 43
  */
 const getBiggestValue = (numbers) => {}
-const task3 = getBiggestValue()
-task3
 /**
  * Exercise 4
  *
