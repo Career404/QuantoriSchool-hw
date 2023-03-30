@@ -171,9 +171,15 @@ const mergeObjects = (objects) => {
  *
  * Use: operator ... and Math.min
  */
-const getSmallestValue2 = (numbers) => {};
-const task7 = getSmallestValue2();
-task7;
+const getSmallestValue2 = (numbers) => {
+	if (
+		numbers === undefined ||
+		(Array.isArray(numbers) && numbers.length === 0)
+	) {
+		return 'Please enter an array with at least one object';
+	}
+	return Math.min(...numbers);
+};
 /**
  * Exercise 8
  *
