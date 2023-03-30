@@ -301,9 +301,15 @@ const getErrorMessage = (code) => {
  *
  * Use: .sort()
  */
-const get2SmallestValues = (numbers) => {};
-const task12 = get2SmallestValues();
-task12;
+const get2SmallestValues = (numbers) => {
+	if (
+		numbers === undefined ||
+		(Array.isArray(numbers) && numbers.length <= 1)
+	) {
+		return 'Please enter an array with at least two numbers';
+	}
+	return numbers.sort().slice(0, 2);
+};
 /**
  * Exercise 13
  *
