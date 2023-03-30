@@ -188,9 +188,20 @@ const getSmallestValue2 = (numbers) => {
  *
  * Use: reduce
  */
-const getOddValues2 = (numbers) => {};
-const task8 = getOddValues2();
-task8;
+const getOddValues2 = (numbers) => {
+	if (
+		numbers === undefined ||
+		(Array.isArray(numbers) && numbers.length === 0)
+	) {
+		return 'Please enter an array with at least one number';
+	}
+	return numbers.reduce((acc, curr) => {
+		if (curr % 2 == 1) {
+			acc.push(curr);
+		}
+		return acc;
+	}, []);
+};
 /**
  * Exercise 9
  *
