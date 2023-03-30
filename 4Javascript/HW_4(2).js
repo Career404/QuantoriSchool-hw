@@ -23,7 +23,12 @@
  * Write a function that returns odd array values.
  * [1,2,3,4] => [1,3]
  */
-const getOddValues = (numbers) => numbers.filter((number) => number % 2 === 1)
+const getOddValues = (numbers) => {
+	if (numbers === undefined) {
+		return 'Please enter an array of numbers'
+	}
+	numbers.filter((num) => num % 2 === 1)
+}
 /**
  * Exercise 2
  *
