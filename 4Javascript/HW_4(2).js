@@ -24,6 +24,8 @@
  * [1,2,3,4] => [1,3]
  */
 const getOddValues = (numbers) => {}
+const task1 = getOddValues()
+task1
 /**
  * Exercise 2
  *
@@ -31,6 +33,8 @@ const getOddValues = (numbers) => {}
  * [4,2,10,27] => 2
  */
 const getSmallestValue = (numbers) => {}
+const task2 = getSmallestValue()
+task2
 /**
  * Exercise 3
  *
@@ -38,6 +42,8 @@ const getSmallestValue = (numbers) => {}
  * [5,22,9,43] => 43
  */
 const getBiggestValue = (numbers) => {}
+const task3 = getBiggestValue()
+task3
 /**
  * Exercise 4
  *
@@ -56,6 +62,8 @@ const getBiggestValue = (numbers) => {}
  * Use: filter
  */
 const getShorterStrings = (strings, characters = 20) => {}
+const task4 = getShorterStrings()
+task4
 /**
  * Exercise 5
  *
@@ -74,6 +82,8 @@ const getShorterStrings = (strings, characters = 20) => {}
  * Use: map
  */
 const getComputedStrings = (fish) => {}
+const task5 = getComputedStrings()
+task5
 /**
  * Exercise 6
  *
@@ -85,6 +95,8 @@ const getComputedStrings = (fish) => {}
  * We use: ...
  */
 const mergeObjects = (objects) => {}
+const task6 = mergeObjects()
+task6
 /**
  * Exercise 7
  *
@@ -94,6 +106,8 @@ const mergeObjects = (objects) => {}
  * Use: operator ... and Math.min
  */
 const getSmallestValue2 = (numbers) => {}
+const task7 = getSmallestValue2()
+task7
 /**
  * Exercise 8
  *
@@ -103,6 +117,8 @@ const getSmallestValue2 = (numbers) => {}
  * Use: reduce
  */
 const getOddValues2 = (numbers) => {}
+const task8 = getOddValues2()
+task8
 /**
  * Exercise 9
  *
@@ -121,6 +137,8 @@ const getOddValues2 = (numbers) => {}
  * Use: reduce
  */
 const calculateTotal = (products) => {}
+const task9 = calculateTotal()
+task9
 /**
  * Exercise 10
  *
@@ -130,6 +148,8 @@ const calculateTotal = (products) => {}
  * Use: reduce and indexOf
  */
 const getUniqueValues = (numbers) => {}
+const task10 = getUniqueValues()
+task10
 /**
  * Exercise 11
  *
@@ -143,6 +163,8 @@ const getUniqueValues = (numbers) => {}
  * Use: switch case or object like a map structure
  */
 const getErrorMessage = (code) => {}
+const task11 = getErrorMessage()
+task11
 /**
  * Exercise 12
  *
@@ -152,6 +174,8 @@ const getErrorMessage = (code) => {}
  * Use: .sort()
  */
 const get2SmallestValues = (numbers) => {}
+const task12 = get2SmallestValues()
+task12
 /**
  * Exercise 13
  *
@@ -164,6 +188,8 @@ const get2SmallestValues = (numbers) => {}
  * output line with the message 'Name: Petr Ivanovich Vasiliev'
  */
 const getFullName = (user) => {}
+const task13 = getFullName()
+task13
 /**
  * Exercise 14
  *
@@ -175,6 +201,8 @@ const getFullName = (user) => {}
  * Use: map
  */
 const multiplyTo = (numbers, multiplier) => {}
+const task14 = multiplyTo()
+task14
 /**
  * Exercise 15
  *
@@ -193,6 +221,8 @@ const multiplyTo = (numbers, multiplier) => {}
  * Use: filter, map, join
  */
 const getСharacterNames = (characters, franchise) => {}
+const task15 = getСharacterNames()
+task15
 
 // ----==== Advanced exercises (8 items) ====----
 /**
@@ -208,6 +238,8 @@ const getСharacterNames = (characters, franchise) => {}
  * => [1,2,3,4]
  */
 const getSmallestRow = (numbers) => {}
+const task16 = getSmallestRow()
+task16
 /**
  * Exercise 17
  *
@@ -221,6 +253,8 @@ const getSmallestRow = (numbers) => {}
  * => [1,2,3,4]
  */
 const getSmallestColumn = (numbers) => {}
+const task17 = getSmallestColumn()
+task17
 /**
  * Exercise 18
  *
@@ -228,6 +262,8 @@ const getSmallestColumn = (numbers) => {}
  * [4,3,2,1] => [4,3]
  */
 const get2BiggestValues = (numbers) => {}
+const task18 = get2BiggestValues()
+task18
 /**
  * Exercise 19
  *
@@ -237,6 +273,8 @@ const get2BiggestValues = (numbers) => {}
  * 'Return the number (count) of vowels in the given string.' => 15
  */
 const getNumberOfVowels = (string) => {}
+const task19 = getNumberOfVowels()
+task19
 /**
  * Exercise 20
  *
@@ -246,6 +284,8 @@ const getNumberOfVowels = (string) => {}
  * 'abcdef' => ['AbCdEf', 'aBcDeF']
  */
 const getCapitalizedStrings = (string) => {}
+const task20 = getCapitalizedStrings()
+task20
 /**
  * Exercise 21
  *
@@ -265,6 +305,8 @@ const getCapitalizedStrings = (string) => {}
  * S consists only of lowercase letters [a-z]
  */
 const getCorrectString = (string) => {}
+const task21 = getCorrectString()
+task21
 /**
  * Exercise 22
  *
@@ -273,6 +315,8 @@ const getCorrectString = (string) => {}
  * [1, 2, [3, 4], 5, [[6, 7], 8], 9] => [1, 2, 3, 4, 5, 6, 7, 8, 9]
  */
 const getFlattenedArray = (numbers) => {}
+const task22 = getFlattenedArray()
+task22
 /**
  * Exercise 23
  *
@@ -281,3 +325,5 @@ const getFlattenedArray = (numbers) => {}
  * [1, 2, 2, 4, 5, 5] => [2, 5]
  */
 const getNotUniqueValues = (numbers) => {}
+const task23 = getNotUniqueValues()
+task23
