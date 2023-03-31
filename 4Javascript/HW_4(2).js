@@ -439,9 +439,14 @@ const getSmallestColumn = (numbers) => {
  * Write a function that returns the 2 biggest value of an array
  * [4,3,2,1] => [4,3]
  */
-const get2BiggestValues = (numbers) => {};
-const task18 = get2BiggestValues();
-task18;
+const get2BiggestValues = (numbers) => {
+	if (!Array.isArray(numbers) || numbers.length < 2) {
+		return 'Please enter an array with at least 2 values';
+	}
+
+	const sortedArr = numbers.sort((a, b) => b - a);
+	return [sortedArr[0], sortedArr[1]];
+};
 /**
  * Exercise 19
  *
