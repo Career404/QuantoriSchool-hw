@@ -455,9 +455,14 @@ const get2BiggestValues = (numbers) => {
  *
  * 'Return the number (count) of vowels in the given string.' => 15
  */
-const getNumberOfVowels = (string) => {};
-const task19 = getNumberOfVowels();
-task19;
+const getNumberOfVowels = (string) => {
+	if (typeof string !== 'string') {
+		return 'Please enter a string';
+	}
+	const vowels = ['a', 'e', 'i', 'o', 'u'];
+	return string.split('').filter((char) => vowels.includes(char.toLowerCase()))
+		.length;
+};
 /**
  * Exercise 20
  *
