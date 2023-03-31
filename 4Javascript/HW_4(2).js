@@ -143,7 +143,6 @@ const getComputedStrings = (fish) => {
 	});
 	return returnArray;
 };
-
 /**
  * Exercise 6
  *
@@ -399,9 +398,19 @@ const getСharacterNames = (characters, franchise) => {
  *]
  * => [1,2,3,4]
  */
-const getSmallestRow = (numbers) => {};
-const task16 = getSmallestRow();
-task16;
+const getSmallestRow = (numbers) => {
+	if (
+		!Array.isArray(numbers) ||
+		numbers.length < 1 ||
+		!numbers.every(Array.isArray)
+	) {
+		return 'Please enter a valid 2-dimensional array';
+	}
+	/* The wording of the task is confusing, and the provided example does not clear things up,
+	but this is what I believe is the solution: returning the smallest value of each row in a new array
+	*/
+	return numbers.map((row) => Math.min(...row));
+};
 /**
  * Exercise 17
  *
