@@ -409,11 +409,6 @@ const getSmallestRow = (numbers) => {
 	}
 	return numbers.map((row) => Math.min(...row));
 };
-const task16 = getSmallestRow([
-	[1, 2],
-	[1, '0'],
-]);
-task16;
 /**
  * Exercise 17
  *
@@ -426,9 +421,18 @@ task16;
  *]
  * => [1,2,3,4]
  */
-const getSmallestColumn = (numbers) => {};
-const task17 = getSmallestColumn();
-task17;
+const getSmallestColumn = (numbers) => {
+	if (
+		!Array.isArray(numbers) ||
+		!numbers.every(Array.isArray) ||
+		numbers.some((subArr) => subArr.length === 0)
+	) {
+		return 'Please enter a valid 2-dimensional array';
+	}
+	return numbers[0]
+		.map((val, colIndex) => numbers.map((row) => row[colIndex]))
+		.map((row) => Math.min(...row));
+};
 /**
  * Exercise 18
  *
