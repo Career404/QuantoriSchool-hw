@@ -471,9 +471,21 @@ const getNumberOfVowels = (string) => {
  * with capital odd.
  * 'abcdef' => ['AbCdEf', 'aBcDeF']
  */
-const getCapitalizedStrings = (string) => {};
-const task20 = getCapitalizedStrings();
-task20;
+const getCapitalizedStrings = (string) => {
+	if (typeof string !== 'string') {
+		return 'Please enter a string';
+	}
+	const uppercaseEveryOtherLetter = (str, evenOdd) =>
+		str
+			.split('')
+			.map((char, index) => (index % 2 === evenOdd ? char : char.toUpperCase()))
+			.join('');
+
+	return [
+		uppercaseEveryOtherLetter(string, 1),
+		uppercaseEveryOtherLetter(string, 0),
+	];
+};
 /**
  * Exercise 21
  *
