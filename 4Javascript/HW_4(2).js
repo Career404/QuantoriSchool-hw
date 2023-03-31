@@ -45,6 +45,7 @@ const getSmallestValue = (numbers) => {
 	) {
 		return 'Please enter an array of numbers';
 	}
+	//There is a separate task for Math.min() so here's a different solution
 	let smallestNum = Infinity;
 	numbers.forEach((num) => {
 		smallestNum < num ? null : (smallestNum = num);
@@ -401,16 +402,18 @@ const getСharacterNames = (characters, franchise) => {
 const getSmallestRow = (numbers) => {
 	if (
 		!Array.isArray(numbers) ||
-		numbers.length < 1 ||
-		!numbers.every(Array.isArray)
+		!numbers.every(Array.isArray) ||
+		numbers.some((subArr) => subArr.length === 0)
 	) {
 		return 'Please enter a valid 2-dimensional array';
 	}
-	/* The wording of the task is confusing, and the provided example does not clear things up,
-	but this is what I believe is the solution: returning the smallest value of each row in a new array
-	*/
 	return numbers.map((row) => Math.min(...row));
 };
+const task16 = getSmallestRow([
+	[1, 2],
+	[1, '0'],
+]);
+task16;
 /**
  * Exercise 17
  *
