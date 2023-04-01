@@ -522,9 +522,12 @@ const getCorrectString = (string) => {
  * and returns an array of all their elements without nesting.
  * [1, 2, [3, 4], 5, [[6, 7], 8], 9] => [1, 2, 3, 4, 5, 6, 7, 8, 9]
  */
-const getFlattenedArray = (numbers) => {};
-const task22 = getFlattenedArray();
-task22;
+const getFlattenedArray = (numbers) => {
+	if (!Array.isArray(numbers) || numbers.length === 0) {
+		return 'Please enter an array with at least one value';
+	}
+	return numbers.flat(Infinity);
+};
 /**
  * Exercise 23
  *
