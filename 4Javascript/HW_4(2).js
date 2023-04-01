@@ -504,9 +504,17 @@ const getCapitalizedStrings = (string) => {
  * N is an integer in the range [1..200,000]
  * S consists only of lowercase letters [a-z]
  */
-const getCorrectString = (string) => {};
-const task21 = getCorrectString();
-task21;
+const getCorrectString = (string) => {
+	if (typeof string !== 'string') {
+		return 'Please enter a string';
+	}
+	let remove3plus = string;
+	const regex = /(.)\1{2,}/g;
+	while (regex.test(remove3plus)) {
+		remove3plus = remove3plus.replace(regex, '$1$1');
+	}
+	return remove3plus;
+};
 /**
  * Exercise 22
  *
