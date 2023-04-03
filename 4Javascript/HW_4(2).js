@@ -535,6 +535,9 @@ const getFlattenedArray = (numbers) => {
  *
  * [1, 2, 2, 4, 5, 5] => [2, 5]
  */
-const getNotUniqueValues = (numbers) => {};
-const task23 = getNotUniqueValues();
-task23;
+const getNotUniqueValues = (numbers) => {
+	if (!Array.isArray(numbers) || numbers.length === 0) {
+		return 'Please enter an array with at least one value';
+	}
+	return numbers.filter((num, index) => numbers.indexOf(num) === index);
+};
