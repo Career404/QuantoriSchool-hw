@@ -1,6 +1,6 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './style.css'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './style.css';
 
 function Main() {
 	return (
@@ -11,13 +11,16 @@ function Main() {
 				<li>
 					<a href="src\pages\1phone\1phone.html">Smartphone</a>
 				</li>
+				<li>
+					<a href="src\pages\3BEM\3BEM.html">Clonify Dashboard</a>
+				</li>
 			</ol>
 		</main>
-	)
+	);
 }
 
 ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
 	<React.StrictMode>
 		<Main />
 	</React.StrictMode>
-)
+);
