@@ -1,0 +1,85 @@
+html {
+	height: 100%;
+	--violet: invert(46%) sepia(12%) saturate(2394%) hue-rotate(0deg);
+	--pink: invert(17%) sepia(74%) saturate(5331%) hue-rotate(36deg);
+	--red: invert(30%) sepia(43%) saturate(7009%) hue-rotate(72deg);
+	--orange: invert(36%) sepia(61%) saturate(5221%) hue-rotate(108deg);
+	--yellow: invert(70%) sepia(65%) saturate(1321%) hue-rotate(144deg);
+	--neonYellow: invert(90%) sepia(76%) saturate(3948%) hue-rotate(180deg);
+	--green: invert(55%) sepia(55%) saturate(586%) hue-rotate(216deg);
+	--aquaMarine: invert(73%) sepia(62%) saturate(427%) hue-rotate(252deg);
+	--blue: invert(54%) sepia(65%) saturate(644%) hue-rotate(288deg);
+	--dirt: invert(100%) sepia(65%) saturate(644%) hue-rotate(288deg);
+}
+body::-webkit-scrollbar {
+	display: none;
+}
+
+.container {
+	user-select: none;
+	position: relative;
+	animation: moveY 2.1s 0.1s linear infinite alternate,
+		colorCycle 21s 0.1s steps(1) infinite;
+}
+.DVDLogo {
+	position: absolute;
+	width: 238px;
+	height: 121px;
+
+	animation: moveX 3.3s 0.05s linear infinite alternate,
+		colorCycle 33s 0.05s steps(1) infinite reverse;
+}
+
+@keyframes moveX {
+	0% {
+		left: 0%;
+	}
+	100% {
+		left: calc(100% - 238px);
+	}
+}
+
+@keyframes moveY {
+	0% {
+		top: 0%;
+	}
+	100% {
+		top: calc(100% - 121px);
+	}
+}
+
+@keyframes colorCycle {
+	0% {
+		filter: invert(100%) hue-rotate(15%);
+	}
+	10% {
+		filter: var(--violet);
+	}
+	20% {
+		filter: var(--pink);
+	}
+	30% {
+		filter: var(--green);
+	}
+	40% {
+		filter: var(--orange);
+	}
+	50% {
+		filter: var(--yellow);
+	}
+	60% {
+		filter: var(--neonYellow);
+	}
+	70% {
+		filter: var(--red);
+	}
+	80% {
+		filter: var(--aquaMarine);
+	}
+	90% {
+		filter: var(--blue);
+	}
+	100% {
+		filter: var(--dirt);
+	}
+}
