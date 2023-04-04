@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import './DVD.css';
-import laserSound from '/DVD/laser.mp3';
+import laserSound from '../../assets/DVD/laser.mp3';
+import DVDLogo from '../../assets/DVD/DVDLogo.png';
 
 const Fullscreen = styled.div`
 	position: fixed;
@@ -33,7 +34,7 @@ export default function DVDOverlay({ clickCallback, sound }: props) {
 				<img
 					className="DVDLogo hasSound"
 					onAnimationIteration={handleAnimationIteration}
-					src="/DVD/DVDLogo.png"
+					src={DVDLogo}
 					alt="DVD logo"
 				/>
 			</div>
