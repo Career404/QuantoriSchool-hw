@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import './DVD.css';
@@ -18,31 +18,21 @@ interface props {
 	sound: boolean;
 }
 export default function DVDOverlay({ clickCallback, sound }: props) {
-	useEffect(() => {
+	const handleAnimationIteration = (event: React.AnimationEvent) => {
 		if (sound) {
-			const handleAnimationIteration = (event) => {
-				const audio = new Audio(laserSound);
-				audio.play();
-			};
-			document.querySelectorAll('.hasSound').forEach((el) => {
-				el.addEventListener('animationiteration', handleAnimationIteration);
-			});
-
-			return () => {
-				document.querySelectorAll('.hasSound').forEach((el) => {
-					el.removeEventListener(
-						'animationiteration',
-						handleAnimationIteration
-					);
-				});
-			};
+			const audio = new Audio(laserSound);
+			audio.play();
 		}
-	}, []);
+	};
 	return (
 		<Fullscreen onClick={clickCallback}>
-			<div className="container hasSound">
+			<div
+				className="container hasSound"
+				onAnimationIteration={handleAnimationIteration}
+			>
 				<img
 					className="DVDLogo hasSound"
+					onAnimationIteration={handleAnimationIteration}
 					src="/DVD/DVDLogo.png"
 					alt="DVD logo"
 				/>
