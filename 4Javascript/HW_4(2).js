@@ -478,7 +478,9 @@ const getCapitalizedStrings = (string) => {
 	const uppercaseEveryOtherLetter = (str, evenOdd) =>
 		str
 			.split('')
-			.map((char, index) => (index % 2 === evenOdd ? char : char.toUpperCase()))
+			.map((char, index) =>
+				index % 2 === evenOdd ? char.toLowerCase() : char.toUpperCase()
+			)
 			.join('');
 
 	return [
@@ -510,10 +512,7 @@ const getCorrectString = (string) => {
 	}
 	let remove3plus = string;
 	const regex = /(.)\1{2,}/g;
-	while (regex.test(remove3plus)) {
-		remove3plus = remove3plus.replace(regex, '$1$1');
-	}
-	return remove3plus;
+	return remove3plus.replace(regex, '$1$1');
 };
 /**
  * Exercise 22
@@ -539,5 +538,7 @@ const getNotUniqueValues = (numbers) => {
 	if (!Array.isArray(numbers) || numbers.length === 0) {
 		return 'Please enter an array with at least one value';
 	}
-	return numbers.filter((num, index) => numbers.indexOf(num) === index);
+	return [
+		...new Set(numbers.filter((num, index) => numbers.indexOf(num) !== index)),
+	];
 };
