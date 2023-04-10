@@ -6,8 +6,8 @@
 		<link rel="stylesheet" href="main.css" />
 	</head>
 	<body>
-		<input class="radio" id="func" name="group" type="radio" checked />
-		<input class="radio" id="oop" name="group" type="radio" />
+		<input class="radio" id="func" name="group" type="radio" />
+		<input class="radio" id="oop" name="group" type="radio" checked />
 		<div class="tab-wrapper">
 			<label class="tab" id="func-tab" for="func">Functional</label>
 			<label class="tab" id="oop-tab" for="oop">OOP </label>
@@ -22,10 +22,10 @@
 		</div>
 	</body>
 
-	<script src="oop/base_classes.js"></script>
-	<script src="oop/components.js"></script>
-	<script src="oop/app.js"></script>
-	<script src="functional/functional.js"></script>
+	<script type="module" src="./oop/base_classes.js"></script>
+	<script type="module" src="./oop/components.js"></script>
+	<script type="module" src="./oop/app.js"></script>
+	<script src="./functional/functional.js"></script>
 
 	<!--
 Basic requirements
