@@ -62,7 +62,7 @@ const funcMain = (function () {
 			iconEl.tabIndex = 0;
 			iconEl.onclick = () => {
 				//! prop drilled for removeItem, but is there a way around it?
-				onClick(callbackParam);
+				callbackParam ? onClick(callbackParam) : onClick();
 			};
 		}
 		return iconEl;
@@ -108,10 +108,7 @@ const funcMain = (function () {
 				checkbox.type = 'checkbox';
 				checkbox.id = `is${index}Completed`;
 				checkbox.checked = item.isCompleted;
-				checkbox.addEventListener('change', () => {
-					console.log('this is checkbox.checked item ID', item.id);
-					checkCallback(item.id);
-				});
+				checkbox.addEventListener('change', () => checkCallback(item.id));
 				const label = document.createElement('label');
 				label.htmlFor = checkbox.id;
 				label.classList.add('completed-label');
@@ -192,9 +189,21 @@ const funcMain = (function () {
 	 */
 	function App() {
 		const [items, setItems] = useState('items', [
-			{ title: 'Item 1', isCompleted: false, id: new Date().getTime() + '1' },
-			{ title: 'Item 2', isCompleted: true, id: new Date().getTime() + '2' },
-			{ title: 'Item 3', isCompleted: false, id: new Date().getTime() + '3' },
+			{
+				title: '1 I am 1',
+				isCompleted: false,
+				id: new Date().getTime() + '1',
+			},
+			{
+				title: '2 number 2',
+				isCompleted: true,
+				id: new Date().getTime() + '2',
+			},
+			{
+				title: '3 is 3',
+				isCompleted: false,
+				id: new Date().getTime() + '3',
+			},
 		]);
 
 		const [searchRequest, setSearchRequest] = useState('search', '');
@@ -223,8 +232,7 @@ const funcMain = (function () {
 				'New Task',
 				[taskCreator],
 				'Add Task',
-				(newTitle) => {
-					console.log(newTitle);
+				(newTitle) =>
 					setItems([
 						...items,
 						{
@@ -232,8 +240,7 @@ const funcMain = (function () {
 							isCompleted: false,
 							id: new Date().getTime(),
 						},
-					]);
-				},
+					]),
 				{ tag: 'addTask', input }
 			);
 		}
@@ -243,14 +250,10 @@ const funcMain = (function () {
 		}
 		function clickCheckbox(id) {
 			//TODO: review - occasionally unchecking one items instead checks its neighbour
-			//hard to reproduce
 			setItems(
-				items.map((item) => {
-					console.log(item);
-					return item.id === id
-						? { ...item, isCompleted: !item.isCompleted }
-						: item;
-				})
+				items.map((item) =>
+					item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+				)
 			);
 		}
 
