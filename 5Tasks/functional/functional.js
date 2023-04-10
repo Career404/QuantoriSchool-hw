@@ -32,7 +32,6 @@ const funcMain = (function () {
 	 * InputText component
 	 * @param placeholder {string}
 	 * @param text {string}
-	 * @param hasFocus {bool}
 	 * @returns {HTMLInputElement} - Input element
 	 */
 	function InputText({ placeholder, text = '' }) {
@@ -317,7 +316,7 @@ const funcMain = (function () {
 	 */
 	function renderApp() {
 		//
-		console.log(state);
+		/* console.log(state); */
 		//
 		const appContainer =
 			document.getElementById('functional-example') ||
