@@ -101,12 +101,12 @@ const funcMain = (function () {
 	) {
 		const listItems = items
 			.filter((item) => item.title.toLowerCase().includes(searchRequest))
-			.map((item, index) => {
+			.map((item) => {
 				const listItemDiv = document.createElement('div');
 				listItemDiv.classList.add('list-item');
 				const checkbox = document.createElement('input');
 				checkbox.type = 'checkbox';
-				checkbox.id = `is${index}Completed`;
+				checkbox.id = `is${item.id}Completed`;
 				checkbox.checked = item.isCompleted;
 				checkbox.addEventListener('change', () => checkCallback(item.id));
 				const label = document.createElement('label');
@@ -249,7 +249,6 @@ const funcMain = (function () {
 			setItems(items.filter((item) => item.id !== removedItem.id));
 		}
 		function clickCheckbox(id) {
-			//TODO: review - occasionally unchecking one items instead checks its neighbour
 			setItems(
 				items.map((item) =>
 					item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
