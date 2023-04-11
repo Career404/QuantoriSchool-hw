@@ -17,14 +17,17 @@ export default class Component {
 	 */
 	render(props = {}) {
 		this.props = { ...props };
-		const div = this.element;
-		div.onclick = props.onClick;
+		const el = this.element;
+		el.onclick = props.onClick;
 		if (props.style) {
-			div.style = props.style;
+			el.style = props.style;
 		}
-		div.innerHTML = '';
-		div.append(...props.children);
-		return div;
+		el.innerHTML = '';
+		const children = Array.isArray(props.children)
+			? props.children
+			: [props.children];
+		el.append(...children);
+		return el;
 	}
 
 	update() {
