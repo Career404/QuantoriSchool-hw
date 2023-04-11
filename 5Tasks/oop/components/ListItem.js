@@ -16,7 +16,7 @@ export default class ListItem extends Component {
 		const liEl = document.createElement('li');
 		liEl.textContent = props.item.title;
 		label.append(checkbox, liEl);
-		label.onclick = () => props.clickCheckbox;
+		label.onclick = () => props.clickCheckbox(props.item.id);
 		const icon = new Icon().render({
 			onClick: () => props.removeItem(props.item.id),
 		});

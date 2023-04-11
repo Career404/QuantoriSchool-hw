@@ -78,7 +78,7 @@ class App extends Component {
 		});
 	};
 	clickCheckbox = (id) => {
-		setItems({
+		this.setState({
 			items: this.state.items.map((item) =>
 				item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
 			),
