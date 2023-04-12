@@ -322,7 +322,6 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 		//! setState is terrible for keyboard navigation because focus causes re-renders. Manually setting state (bad practice in React terms) works just fine
 
 		const flexDiv = document.createElement('div');
-
 		flexDiv.classList.add('search-bar');
 		flexDiv.append(search, button);
 		div.append(
@@ -342,9 +341,8 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 	 */
 	function renderApp() {
 		//
-		console.log('state:', state);
+		// console.log('state:', state);
 		//
-		console.log(getStorage('funcState'));
 		const appContainer =
 			document.getElementById('functional-example') ||
 			document.createElement('div');
