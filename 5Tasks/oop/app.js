@@ -40,7 +40,6 @@ class App extends Component {
 				searchInputFocus: false,
 			};
 		}
-		console.log(this);
 		this.element.classList.add('main');
 	}
 
@@ -96,8 +95,8 @@ class App extends Component {
 
 				new List().render({
 					items: completedItems,
-					removeItem: this.removeItem,
 					clickCheckbox: this.clickCheckbox,
+					className: 'list-completed',
 				}),
 			],
 		});

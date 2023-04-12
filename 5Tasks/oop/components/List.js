@@ -27,6 +27,7 @@ export default class List extends Component {
 					})
 				),
 			],
+			...props,
 		});
 	}
 }
@@ -71,16 +72,20 @@ class ListItem extends Component {
 			onClick: () => props.clickCheckbox(props.item.id),
 		});
 		label.htmlFor = checkbox.id;
-		const icon = new Icon().render({
-			onClick: () => props.removeItem(props.item.id),
-			onKeydown: (e) => {
-				if (e.code === 'Space' || e.key === 'Enter') {
-					props.removeItem(props.item.id);
-				}
-			},
-		});
+		if (props.removeItem) {
+			const icon = new Icon().render({
+				onClick: () => props.removeItem(props.item.id),
+				onKeydown: (e) => {
+					if (e.code === 'Space' || e.key === 'Enter') {
+						props.removeItem(props.item.id);
+					}
+				},
+			});
+			props.children = [label, icon];
+		} else {
+			props.children = label;
+		}
 
-		props.children = [label, icon];
 		return super.render(props);
 	}
 }
