@@ -22,6 +22,7 @@ export default class List extends Component {
 						item: item,
 						clickCheckbox: props.clickCheckbox,
 						removeItem: props.removeItem,
+						//? prop drilling, but it's not deep and simple so probably ok
 					})
 				),
 			],
@@ -53,6 +54,11 @@ class ListItem extends Component {
 		label.htmlFor = checkbox.id;
 		const icon = new Icon().render({
 			onClick: () => props.removeItem(props.item.id),
+			onKeydown: (e) => {
+				if (e.code === 'Space' || e.key === 'Enter') {
+					props.removeItem(props.item.id);
+				}
+			},
 		});
 
 		props.children = [label, icon];

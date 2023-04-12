@@ -62,8 +62,13 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 			iconEl.classList.add('icon-interactive');
 			iconEl.tabIndex = 0;
 			iconEl.onclick = () => {
-				//! prop drilled for removeItem, but is there a way around it?
+				//? prop drilled for removeItem, but is there a way around it?
 				callbackParam ? onClick(callbackParam) : onClick();
+			};
+			iconEl.onkeydown = (e) => {
+				if (e.code === 'Space' || e.key === 'Enter') {
+					callbackParam ? onClick(callbackParam) : onClick();
+				}
 			};
 		}
 		return iconEl;
