@@ -1,5 +1,6 @@
 import Component from '../base_classes.js';
 import Icon from './Icon.js';
+import { formatDate } from '../../helpers.js';
 
 export default class List extends Component {
 	constructor() {
@@ -22,7 +23,7 @@ export default class List extends Component {
 						item: item,
 						clickCheckbox: props.clickCheckbox,
 						removeItem: props.removeItem,
-						//? prop drilling, but it's not deep and simple so probably ok
+						//? prop drilling, but it's not deep and simple and in the same file so probably ok
 					})
 				),
 			],
@@ -46,7 +47,25 @@ class ListItem extends Component {
 			children: [
 				checkbox,
 				new Component('li').render({
-					children: [props.item.title],
+					children: [
+						new Component('p').render({
+							children: [props.item.title],
+						}),
+						new Component().render({
+							children: [
+								new Component().render({
+									children: props.item.tag,
+									className: ['li-tag', `li-tag-${props.item.tag}`],
+								}),
+								new Component().render({
+									children: formatDate(props.item.dateDueJson),
+									className: 'li-date',
+								}),
+							],
+							className: 'li-more',
+						}),
+					],
+					className: 'item-info',
 				}),
 			],
 			onClick: () => props.clickCheckbox(props.item.id),

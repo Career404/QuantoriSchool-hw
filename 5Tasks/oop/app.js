@@ -4,22 +4,35 @@ import Modal from './components/Modal.js';
 class App extends Component {
 	constructor() {
 		super('div', 'oopStateStorage');
+		//
+		const today = new Date();
+		const tomorrow = new Date(today);
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		const yesterday = new Date(today);
+		yesterday.setDate(yesterday.getDate() - 1);
+		//
 		if (Object.keys(this.state).length === 0) {
 			this.state = {
 				items: [
 					{
 						title: 'Task 1 - default',
 						isCompleted: false,
+						dateDueJson: tomorrow.toJSON(),
+						tag: 'home',
 						id: new Date().getTime() + '1',
 					},
 					{
 						title: 'This page can be navigated with a keyboard',
 						isCompleted: true,
+						dateDueJson: today.toJSON(),
+						tag: 'work',
 						id: new Date().getTime() + '2',
 					},
 					{
 						title: 'Tasks are saved in localStorage',
 						isCompleted: false,
+						dateDueJson: yesterday.toJSON(),
+						tag: 'health',
 						id: new Date().getTime() + '3',
 					},
 				],
@@ -91,6 +104,7 @@ class App extends Component {
 	}
 
 	addItem = () => {
+		const availableTags = ['health', 'work', 'home', 'other'];
 		const input = new Component('input').render({
 			type: 'text',
 			placeholder: 'Task Title',
@@ -99,12 +113,57 @@ class App extends Component {
 			minLength: '1',
 			name: 'taskTitle',
 		});
+		const dateInput = new Component('input').render({
+			type: 'date',
+			value: new Date().toJSON().slice(0, 10),
+			className: 'datePicker',
+		});
+		//! probably a temporary solution
+		let selectedTag = 'health';
+		const selectTags = new Component().render({
+			children: [
+				...availableTags.map((tag, index) => {
+					let checkFirst = index === 0 ? true : false;
+					const radio = new Component('input').render({
+						type: 'radio',
+						checked: checkFirst,
+						id: tag,
+						name: 'tag',
+						children: [tag],
+						className: 'radioTab',
+					});
+					const label = new Component('label').render({
+						name: 'tag',
+						children: [tag, radio],
+						className: ['li-tag', 'newTaskTag', `li-tag-${tag}`],
+						tabindex: '0',
+						onClick: () => (selectedTag = tag),
+						onKeydown: (e) => {
+							if (e.code === 'Space' || e.key === 'Enter') {
+								label.click();
+							}
+						},
+					});
+					return new Component().render({
+						children: label,
+					});
+				}),
+			],
+			className: 'tagSelector',
+		});
+
 		this.props.children.push(
 			new Modal().render({
 				title: 'New Task',
 				children: [
 					new Component().render({
-						children: [input],
+						children: [
+							input,
+							new Component().render({
+								children: [selectTags, dateInput],
+								className: 'newTask-more',
+							}),
+						],
 						className: 'taskCreator',
 					}),
 				],
@@ -116,7 +175,9 @@ class App extends Component {
 							{
 								title: input.value,
 								isCompleted: false,
-								id: new Date().getTime().toString(),
+								dateDueJson: new Date(dateInput.value).toJSON(),
+								tag: selectedTag,
+								id: new Date().getTime(),
 							},
 						],
 					});

@@ -37,6 +37,9 @@ export default class Component {
 		if (props.onInput) {
 			el.oninput = props.onInput;
 		}
+		if (props.onChange) {
+			el.onchange = props.onChange;
+		}
 		if (props.onKeydown) {
 			el.onkeydown = props.onKeydown;
 		}
@@ -75,6 +78,12 @@ export default class Component {
 		}
 		if (props.checked) {
 			el.checked = props.checked;
+		}
+		if (props.htmlFor) {
+			el.htmlFor = props.htmlFor;
+		}
+		if (props.tabindex) {
+			el.tabIndex = props.tabindex;
 		}
 
 		if (props.focus === true) {
