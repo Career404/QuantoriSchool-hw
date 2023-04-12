@@ -1,4 +1,5 @@
-const funcMain = (function () {
+import { setStorage, getStorage } from '../localStorage/localstorage.js';
+(function () {
 	const state = {};
 	/**
 	 * Global application state
@@ -13,6 +14,7 @@ const funcMain = (function () {
 			state[name] = newValue;
 			renderApp();
 		};
+		setStorage('funcState', state);
 		return [state[name], setValue];
 	}
 
@@ -138,26 +140,27 @@ const funcMain = (function () {
 		[...children] = [],
 		agreeText = 'Continue',
 		agreeCallback = null,
-		agreeCallbackParam
+		agreeCallbackParam = null
 	) {
-		//? might as well leave the title to be in [...children]
-		const fullscreen = document.createElement('dialog');
+		const fullscreen = document.createElement('div');
 		fullscreen.classList.add('fullscreen');
 		document.getElementById('functional-example').append(fullscreen);
 		fullscreen.addEventListener('click', () => fullscreen.remove());
-		const modal = document.createElement('div');
+		const modal = document.createElement('form');
 		modal.classList.add('modal');
+		modal.name = 'newTask';
 		fullscreen.append(modal);
 		modal.addEventListener('click', (e) => e.stopPropagation());
+		//? might as well leave the title to be in [...children]
 		const header = document.createElement('h3');
 		header.innerText = title;
 		const buttonsContainer = document.createElement('div');
 		buttonsContainer.classList.add('buttons-container');
-
 		const cancelButton = Button('Cancel', () => fullscreen.remove());
+		cancelButton.type = 'button';
 		cancelButton.classList.add('cancel-button');
 		let agreeButton;
-		if (agreeCallbackParam.tag === 'addTask') {
+		if (agreeCallbackParam && agreeCallbackParam.tag === 'addTask') {
 			agreeButton = Button(agreeText, () => {
 				agreeCallbackParam
 					? agreeCallback(agreeCallbackParam.input.value)
@@ -176,10 +179,14 @@ const funcMain = (function () {
 					: agreeCallback();
 			});
 		}
+		agreeButton.type = 'submit';
 		agreeButton.classList.add('agree-button');
+
 		buttonsContainer.append(cancelButton, agreeButton);
 		modal.append(header, ...children, buttonsContainer);
-		fullscreen.querySelector('input').focus();
+		if (agreeCallbackParam && agreeCallbackParam.tag === 'addTask') {
+			fullscreen.querySelector('input').focus();
+		}
 	}
 
 	/**
@@ -187,30 +194,53 @@ const funcMain = (function () {
 	 * @returns {HTMLDivElement} - The app container
 	 */
 	function App() {
-		const [items, setItems] = useState('items', [
-			{
-				title: '1 I am 1',
-				isCompleted: false,
-				id: new Date().getTime() + '1',
-			},
-			{
-				title: '2 number 2',
-				isCompleted: true,
-				id: new Date().getTime() + '2',
-			},
-			{
-				title: '3 is 3',
-				isCompleted: false,
-				id: new Date().getTime() + '3',
-			},
-		]);
+		const stateStore = getStorage('funcState');
+		let items,
+			setItems,
+			searchRequest,
+			setSearchRequest,
+			isFocused,
+			setIsFocused,
+			searchSelection,
+			setSearchSelection;
+		if (stateStore === false) {
+			[items, setItems] = useState('items', [
+				{
+					title: '1 I am 1',
+					isCompleted: false,
+					id: new Date().getTime() + '1',
+				},
+				{
+					title: '2 number 2',
+					isCompleted: true,
+					id: new Date().getTime() + '2',
+				},
+				{
+					title: '3 is 3',
+					isCompleted: false,
+					id: new Date().getTime() + '3',
+				},
+			]);
 
-		const [searchRequest, setSearchRequest] = useState('search', '');
-		const [isFocused, setIsFocused] = useState('inputFocus', false);
-		const [searchSelection, setSearchSelection] = useState(
-			'searchSelection',
-			[0, 0]
-		);
+			[searchRequest, setSearchRequest] = useState('search', '');
+			[isFocused, setIsFocused] = useState('inputFocus', false);
+			[searchSelection, setSearchSelection] = useState(
+				'searchSelection',
+				[0, 0]
+			);
+		} else {
+			[items, setItems] = useState('items', stateStore.items);
+
+			[searchRequest, setSearchRequest] = useState(
+				'search',
+				stateStore.searchRequest
+			);
+			[isFocused, setIsFocused] = useState('inputFocus', stateStore.isFocused);
+			[searchSelection, setSearchSelection] = useState(
+				'searchSelection',
+				stateStore.searchSelection
+			);
+		}
 
 		const notcompletedItems = items.filter((item) => item.isCompleted !== true);
 		const completedItems = items.filter((item) => item.isCompleted === true);
@@ -286,15 +316,11 @@ const funcMain = (function () {
 			setSearchSelection([search.selectionStart, search.selectionEnd]);
 			setIsFocused(true);
 		});
-		search.addEventListener('blur', () => setIsFocused(false));
-		//! this is terrible for keyboard navigation because focus causes re-renders
-		search.tabIndex = -1;
-		document.addEventListener('keydown', (e) => {
-			//shift is easy to notice (but not optimal still)
-			if (e.shiftKey) {
-				search.focus();
-			}
+		search.addEventListener('blur', () => {
+			state.inputFocus = false;
 		});
+		//! setState is terrible for keyboard navigation because focus causes re-renders. Manually setting state (bad practice in React terms) works just fine
+
 		const flexDiv = document.createElement('div');
 
 		flexDiv.classList.add('search-bar');
@@ -316,8 +342,9 @@ const funcMain = (function () {
 	 */
 	function renderApp() {
 		//
-		/* console.log(state); */
+		console.log('state:', state);
 		//
+		console.log(getStorage('funcState'));
 		const appContainer =
 			document.getElementById('functional-example') ||
 			document.createElement('div');
