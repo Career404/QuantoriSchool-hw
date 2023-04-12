@@ -30,7 +30,6 @@ Start tabs
 	position: absolute;
 	display: flex;
 	flex-flow: row nowrap;
-	padding-top: 1px;
 	z-index: 999;
 }
 .tab {
@@ -50,7 +49,7 @@ Start tabs
 	height: 2rem;
 	line-height: 2rem;
 }
-.radio {
+.radioTab {
 	display: none;
 }
 .panels-wrapper {
