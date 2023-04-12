@@ -28,19 +28,20 @@ class App extends Component {
 			};
 		}
 		console.log(this);
+		this.element.classList.add('main');
 	}
 
 	render(props) {
 		//
 		/* console.log(this.state); */
 		//
-		this.state.filteredItems = this.state.items.filter((item) =>
+		const filteredItems = this.state.items.filter((item) =>
 			item.title.toLowerCase().includes(this.state.searchRequest.toLowerCase())
 		);
-		const notcompletedItems = this.state.filteredItems.filter(
+		const notcompletedItems = filteredItems.filter(
 			(item) => item.isCompleted !== true
 		);
-		const completedItems = this.state.filteredItems.filter(
+		const completedItems = filteredItems.filter(
 			(item) => item.isCompleted === true
 		);
 		const searchEl = new Component('input').render({
@@ -60,35 +61,30 @@ class App extends Component {
 
 		return super.render({
 			children: [
+				new Component('h1').render({ children: 'To Do List' }),
 				new Component().render({
-					className: 'main',
+					className: 'search-bar',
 					children: [
-						new Component('h1').render({ children: 'To Do List' }),
-						new Component().render({
-							className: 'search-bar',
-							children: [
-								searchEl,
-								new Component('button').render({
-									children: '+ New Task',
-									className: 'button',
-									onClick: this.addItem,
-								}),
-							],
-						}),
-						new Component('h2').render({ children: 'All Tasks' }),
-						new List().render({
-							items: notcompletedItems,
-							removeItem: this.removeItem,
-							clickCheckbox: this.clickCheckbox,
-						}),
-						new Component('h2').render({ children: 'Completed Tasks' }),
-
-						new List().render({
-							items: completedItems,
-							removeItem: this.removeItem,
-							clickCheckbox: this.clickCheckbox,
+						searchEl,
+						new Component('button').render({
+							children: '+ New Task',
+							className: 'button',
+							onClick: this.addItem,
 						}),
 					],
+				}),
+				new Component('h2').render({ children: 'All Tasks' }),
+				new List().render({
+					items: notcompletedItems,
+					removeItem: this.removeItem,
+					clickCheckbox: this.clickCheckbox,
+				}),
+				new Component('h2').render({ children: 'Completed Tasks' }),
+
+				new List().render({
+					items: completedItems,
+					removeItem: this.removeItem,
+					clickCheckbox: this.clickCheckbox,
 				}),
 			],
 		});
@@ -120,7 +116,7 @@ class App extends Component {
 							{
 								title: input.value,
 								isCompleted: false,
-								id: new Date().getTime(),
+								id: new Date().getTime().toString(),
 							},
 						],
 					});
