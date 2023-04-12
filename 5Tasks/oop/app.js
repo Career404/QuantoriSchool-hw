@@ -8,17 +8,17 @@ class App extends Component {
 			this.state = {
 				items: [
 					{
-						title: '1 I am 1',
+						title: 'Task 1 - default',
 						isCompleted: false,
 						id: new Date().getTime() + '1',
 					},
 					{
-						title: '2 number 2',
+						title: 'This page can be navigated with a keyboard',
 						isCompleted: true,
 						id: new Date().getTime() + '2',
 					},
 					{
-						title: '3 is 3',
+						title: 'Tasks are saved in localStorage',
 						isCompleted: false,
 						id: new Date().getTime() + '3',
 					},
