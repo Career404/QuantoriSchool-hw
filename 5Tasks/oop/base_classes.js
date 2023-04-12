@@ -12,8 +12,8 @@ export default class Component {
 		this.state = { ...this.state, ...state };
 		if (this.storageName !== false) {
 			setStorage(this.storageName, this.state);
-			console.log('loaded: ', getStorage(this.storageName));
 		}
+
 		this.update();
 	}
 
