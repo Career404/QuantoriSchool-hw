@@ -1,9 +1,6 @@
 import Component from './base_classes.js';
-import Searchbar from './components/SearchBar.js';
-import Title from './components/Title.js';
 import List from './components/List.js';
-import Button from './components/Button.js';
-import TaskListItem from './components/ListItem.js';
+import Modal from './components/Modal.js';
 class App extends Component {
 	constructor() {
 		super();
@@ -25,60 +22,125 @@ class App extends Component {
 					id: new Date().getTime() + '3',
 				},
 			],
+			searchRequest: '',
+			searchInputFocus: false,
 		};
-		this.element.classList.add('main');
 	}
 
 	render(props) {
 		//
-		console.log(this.state.items);
+		console.log(this.state);
 		//
-		const notcompletedItems = this.state.items.filter(
+		this.state.filteredItems = this.state.items.filter((item) =>
+			item.title.toLowerCase().includes(this.state.searchRequest.toLowerCase())
+		);
+		const notcompletedItems = this.state.filteredItems.filter(
 			(item) => item.isCompleted !== true
 		);
-		const completedItems = this.state.items.filter(
+		const completedItems = this.state.filteredItems.filter(
 			(item) => item.isCompleted === true
 		);
+
 		return super.render({
 			children: [
-				new Title().render({ text: 'To Do List', size: 1 }),
-				new Searchbar().render({ addItem: this.addItem }),
-				new Title().render({ text: 'All Tasks', size: 2 }),
-				new List().render({
-					items: notcompletedItems,
-					removeItem: this.removeItem,
-					clickCheckbox: this.clickCheckbox,
-				}),
-				new Title().render({ text: 'Completed Tasks', size: 2 }),
+				new Component().render({
+					className: 'main',
+					children: [
+						new Component('h1').render({ children: 'To Do List' }),
+						new Component().render({
+							className: 'search-bar',
+							children: [
+								new Component('input').render({
+									type: 'text',
+									placeholder: 'Search Task',
+									value: this.state.searchRequest,
+									//! FOCUS
+									focus: this.state.searchInputFocus,
+									/* 									onBlur: () =>
+										this.setState({
+											...this.state,
+											searchInputFocus: false,
+										}), */
+									onInput: (e) => {
+										this.setState({
+											...this.state,
+											searchInputFocus: true,
+											searchRequest: e.target.value,
+										});
+									},
+								}),
+								new Component('button').render({
+									children: '+ New Task',
+									className: 'button',
+									onClick: this.addItem,
+								}),
+							],
+						}),
+						new Component('h2').render({ children: 'All Tasks' }),
+						new List().render({
+							items: notcompletedItems,
+							removeItem: this.removeItem,
+							clickCheckbox: this.clickCheckbox,
+						}),
+						new Component('h2').render({ children: 'Completed Tasks' }),
 
-				new List().render({
-					items: completedItems,
-					removeItem: this.removeItem,
-					clickCheckbox: this.clickCheckbox,
+						new List().render({
+							items: completedItems,
+							removeItem: this.removeItem,
+							clickCheckbox: this.clickCheckbox,
+						}),
+					],
 				}),
 			],
 		});
 	}
 
 	addItem = () => {
-		this.setState({
-			items: [
-				...this.state.items,
-				{
-					title: 'item' + (this.state.items.length + 1),
-					isCompleted: false,
-					id: new Date().getTime(),
-				},
-			],
+		const input = new Component('input').render({
+			type: 'text',
+			placeholder: 'Task Title',
+			className: 'newTaskTitle',
+			id: 'taskTitle',
+			minLength: '1',
+			name: 'taskTitle',
 		});
+		this.props.children.push(
+			new Modal().render({
+				title: 'New Task',
+				children: [
+					new Component().render({
+						children: [input],
+						className: 'taskCreator',
+					}),
+				],
+				onAgree: () => {
+					this.setState({
+						...this.state,
+						items: [
+							...this.state.items,
+							{
+								title: input.value,
+								isCompleted: false,
+								id: new Date().getTime(),
+							},
+						],
+					});
+				},
+				inputElement: input,
+			})
+		);
+		super.render(this.props);
 	};
+
 	removeItem = (id) => {
 		this.setState({
+			...this.state,
 			items: this.state.items.filter((item) => item.id !== id),
 		});
 	};
 	clickCheckbox = (id) => {
 		this.setState({
+			...this.state,
 			items: this.state.items.map((item) =>
 				item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
 			),

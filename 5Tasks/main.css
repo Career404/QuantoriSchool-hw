@@ -4,7 +4,6 @@
 	margin: 0;
 	padding: 0;
 	font-family: 'Nunito', sans-serif;
-
 	transition: 150ms;
 }
 html {
@@ -196,7 +195,8 @@ End tabs
 	background: transparent url(./assets/CheckboxUnchecked.svg) center no-repeat;
 	background-size: contain;
 }
-.list-item:has(input[type='checkbox']:focus-visible) label::before {
+.list-item:has(input[type='checkbox']:focus-visible) label::before,
+.list-item label:hover::before {
 	content: '';
 	position: relative;
 	display: inline-block;
