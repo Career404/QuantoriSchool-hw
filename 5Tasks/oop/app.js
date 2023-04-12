@@ -3,28 +3,31 @@ import List from './components/List.js';
 import Modal from './components/Modal.js';
 class App extends Component {
 	constructor() {
-		super();
-		this.state = {
-			items: [
-				{
-					title: '1 I am 1',
-					isCompleted: false,
-					id: new Date().getTime() + '1',
-				},
-				{
-					title: '2 number 2',
-					isCompleted: true,
-					id: new Date().getTime() + '2',
-				},
-				{
-					title: '3 is 3',
-					isCompleted: false,
-					id: new Date().getTime() + '3',
-				},
-			],
-			searchRequest: '',
-			searchInputFocus: false,
-		};
+		super('div', 'oopStateStorage');
+		if (Object.keys(this.state).length === 0) {
+			this.state = {
+				items: [
+					{
+						title: '1 I am 1',
+						isCompleted: false,
+						id: new Date().getTime() + '1',
+					},
+					{
+						title: '2 number 2',
+						isCompleted: true,
+						id: new Date().getTime() + '2',
+					},
+					{
+						title: '3 is 3',
+						isCompleted: false,
+						id: new Date().getTime() + '3',
+					},
+				],
+				searchRequest: '',
+				searchInputFocus: false,
+			};
+		}
+		console.log(this);
 	}
 
 	render(props) {
@@ -44,16 +47,9 @@ class App extends Component {
 			type: 'text',
 			placeholder: 'Search Task',
 			value: this.state.searchRequest,
-			//! FOCUS
 			focus: this.state.searchInputFocus,
-			onBlur: () =>
-				this.setState({
-					...this.state,
-					searchInputFocus: false,
-				}),
+			onBlur: () => (this.state.searchInputFocus = false),
 			onInput: (e) => {
-				console.log('before focus:', this.state.searchInputFocus);
-
 				this.setState({
 					...this.state,
 					searchInputFocus: true,

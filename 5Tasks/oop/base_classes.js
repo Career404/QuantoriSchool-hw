@@ -1,12 +1,19 @@
+import { setStorage, getStorage } from '../localStorage/localstorage.js';
 export default class Component {
-	constructor(element = 'div') {
-		this.state = {};
+	constructor(element = 'div', stateStorageName = '') {
+		this.storageName = stateStorageName === '' ? false : stateStorageName;
+		const stateStore = getStorage(stateStorageName);
+		this.state = stateStore ? stateStore : {};
 		this.props = {};
 		this.element = document.createElement(element);
 	}
 
 	setState(state) {
 		this.state = { ...this.state, ...state };
+		if (this.storageName !== false) {
+			setStorage(this.storageName, this.state);
+			console.log('loaded: ', getStorage(this.storageName));
+		}
 		this.update();
 	}
 
