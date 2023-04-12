@@ -119,6 +119,7 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 				label.htmlFor = checkbox.id;
 				label.classList.add('completed-label');
 				const liEl = document.createElement('li');
+				liEl.classList.add('item-info');
 				liEl.textContent = item.title;
 				label.append(checkbox, liEl);
 				listItemDiv.append(label, Icon('delete', '', deleteCallback, item));
@@ -205,9 +206,7 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 			searchRequest,
 			setSearchRequest,
 			isFocused,
-			setIsFocused,
-			searchSelection,
-			setSearchSelection;
+			setIsFocused;
 		if (stateStore === false) {
 			[items, setItems] = useState('items', [
 				{
@@ -229,10 +228,6 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 
 			[searchRequest, setSearchRequest] = useState('search', '');
 			[isFocused, setIsFocused] = useState('inputFocus', false);
-			[searchSelection, setSearchSelection] = useState(
-				'searchSelection',
-				[0, 0]
-			);
 		} else {
 			[items, setItems] = useState('items', stateStore.items);
 
@@ -241,10 +236,6 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 				stateStore.searchRequest
 			);
 			[isFocused, setIsFocused] = useState('inputFocus', stateStore.isFocused);
-			[searchSelection, setSearchSelection] = useState(
-				'searchSelection',
-				stateStore.searchSelection
-			);
 		}
 
 		const notcompletedItems = items.filter((item) => item.isCompleted !== true);
@@ -318,7 +309,6 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 
 		search.addEventListener('input', () => {
 			setSearchRequest(search.value.toString());
-			setSearchSelection([search.selectionStart, search.selectionEnd]);
 			setIsFocused(true);
 		});
 		search.addEventListener('blur', () => {
@@ -353,15 +343,11 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 			document.createElement('div');
 		appContainer.innerHTML = '';
 		appContainer.append(App());
-		//* since this renders the entire app, there's no way to track focus other than here (React does it with virtual DOM and independently rendered components)
+		//* since this renders the entire app, there's no way to track focus other than here (cleaner with virtual DOM and independently rendered components)
 		if (state.inputFocus === true) {
 			const search = document
 				.getElementsByClassName('search-bar')[0]
 				.querySelector('input[type="text"]');
-			search.setSelectionRange(
-				state.searchSelection[0],
-				state.searchSelection[1]
-			);
 			search.focus();
 		}
 	}
