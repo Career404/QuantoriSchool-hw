@@ -29,7 +29,7 @@ class App extends Component {
 
 	render(props) {
 		//
-		console.log(this.state);
+		/* console.log(this.state); */
 		//
 		this.state.filteredItems = this.state.items.filter((item) =>
 			item.title.toLowerCase().includes(this.state.searchRequest.toLowerCase())
@@ -40,6 +40,27 @@ class App extends Component {
 		const completedItems = this.state.filteredItems.filter(
 			(item) => item.isCompleted === true
 		);
+		const searchEl = new Component('input').render({
+			type: 'text',
+			placeholder: 'Search Task',
+			value: this.state.searchRequest,
+			//! FOCUS
+			focus: this.state.searchInputFocus,
+			onBlur: () =>
+				this.setState({
+					...this.state,
+					searchInputFocus: false,
+				}),
+			onInput: (e) => {
+				console.log('before focus:', this.state.searchInputFocus);
+
+				this.setState({
+					...this.state,
+					searchInputFocus: true,
+					searchRequest: e.target.value,
+				});
+			},
+		});
 
 		return super.render({
 			children: [
@@ -50,25 +71,7 @@ class App extends Component {
 						new Component().render({
 							className: 'search-bar',
 							children: [
-								new Component('input').render({
-									type: 'text',
-									placeholder: 'Search Task',
-									value: this.state.searchRequest,
-									//! FOCUS
-									focus: this.state.searchInputFocus,
-									/* 									onBlur: () =>
-										this.setState({
-											...this.state,
-											searchInputFocus: false,
-										}), */
-									onInput: (e) => {
-										this.setState({
-											...this.state,
-											searchInputFocus: true,
-											searchRequest: e.target.value,
-										});
-									},
-								}),
+								searchEl,
 								new Component('button').render({
 									children: '+ New Task',
 									className: 'button',
@@ -130,6 +133,7 @@ class App extends Component {
 			})
 		);
 		super.render(this.props);
+		input.focus();
 	};
 
 	removeItem = (id) => {

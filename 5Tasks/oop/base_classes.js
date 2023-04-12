@@ -30,6 +30,13 @@ export default class Component {
 		if (props.onInput) {
 			el.oninput = props.onInput;
 		}
+		if (props.onKeydown) {
+			el.onkeydown = props.onKeydown;
+		}
+		if (props.onSubmit) {
+			el.onsubmit = props.onSubmit;
+		}
+
 		if (props.style) {
 			el.style = props.style;
 		}
@@ -41,7 +48,6 @@ export default class Component {
 				el.classList.add(className);
 			});
 		}
-
 		if (props.id) {
 			el.id = props.id;
 		}
@@ -63,9 +69,11 @@ export default class Component {
 		if (props.checked) {
 			el.checked = props.checked;
 		}
+
 		if (props.focus === true) {
-			console.log('we focus');
-			el.focus({ focusVisible: true });
+			setTimeout(() => {
+				el.focus();
+			}, 0);
 		}
 
 		el.innerHTML = '';

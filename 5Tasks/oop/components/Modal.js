@@ -32,6 +32,11 @@ export default class Modal extends Component {
 						? (agreeButton.disabled = true)
 						: (agreeButton.disabled = false)
 				);
+				props.inputElement.addEventListener('keydown', (e) => {
+					if (e.key === 'Enter') {
+						agreeButton.click();
+					}
+				});
 			}
 		} else {
 			agreeButton = new Component('button').render({
@@ -47,9 +52,11 @@ export default class Modal extends Component {
 		}
 
 		props.children = [
-			new Component().render({
+			new Component('form').render({
+				//? use div instead of form (Form submission canceled because the form is not connected)
 				className: 'modal',
 				onClick: (e) => e.stopPropagation(),
+				onSubmit: (e) => e.preventDefault(),
 				children: [
 					new Component('h3').render({ children: props.title }),
 					...props.children,
