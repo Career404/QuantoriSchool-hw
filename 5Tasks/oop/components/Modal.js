@@ -52,8 +52,7 @@ export default class Modal extends Component {
 		}
 
 		props.children = [
-			new Component('form').render({
-				//? use div instead of form (Form submission canceled because the form is not connected)
+			new Component().render({
 				className: 'modal',
 				onClick: (e) => e.stopPropagation(),
 				onSubmit: (e) => e.preventDefault(),
