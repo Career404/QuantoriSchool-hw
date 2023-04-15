@@ -117,7 +117,6 @@ class App extends Component {
 			value: new Date().toJSON().slice(0, 10),
 			className: 'datePicker',
 		});
-		//! probably a temporary solution
 		let selectedTag = 'health';
 		const selectTags = new Component().render({
 			children: [
