@@ -40,7 +40,7 @@ export default class Modal extends Component {
 			}
 		} else {
 			agreeButton = new Component('button').render({
-				children: props.agreeText || 'Agree',
+				children: props.agreeText || 'Continue',
 				type: 'submit',
 				onClick: () => {
 					props.agreeCallbackParam
