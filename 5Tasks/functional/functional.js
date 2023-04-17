@@ -1,4 +1,6 @@
 import { setStorage, getStorage } from '../localStorage/localstorage.js';
+import { formatDate } from '../helpers.js';
+
 (function () {
 	const state = {};
 	/**
@@ -120,7 +122,18 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 				label.classList.add('completed-label');
 				const liEl = document.createElement('li');
 				liEl.classList.add('item-info');
-				liEl.textContent = item.title;
+				const text = document.createElement('p');
+				text.textContent = item.title;
+				const liMore = document.createElement('div');
+				liMore.classList.add('li-more');
+				const liTag = document.createElement('div');
+				liTag.classList.add('li-tag', `li-tag-${item.tag}`);
+				liTag.innerText = item.tag;
+				const liDate = document.createElement('div');
+				liDate.classList.add('li-date');
+				liDate.innerText = formatDate(item.dateDueJson);
+				liMore.append(liTag, liDate);
+				liEl.append(text, liMore);
 				label.append(checkbox, liEl);
 				listItemDiv.append(label, Icon('delete', '', deleteCallback, item));
 				return listItemDiv;
@@ -146,7 +159,7 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 		[...children] = [],
 		agreeText = 'Continue',
 		agreeCallback = null,
-		agreeCallbackParam = null
+		agreeCallbackParam = [null]
 	) {
 		const fullscreen = document.createElement('div');
 		fullscreen.classList.add('fullscreen');
@@ -169,7 +182,11 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 		if (agreeCallbackParam && agreeCallbackParam.tag === 'addTask') {
 			agreeButton = Button(agreeText, () => {
 				agreeCallbackParam
-					? agreeCallback(agreeCallbackParam.input.value)
+					? agreeCallback(
+							agreeCallbackParam.input.value,
+							agreeCallbackParam.selectedTag,
+							agreeCallbackParam.dateInput.value
+					  )
 					: agreeCallback();
 			});
 			agreeButton.disabled = true;
@@ -208,21 +225,32 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 			isFocused,
 			setIsFocused;
 		if (stateStore === false) {
+			const today = new Date();
+			const tomorrow = new Date(today);
+			tomorrow.setDate(tomorrow.getDate() + 1);
+			const yesterday = new Date(today);
+			yesterday.setDate(yesterday.getDate() - 1);
 			[items, setItems] = useState('items', [
 				{
 					title: 'Task 1 - default',
 					isCompleted: false,
-					id: new Date().getTime() + '1',
+					dateDueJson: tomorrow.toJSON(),
+					tag: 'home',
+					id: Date.now() + '1',
 				},
 				{
 					title: 'This page can be navigated with a keyboard',
 					isCompleted: true,
-					id: new Date().getTime() + '2',
+					dateDueJson: today.toJSON(),
+					tag: 'work',
+					id: Date.now() + '2',
 				},
 				{
 					title: 'Tasks are saved in localStorage',
 					isCompleted: false,
-					id: new Date().getTime() + '3',
+					dateDueJson: yesterday.toJSON(),
+					tag: 'health',
+					id: Date.now() + '3',
 				},
 			]);
 
@@ -242,6 +270,9 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 		const completedItems = items.filter((item) => item.isCompleted === true);
 
 		function addItem() {
+			const availableTags = ['health', 'work', 'home', 'other'];
+			let selectedTag = 'health';
+
 			const taskCreator = document.createElement('div');
 			taskCreator.classList.add('taskCreator');
 			const input = document.createElement('input');
@@ -251,22 +282,53 @@ import { setStorage, getStorage } from '../localStorage/localstorage.js';
 			input.name = 'taskTitle';
 			input.id = 'taskTitle';
 			input.placeholder = 'Task Title';
-			taskCreator.appendChild(input);
+
+			const dateInput = document.createElement('input');
+			dateInput.type = 'date';
+			dateInput.value = new Date().toJSON().slice(0, 10);
+			dateInput.classList.add('datePicker');
+
+			const selectTags = availableTags.map((tag, index) => {
+				let checkFirst = index === 0 ? true : false;
+				const radio = document.createElement('input');
+				radio.type = 'radio';
+				radio.name = 'tag';
+				radio.id = tag;
+				radio.checked = checkFirst;
+				radio.classList.add('radioTab');
+				const label = document.createElement('label');
+				label.name = 'tag';
+				label.classList.add('li-tag', 'newTaskTag', `li-tag-${tag}`);
+				label.tabIndex = 0;
+				label.innerText = tag;
+				label.append(radio);
+				label.onclick = () => (selectedTag = tag);
+				return label;
+			});
+			const newTaskData = document.createElement('div');
+			newTaskData.classList.add('newTask-more');
+			const tagSelector = document.createElement('div');
+			tagSelector.classList.add('tagSelector');
+			tagSelector.append(...selectTags);
+			newTaskData.append(tagSelector, dateInput);
+			taskCreator.append(input, newTaskData);
 
 			Modal(
 				'New Task',
 				[taskCreator],
 				'Add Task',
-				(newTitle) =>
+				(newTitle, newTag, newDateJson) =>
 					setItems([
 						...items,
 						{
 							title: newTitle.toString(),
 							isCompleted: false,
-							id: new Date().getTime(),
+							tag: newTag,
+							dateDueJson: newDateJson,
+							id: Date.now(),
 						},
 					]),
-				{ tag: 'addTask', input }
+				{ tag: 'addTask', input, dateInput, selectedTag }
 			);
 		}
 
