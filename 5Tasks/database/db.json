@@ -1,0 +1,26 @@
+{
+  "sic": "this is a dummy file. Live file is in the root of the project, JSON server runs from there",
+  "tasks": [
+    {
+      "title": "Task 1 - default",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-15T15:25:58.964Z",
+      "tag": "home",
+      "id": "2023-04-15T15:25:58.964Z"
+    },
+    {
+      "title": "This page can be navigated with a keyboard",
+      "isCompleted": true,
+      "dateDueJson": "2023-04-14T15:25:58.964Z",
+      "tag": "work",
+      "id": "2023-04-14T15:25:58.964Z"
+    },
+    {
+      "title": "Tasks are saved via JSON-server",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-13T15:25:58.964Z",
+      "tag": "health",
+      "id": "2023-04-13T15:25:58.964Z"
+    }
+  ]
+}
