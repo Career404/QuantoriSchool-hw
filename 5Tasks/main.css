@@ -292,6 +292,10 @@ End tabs
 .completed-list .list-item {
 	color: #838383;
 }
+.completed-list .li-tag {
+	background-color: #f5f5f5;
+	color: #838383;
+}
 .fullscreen {
 	position: absolute;
 	top: 0;
