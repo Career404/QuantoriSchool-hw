@@ -7,13 +7,9 @@ export default class Modal extends Component {
 		this.element.onclick = () => this.element.remove();
 	}
 	render(props) {
-		const cancelButton = new Component('button').render({
-			children: 'Cancel',
-			onClick: () => this.element.remove(),
-			className: ['button', 'cancel-button'],
-		});
-
+		let cancelButton;
 		let agreeButton;
+		let displayedButtons;
 		if (props.title === 'New Task') {
 			agreeButton = new Component('button').render({
 				type: 'submit',
@@ -26,6 +22,15 @@ export default class Modal extends Component {
 				className: ['button', 'agree-button'],
 			});
 			agreeButton.disabled = true;
+			cancelButton = new Component('button').render({
+				children: 'Cancel',
+				onClick: () => {
+					this.element.remove();
+					console.log('removing');
+				},
+				className: ['button', 'cancel-button'],
+			});
+			displayedButtons = [cancelButton, agreeButton];
 			if (props.inputElement) {
 				props.inputElement.addEventListener('input', () =>
 					props.inputElement.value.length < 1
@@ -38,6 +43,11 @@ export default class Modal extends Component {
 					}
 				});
 			}
+			cancelButton = new Component('button').render({
+				children: 'Cancel',
+				onClick: () => this.element.remove(),
+				className: ['button', 'cancel-button'],
+			});
 		} else {
 			agreeButton = new Component('button').render({
 				children: props.agreeText || 'Continue',
@@ -49,19 +59,19 @@ export default class Modal extends Component {
 				},
 				className: ['button', 'agree-button'],
 			});
+			displayedButtons = [agreeButton];
 		}
 
 		props.children = [
 			new Component().render({
 				className: 'modal',
 				onClick: (e) => e.stopPropagation(),
-				onSubmit: (e) => e.preventDefault(),
 				children: [
 					new Component('h3').render({ children: props.title }),
 					...props.children,
 					new Component().render({
 						className: 'buttons-container',
-						children: [cancelButton, agreeButton],
+						children: displayedButtons,
 					}),
 				],
 			}),

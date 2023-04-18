@@ -54,3 +54,16 @@ export function formatDate(date) {
 		return `${dayOfWeek}, ${dayOfMonth} ${monthName}`;
 	}
 }
+
+export function getTimeOfDay(date) {
+	const hour = date.getHours();
+	if (hour >= 5 && hour < 12) {
+		return 'morning';
+	} else if (hour >= 12 && hour < 18) {
+		return 'day';
+	} else if (hour >= 18 && hour < 22) {
+		return 'evening';
+	} else {
+		return 'night';
+	}
+}

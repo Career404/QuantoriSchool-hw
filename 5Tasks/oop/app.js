@@ -5,9 +5,11 @@ import {
 	updateTaskById,
 } from '../API/dbOps.js';
 import { getGeo, getWeather } from '../API/weather.js';
+import checkDaily from '../dailyReminder/daily.js';
 import Component from './base_classes.js';
 import List from './components/List.js';
 import Modal from './components/Modal.js';
+import { getTimeOfDay } from '../helpers.js';
 class App extends Component {
 	constructor() {
 		super();
@@ -113,6 +115,7 @@ class App extends Component {
 					className: 'list-completed',
 				}),
 			],
+			onLoad: setTimeout(checkDaily, 0, this.showDaily),
 		});
 	}
 
@@ -180,7 +183,7 @@ class App extends Component {
 					}),
 				],
 				onAgree: () => {
-					this.setState({
+					/* this.setState({
 						...this.state,
 						items: [
 							...this.state.items,
@@ -192,7 +195,7 @@ class App extends Component {
 								id: Date.now(),
 							},
 						],
-					});
+					}); */
 					addNewTask({
 						title: input.value,
 						isCompleted: false,
@@ -200,6 +203,7 @@ class App extends Component {
 						tag: selectedTag,
 						id: Date.now(),
 					});
+					super.render();
 				},
 				inputElement: input,
 			})
@@ -236,6 +240,43 @@ class App extends Component {
 			console.log('Sorry, there seems to be an error: ', error);
 		}
 		this.update();
+	};
+	showDaily = () => {
+		const today = new Date();
+		const todaysTasks = this.state.items.filter(
+			(item) =>
+				new Date(item.dateDueJson).toLocaleDateString() ===
+					today.toLocaleDateString() && !item.isCompleted
+		);
+		console.log(todaysTasks);
+
+		if (todaysTasks.length > 0) {
+			const dailyModal = new Modal().render({
+				title: 'Good ' + getTimeOfDay(today),
+				children: [
+					new Component().render({
+						className: 'todaysTasks',
+						children: [
+							new Component('p').render({
+								children: 'You have the next planned tasks for today: ',
+							}),
+							new Component('ul').render({
+								children: todaysTasks.map((task) => {
+									return new Component('li').render({
+										children: [task.title],
+									});
+								}),
+							}),
+						],
+					}),
+				],
+
+				onAgree: () => dailyModal.remove(),
+				agreeText: 'Ok',
+			});
+			this.props.children.push(dailyModal);
+			super.render(this.props);
+		}
 	};
 }
 const app = new App();

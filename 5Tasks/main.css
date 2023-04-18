@@ -161,6 +161,7 @@ End tabs
 	width: 50px;
 	height: 50px;
 	background: transparent center no-repeat;
+	background-size: contain;
 }
 .weather-temp {
 	font-weight: bold;
@@ -202,19 +203,15 @@ End tabs
 	justify-content: space-between;
 	align-items: center;
 }
-.completed-label {
+.label {
 	flex-grow: 1;
 	cursor: pointer;
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
 }
-.completed-label:hover {
+.label:hover {
 	text-shadow: 0 0 30px #0053cf;
-}
-.completed-label li {
-	list-style: none;
-	padding-left: 20px;
 }
 .list-item input[type='checkbox'] {
 	cursor: pointer;
@@ -230,9 +227,7 @@ End tabs
 	background: transparent url(./assets/CheckboxUnchecked.svg) center no-repeat;
 	background-size: contain;
 }
-.list-item:has(input[type='checkbox']:focus-visible) label::before
-/* ,
-.list-item label:hover::before  */ {
+.list-item:has(input[type='checkbox']:focus-visible) label::before {
 	content: '';
 	position: relative;
 	display: inline-block;
@@ -265,6 +260,13 @@ End tabs
 	flex-flow: column nowrap;
 	gap: 9px;
 	font-size: 18px;
+
+	list-style: none;
+	padding-left: 20px;
+}
+.item-info p {
+	max-width: 443px;
+	word-break: break-all;
 }
 .li-more {
 	display: flex;
@@ -333,6 +335,9 @@ End tabs
 	justify-content: center;
 	background-color: rgba(0, 0, 0, 0.495);
 }
+body:has(.fullscreen) {
+	overflow: hidden;
+}
 .modal {
 	height: max(50%, 371px);
 	width: max(50%, 524px);
@@ -340,13 +345,16 @@ End tabs
 	display: flex;
 	flex-flow: column nowrap;
 	justify-content: space-between;
-	align-items: center;
 	border-radius: 24px;
 	background-color: white;
 }
 .modal h3 {
-	margin-bottom: 38px;
+	margin-bottom: 15px;
 	font-size: 24px;
+	text-align: center;
+}
+.modal:has(.taskCreator) h3 {
+	margin-bottom: 38px;
 }
 .modal .buttons-container {
 	width: 100%;
@@ -426,8 +434,70 @@ End tabs
 	height: 100%;
 	border-color: black;
 	opacity: 0.1;
-	/*current solution makes manual input not very comfortable (adjustable by width)*/
-	/* display: none; */
-	/* would remove the element as per mockup, but why have input type=date without the calendar dropdown */
-	/* did not find the element used by moz browser :( */
+}
+.todaysTasks {
+	padding-top: 9px;
+	flex: 1 0;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: start;
+	overflow: hidden;
+	font-weight: 500;
+	/*
+	there is a note in the mockup, stating:
+		min width is 350px
+		max width is 500px
+	Seeing as this element is a modal, a content-blocking element, there's no point in using absolute values. List itself has limited width (maybe that is what the note is talking about?)
+	Note also states:
+		in case if user has more tasks, the list should be scrolled
+	This is implemented
+	*/
+}
+.todaysTasks ul {
+	margin: 0;
+	max-height: 85%;
+	list-style: none;
+	overflow: auto;
+}
+.todaysTasks li {
+	margin: 9px 0 0 24px;
+	font-weight: 400;
+	word-break: break-all;
+}
+
+.notification {
+	position: fixed;
+	top: 1vh;
+	right: 1vh;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: red;
+}
+.notification .notification-content {
+	display: none;
+	margin-left: 10%;
+}
+.notification:hover {
+	width: 50%;
+	height: fit-content;
+	border-radius: 15px;
+	border: 1px solid rgba(255, 0, 0, 0.5);
+	background-color: rgba(128, 128, 128, 0.1);
+}
+.notification:hover .notification-content {
+	display: block;
+}
+
+@media (max-width: 769px) {
+	.main {
+		width: 94%;
+	}
+	.search-bar {
+		flex-flow: column nowrap;
+		margin: 0 0 88px;
+	}
+	.search-bar input[type='text'] {
+		min-height: 54px;
+	}
 }

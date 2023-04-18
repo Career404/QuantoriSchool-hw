@@ -35,6 +35,9 @@ export default class Component {
 	render(props = {}) {
 		this.props = { ...props };
 		const el = this.element;
+		if (props.onLoad) {
+			el.onload = props.onLoad;
+		}
 		if (props.onClick) {
 			el.onclick = props.onClick;
 		}
