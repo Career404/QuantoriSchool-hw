@@ -144,6 +144,30 @@ End tabs
 .main ul {
 	margin-bottom: 1rem;
 }
+.title {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+}
+.weather-widget {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	gap: 23px;
+}
+.weather-icon {
+	width: 50px;
+	height: 50px;
+	background: transparent center no-repeat;
+}
+.weather-temp {
+	font-weight: bold;
+}
+.weather-city {
+	margin-left: 53px;
+	font-weight: 500;
+	color: #838383;
+}
 .search-bar {
 	height: 52px;
 	margin: 42px 0;

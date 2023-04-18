@@ -1,4 +1,20 @@
 export default class Component {
+	/* 	import { setStorage, getStorage } from '../localStorage/localstorage.js';
+export default class Component {
+	constructor(element = 'div', stateStorageName = '') {
+		this.storageName = stateStorageName === '' ? false : stateStorageName;
+		const stateStore = getStorage(stateStorageName);
+		this.state = stateStore ? stateStore : {};
+		this.props = {};
+		this.element = document.createElement(element);
+	}
+
+	setState(state) {
+		this.state = { ...this.state, ...state };
+		if (this.storageName !== false) {
+			setStorage(this.storageName, this.state);
+		} */
+
 	constructor(element = 'div') {
 		this.state = {};
 		this.props = {};
@@ -42,7 +58,7 @@ export default class Component {
 		}
 
 		if (props.style) {
-			el.style = props.style;
+			Object.assign(el.style, props.style);
 		}
 		if (props.className) {
 			const classes = Array.isArray(props.className)

@@ -3,7 +3,8 @@ import {
 	addNewTask,
 	deleteTaskById,
 	updateTaskById,
-} from '../database/dbOps.js';
+} from '../API/dbOps.js';
+import { getGeo, getWeather } from '../API/weather.js';
 import Component from './base_classes.js';
 import List from './components/List.js';
 import Modal from './components/Modal.js';
@@ -21,13 +22,19 @@ class App extends Component {
 	}
 
 	//! Only call server when changes happen, store items locally (search is slow)
-	//!Save it in localStorage as well, fetch on timer
+	//! Save it in localStorage as well, fetch on timer
+	//? go for background updates with service workers
+
+	//! Save last known location in localStorage (replace default in getWeather)
 
 	async render(props) {
 		const items = await getAllTasks();
+		const geo = await getGeo();
+		const currentWeather = await getWeather(geo);
+
 		this.state = { items, ...this.state };
 		//
-		console.log(this.state);
+		//console.log(this.state);
 		//
 
 		const filteredItems = this.state.items.filter((item) =>
@@ -57,7 +64,28 @@ class App extends Component {
 		return super.render({
 			children: [
 				new Component().render({
-					children: [new Component('h1').render({ children: 'To Do List' })],
+					children: [
+						new Component('h1').render({ children: 'To Do List' }),
+						new Component().render({
+							children: [
+								new Component().render({
+									className: 'weather-icon',
+									style: {
+										backgroundImage: `url(${currentWeather.current.condition.icon})`,
+									},
+								}),
+								new Component('p').render({
+									children: currentWeather.current.temp_c + '°',
+									className: 'weather-temp',
+								}),
+								new Component('p').render({
+									children: currentWeather.location.name,
+									className: 'weather-city',
+								}),
+							],
+							className: 'weather-widget',
+						}),
+					],
 					className: 'title',
 				}),
 				new Component().render({
@@ -189,7 +217,7 @@ class App extends Component {
 	};
 	clickCheckbox = async (id) => {
 		let [itemStorage] = this.state.items.filter((item) => item.id === id);
-		console.log(itemStorage);
+
 		/* this.setState({
 			...this.state,
 			items: this.state.items.map((item) => {
