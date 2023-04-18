@@ -145,9 +145,11 @@ End tabs
 	margin-bottom: 1rem;
 }
 .title {
+	min-height: 85px;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
+	align-items: center;
 }
 .weather-widget {
 	display: flex;
