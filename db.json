@@ -3,23 +3,37 @@
     {
       "title": "Task 1 - default",
       "isCompleted": false,
-      "dateDueJson": "2023-04-15T15:25:58.964Z",
+      "dateDueJson": "2023-04-13T16:11:22.697Z",
       "tag": "home",
-      "id": "2023-04-15T15:25:58.964Z"
+      "id": "16813158826971"
     },
     {
       "title": "This page can be navigated with a keyboard",
-      "isCompleted": true,
-      "dateDueJson": "2023-04-14T15:25:58.964Z",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-12T16:11:22.697Z",
       "tag": "work",
-      "id": "2023-04-14T15:25:58.964Z"
+      "id": "16813158826972"
     },
     {
-      "title": "Tasks are saved via JSON-server",
+      "title": "Tasks are saved in localStorage",
       "isCompleted": false,
-      "dateDueJson": "2023-04-13T15:25:58.964Z",
+      "dateDueJson": "2023-04-11T16:11:22.697Z",
       "tag": "health",
-      "id": "2023-04-13T15:25:58.964Z"
+      "id": "16813158826973"
+    },
+    {
+      "title": "Modifying server data directly modifies the visible task list",
+      "isCompleted": true,
+      "dateDueJson": "2023-04-11T00:00:00.000Z",
+      "tag": "work",
+      "id": 1681315930193
+    },
+    {
+      "title": "Ther also is a tab with tasks saved localStorage",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-15T00:00:00.000Z",
+      "tag": "home",
+      "id": 1681550095549
     }
   ]
 }

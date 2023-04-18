@@ -1,52 +1,35 @@
+import {
+	getAllTasks,
+	addNewTask,
+	deleteTaskById,
+	updateTaskById,
+} from '../database/dbOps.js';
 import Component from './base_classes.js';
 import List from './components/List.js';
 import Modal from './components/Modal.js';
 class App extends Component {
 	constructor() {
-		super('div', 'oopStateStorage');
+		super();
 		//
-		const today = new Date();
-		const tomorrow = new Date(today);
-		tomorrow.setDate(tomorrow.getDate() + 1);
-		const yesterday = new Date(today);
-		yesterday.setDate(yesterday.getDate() - 1);
 		//
-		if (Object.keys(this.state).length === 0) {
-			this.state = {
-				items: [
-					{
-						title: 'Task 1 - default',
-						isCompleted: false,
-						dateDueJson: tomorrow.toJSON(),
-						tag: 'home',
-						id: new Date().getTime() + '1',
-					},
-					{
-						title: 'This page can be navigated with a keyboard',
-						isCompleted: true,
-						dateDueJson: today.toJSON(),
-						tag: 'work',
-						id: new Date().getTime() + '2',
-					},
-					{
-						title: 'Tasks are saved in localStorage',
-						isCompleted: false,
-						dateDueJson: yesterday.toJSON(),
-						tag: 'health',
-						id: new Date().getTime() + '3',
-					},
-				],
-				searchRequest: '',
-				searchInputFocus: false,
-			};
-		}
+
+		this.state = {
+			searchRequest: '',
+			searchInputFocus: false,
+		};
 		this.element.classList.add('main');
 	}
 
-	render(props) {
+	//! Only call server when changes happen, store items locally (search is slow)
+	//!Save it in localStorage as well, fetch on timer
+
+	async render(props) {
+		const items = await getAllTasks();
+		this.state = { items, ...this.state };
 		//
-		/* console.log(this.state); */
+		console.log(this.state);
 		//
+
 		const filteredItems = this.state.items.filter((item) =>
 			item.title.toLowerCase().includes(this.state.searchRequest.toLowerCase())
 		);
@@ -73,7 +56,10 @@ class App extends Component {
 
 		return super.render({
 			children: [
-				new Component('h1').render({ children: 'To Do List' }),
+				new Component().render({
+					children: [new Component('h1').render({ children: 'To Do List' })],
+					className: 'title',
+				}),
 				new Component().render({
 					className: 'search-bar',
 					children: [
@@ -175,9 +161,16 @@ class App extends Component {
 								isCompleted: false,
 								dateDueJson: new Date(dateInput.value).toJSON(),
 								tag: selectedTag,
-								id: new Date().getTime(),
+								id: Date.now(),
 							},
 						],
+					});
+					addNewTask({
+						title: input.value,
+						isCompleted: false,
+						dateDueJson: new Date(dateInput.value).toJSON(),
+						tag: selectedTag,
+						id: Date.now(),
 					});
 				},
 				inputElement: input,
@@ -192,14 +185,31 @@ class App extends Component {
 			...this.state,
 			items: this.state.items.filter((item) => item.id !== id),
 		});
+		deleteTaskById(id);
 	};
-	clickCheckbox = (id) => {
-		this.setState({
+	clickCheckbox = async (id) => {
+		let [itemStorage] = this.state.items.filter((item) => item.id === id);
+		console.log(itemStorage);
+		/* this.setState({
 			...this.state,
-			items: this.state.items.map((item) =>
-				item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
-			),
-		});
+			items: this.state.items.map((item) => {
+				if (item.id === id) {
+					itemStorage = item;
+					return { ...item, isCompleted: !item.isCompleted };
+				} else return item;
+			}),
+		}); */
+		try {
+			updateTaskById(id, {
+				...itemStorage,
+				isCompleted: !itemStorage.isCompleted,
+			});
+		} catch (error) {
+			console.log('Sorry, there seems to be an error: ', error);
+		}
+		this.update();
 	};
 }
-document.getElementById('root').appendChild(new App().render());
+const app = new App();
+const appAsync = await app.render();
+document.getElementById('root').appendChild(appAsync);
