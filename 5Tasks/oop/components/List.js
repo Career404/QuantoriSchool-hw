@@ -44,7 +44,7 @@ class ListItem extends Component {
 			checked: props.item.isCompleted,
 		});
 		const label = new Component('label').render({
-			className: 'completed-label',
+			className: 'label',
 			children: [
 				checkbox,
 				new Component('li').render({
