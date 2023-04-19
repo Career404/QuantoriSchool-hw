@@ -34,16 +34,6 @@
       "dateDueJson": "2023-04-19T00:00:00.000Z",
       "tag": "health",
       "id": 1681899762142
-    },
-    {
-      "title": "123",
-      "isCompleted": false,
-      "dateDueJson": "2023-04-19T00:00:00.000Z",
-      "tag": "health",
-      "id": 1681900829384
     }
-  ],
-  "lastUpdated": [
-    0
   ]
 }

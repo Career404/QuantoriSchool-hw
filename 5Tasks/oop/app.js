@@ -1,5 +1,4 @@
 import {
-	checkLastUpdated,
 	getAllTasks,
 	addNewTask,
 	deleteTaskById,
@@ -20,7 +19,6 @@ class App extends Component {
 			weatherLastUpdated: -600000,
 			searchRequest: '',
 			searchInputFocus: false,
-			localItemsLastUpdated: '0',
 			...this.state,
 		};
 		this.element.classList.add('main');
@@ -41,15 +39,9 @@ class App extends Component {
 	}
 	async loadItems() {
 		try {
-			const lastUpdatedServer = await checkLastUpdated();
-			console.log(lastUpdatedServer);
-			if (lastUpdatedServer <= this.state.localItemsLastUpdated) {
-				const tasks = await getAllTasks();
-				this.state.items = tasks;
-				this.updateStorage({ items: tasks });
-				this.state.localItemsLastUpdated = Date.now();
-			} else {
-			}
+			const tasks = await getAllTasks();
+			this.state.items = tasks;
+			this.updateStorage({ items: tasks });
 		} catch (err) {
 			console.log(err);
 			//Items are loaded from localStorage by default, so leaving this block empty is fine
@@ -57,7 +49,7 @@ class App extends Component {
 	}
 
 	async render(props) {
-		this.state.items = await this.loadItems();
+		await this.loadItems();
 		if (Date.now() - this.state.weatherLastUpdated >= 600000) {
 			await this.loadWeather();
 		}
@@ -227,8 +219,6 @@ class App extends Component {
 								},
 							],
 						});
-					} finally {
-						this.state.localItemsLastUpdated = Date.now();
 					}
 				},
 				inputElement: input,
@@ -248,8 +238,6 @@ class App extends Component {
 				...this.state,
 				items: this.state.items.filter((item) => item.id !== id),
 			});
-		} finally {
-			this.state.localItemsLastUpdated = Date.now();
 		}
 	};
 
@@ -272,8 +260,6 @@ class App extends Component {
 					} else return item;
 				}),
 			});
-		} finally {
-			this.state.localItemsLastUpdated = Date.now();
 		}
 	};
 	showDaily = () => {
