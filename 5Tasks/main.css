@@ -326,7 +326,7 @@ End tabs
 	color: #838383;
 }
 .fullscreen {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	bottom: 0;
 	left: 0;
