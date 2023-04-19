@@ -16,6 +16,7 @@ export default class Component {
 		this.update();
 	}
 	updateStorage() {
+		console.log('update LS', this);
 		if (this.storageName) {
 			setStorage(this.storageName, this.state);
 		}

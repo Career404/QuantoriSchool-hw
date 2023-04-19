@@ -1,5 +1,8 @@
 import {
+	getLastUpdated,
+	setLastUpdated,
 	getAllTasks,
+	updateAllTasks,
 	addNewTask,
 	deleteTaskById,
 	updateTaskById,
@@ -36,20 +39,10 @@ class App extends Component {
 			],
 			searchRequest: '',
 			searchInputFocus: false,
+			lastUpdated: 0,
 			...this.state,
 		};
 		this.element.classList.add('main');
-	}
-
-	async loadItems() {
-		try {
-			const tasks = await getAllTasks();
-			this.state.items = tasks;
-			this.updateStorage({ items: tasks });
-		} catch (err) {
-			console.log(err);
-			//Items are loaded from localStorage by default, so leaving this block empty is fine
-		}
 	}
 
 	render(props) {
@@ -99,16 +92,73 @@ class App extends Component {
 					items: notcompletedItems,
 					removeItem: this.removeItem,
 					clickCheckbox: this.clickCheckbox,
+					id: 'listUndone',
 				}),
 				new Component('h2').render({ children: 'Completed Tasks' }),
 				new List().render({
 					items: completedItems,
 					clickCheckbox: this.clickCheckbox,
 					className: 'list-completed',
+					id: 'listDone',
 				}),
 			],
 		});
 	}
+
+	loadItems = () => {
+		getAllTasks((tasks) => {
+			return tasks;
+		}).catch((err) => {
+			throw err;
+			//state.items are loaded from localStorage by default, so leaving this block empty
+		});
+	};
+
+	uploadItems = (tasks) => {
+		updateAllTasks(tasks).then(() => {
+			const date = Date.now();
+			setLastUpdated(date);
+			this.state.lastUpdated = date;
+			console.log('success: updated local ' + date + ' to server data');
+			super.updateStorage();
+		});
+	};
+
+	isLocalNewer = (remoteDate) => {
+		const isNewer =
+			this.state.lastUpdated > remoteDate
+				? true
+				: this.state.lastUpdated === remoteDate
+				? 'equal'
+				: false;
+		console.log('is local newer?', isNewer);
+		return isNewer;
+	};
+
+	updateList = () => {
+		const filteredItems = this.state.items.filter((item) =>
+			item.title.toLowerCase().includes(this.state.searchRequest.toLowerCase())
+		);
+		const notcompletedItems = filteredItems.filter(
+			(item) => item.isCompleted !== true
+		);
+		const completedItems = filteredItems.filter(
+			(item) => item.isCompleted === true
+		);
+		const newUndone = new List().render({
+			items: notcompletedItems,
+			removeItem: this.removeItem,
+			clickCheckbox: this.clickCheckbox,
+			className: 'list-new',
+		});
+		const newDone = new List().render({
+			items: completedItems,
+			clickCheckbox: this.clickCheckbox,
+			className: 'list-completed',
+		});
+		document.getElementById('listunDone').replaceWith(newUndone);
+		document.getElementById('listDone').replaceWith(newDone);
+	};
 
 	addItem = () => {
 		const availableTags = ['health', 'work', 'home', 'other'];
@@ -186,6 +236,7 @@ class App extends Component {
 							},
 						],
 					});
+					this.uploadItems(this.state.items);
 				},
 				inputElement: input,
 			})
@@ -195,20 +246,56 @@ class App extends Component {
 	};
 
 	removeItem = (id) => {
-		this.setState({
-			...this.state,
-			items: this.state.items.filter((item) => item.id !== id),
-		});
+		this.state.items = this.state.items.filter((item) => item.id !== id);
+		this.updateList();
+		this.uploadItems(this.state.items);
 	};
 	clickCheckbox = (id) => {
-		this.setState({
-			...this.state,
-			items: this.state.items.map((item) =>
-				item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
-			),
-		});
+		this.state.items = this.state.items.map((item) =>
+			item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+		);
+		this.uploadItems(this.state.items);
 	};
 }
+
 const app = new App();
 document.getElementById('root').appendChild(app.render());
-app.loadItems().then(() => app.update());
+
+getLastUpdated()
+	.then((date) => {
+		console.log(
+			'lastServerUpdate ' +
+				date +
+				' last local update: ' +
+				app.state.lastUpdated
+		);
+		const isNewer = app.isLocalNewer(date);
+		if (isNewer === 'equal') {
+			console.log('everything up to date');
+		} else if (isNewer) {
+			app.uploadItems().catch((err) => console.log('failed upload', err));
+			console.log('update server from local');
+		} else {
+			app.loadItems().then((items) => {
+				app.state.items = items;
+				app.state.lastUpdated = date;
+				console.log('update local from server with: ', items);
+			});
+			app.updateStorage();
+			app.updateList();
+		}
+	})
+	.catch((error) => console.log(error))
+	.finally(() => {
+		//app.displayStatus)
+		console.log(app);
+	});
+/*
+app opens up with local date,
+then if local is newer, local items are sent to server
+otherwise re-renders with server-loaded data
+
+every time a new task is created, task is checked or removed,
+local is updated via setState, which causes re-renders of the app,
+then all items are uploaded to the server
+*/
