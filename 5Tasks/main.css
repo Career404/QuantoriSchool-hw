@@ -134,6 +134,7 @@ End tabs
 .main input[type='checkbox'] {
 	accent-color: #0053cf;
 }
+
 .main h1 {
 	margin-bottom: 2px;
 	font-size: 2rem;
@@ -183,10 +184,10 @@ End tabs
 	flex-flow: row nowrap;
 	align-items: center;
 }
-.completed-label:hover {
+.label:hover {
 	text-shadow: 0 0 30px #0053cf;
 }
-.completed-label li {
+.label li {
 	list-style: none;
 	padding-left: 20px;
 }
@@ -407,4 +408,20 @@ body:has(.fullscreen) {
 	/* display: none; */
 	/* would remove the element as per mockup, but why have input type=date without the calendar dropdown */
 	/* did not find the element used by moz browser :( */
+}
+
+@media (max-width: 769px) {
+	.main {
+		width: 94%;
+	}
+	.search-bar {
+		flex-flow: column nowrap;
+		margin: 0 0 88px;
+	}
+	.search-bar input[type='text'] {
+		min-height: 54px;
+	}
+	.list-item {
+		max-width: 98%;
+	}
 }
