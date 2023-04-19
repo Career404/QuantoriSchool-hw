@@ -14,4 +14,6 @@ Get the state from the local storage.
 @returns {object|boolean} - The state object if it exists, otherwise false.
 */
 export const getStorage = (name) =>
-	localStorage.getItem(name) ? JSON.parse(localStorage.getItem(name)) : false;
+	localStorage.getItem(name)
+		? JSON.parse(localStorage.getItem(name))
+		: undefined;

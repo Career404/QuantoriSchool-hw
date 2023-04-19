@@ -1,51 +1,60 @@
+import {
+	getAllTasks,
+	addNewTask,
+	deleteTaskById,
+	updateTaskById,
+} from '../API/dbOps.js';
 import Component from './base_classes.js';
 import List from './components/List.js';
 import Modal from './components/Modal.js';
 class App extends Component {
 	constructor() {
 		super('div', 'oopStateStorage');
-		//
-		const today = new Date();
-		const tomorrow = new Date(today);
-		tomorrow.setDate(tomorrow.getDate() + 1);
-		const yesterday = new Date(today);
-		yesterday.setDate(yesterday.getDate() - 1);
-		//
-		if (Object.keys(this.state).length === 0) {
-			this.state = {
-				items: [
-					{
-						title: 'Task 1 - default',
-						isCompleted: false,
-						dateDueJson: tomorrow.toJSON(),
-						tag: 'home',
-						id: new Date().getTime() + '1',
-					},
-					{
-						title: 'This page can be navigated with a keyboard',
-						isCompleted: true,
-						dateDueJson: today.toJSON(),
-						tag: 'work',
-						id: new Date().getTime() + '2',
-					},
-					{
-						title: 'Tasks are saved in localStorage',
-						isCompleted: false,
-						dateDueJson: yesterday.toJSON(),
-						tag: 'health',
-						id: new Date().getTime() + '3',
-					},
-				],
-				searchRequest: '',
-				searchInputFocus: false,
-			};
-		}
+		this.state = {
+			items: [
+				{
+					title: 'Task 1 - default',
+					isCompleted: false,
+					dateDueJson: '2023-04-13T16:11:22.697Z',
+					tag: 'home',
+					id: '16813158826971',
+				},
+				{
+					title: 'This page can be navigated with a keyboard',
+					isCompleted: false,
+					dateDueJson: '2023-04-12T16:11:22.697Z',
+					tag: 'work',
+					id: '16813158826972',
+				},
+				{
+					title: 'Tasks are saved in localStorage',
+					isCompleted: false,
+					dateDueJson: '2023-04-11T16:11:22.697Z',
+					tag: 'health',
+					id: '16813158826973',
+				},
+			],
+			searchRequest: '',
+			searchInputFocus: false,
+			...this.state,
+		};
 		this.element.classList.add('main');
+	}
+
+	async loadItems() {
+		try {
+			const tasks = await getAllTasks();
+			this.state.items = tasks;
+			this.updateStorage({ items: tasks });
+		} catch (err) {
+			console.log(err);
+			//Items are loaded from localStorage by default, so leaving this block empty is fine
+		}
 	}
 
 	render(props) {
 		//
-		/* console.log(this.state); */
+		console.log(this.state);
 		//
 		const filteredItems = this.state.items.filter((item) =>
 			item.title.toLowerCase().includes(this.state.searchRequest.toLowerCase())
@@ -92,7 +101,6 @@ class App extends Component {
 					clickCheckbox: this.clickCheckbox,
 				}),
 				new Component('h2').render({ children: 'Completed Tasks' }),
-
 				new List().render({
 					items: completedItems,
 					clickCheckbox: this.clickCheckbox,
@@ -149,7 +157,6 @@ class App extends Component {
 			],
 			className: 'tagSelector',
 		});
-
 		this.props.children.push(
 			new Modal().render({
 				title: 'New Task',
@@ -202,4 +209,6 @@ class App extends Component {
 		});
 	};
 }
-document.getElementById('root').appendChild(new App().render());
+const app = new App();
+document.getElementById('root').appendChild(app.render());
+app.loadItems().then(() => app.update());
