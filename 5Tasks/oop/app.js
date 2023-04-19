@@ -1,4 +1,5 @@
 import {
+	checkLastUpdated,
 	getAllTasks,
 	addNewTask,
 	deleteTaskById,
@@ -9,36 +10,71 @@ import checkDaily from '../dailyReminder/daily.js';
 import Component from './base_classes.js';
 import List from './components/List.js';
 import Modal from './components/Modal.js';
+import WeatherWidget from './components/Weather.js';
 import { getTimeOfDay } from '../helpers.js';
 class App extends Component {
 	constructor() {
-		super();
-		//
-		//
-
+		super('div', 'oopState');
 		this.state = {
+			geo: [41.716667, 44.783333], //Tbilisi coordinates
+			weatherLastUpdated: -600000,
 			searchRequest: '',
 			searchInputFocus: false,
+			localItemsLastUpdated: '0',
+			...this.state,
 		};
 		this.element.classList.add('main');
 	}
 
-	//! Only call server when changes happen, store items locally (search is slow)
-	//! Save it in localStorage as well, fetch on timer
-	//? go for background updates with service workers
-
-	//! Save last known location in localStorage (replace default in getWeather)
+	async loadWeather() {
+		try {
+			const position = await getGeo();
+			this.state.geo = [position.coords.latitude, position.coords.longitude];
+			this.updateStorage({ geo: this.state.geo });
+		} catch (err) {
+			console.log(err);
+		} finally {
+			this.state.latestWeather = await getWeather(this.state.geo);
+			this.state.weatherLastUpdated =
+				this.state.latestWeather.current.last_updated_epoch;
+		}
+	}
+	async loadItems() {
+		try {
+			const lastUpdatedServer = await checkLastUpdated();
+			console.log(lastUpdatedServer);
+			if (lastUpdatedServer <= this.state.localItemsLastUpdated) {
+				const tasks = await getAllTasks();
+				this.state.items = tasks;
+				this.updateStorage({ items: tasks });
+				this.state.localItemsLastUpdated = Date.now();
+			} else {
+			}
+		} catch (err) {
+			console.log(err);
+			//Items are loaded from localStorage by default, so leaving this block empty is fine
+		}
+	}
 
 	async render(props) {
-		const items = await getAllTasks();
-		const geo = await getGeo();
-		const currentWeather = await getWeather(geo);
-
-		this.state = { items, ...this.state };
+		this.state.items = await this.loadItems();
+		if (Date.now() - this.state.weatherLastUpdated >= 600000) {
+			await this.loadWeather();
+		}
 		//
-		//console.log(this.state);
+		console.log('render!', this.state);
 		//
-
+		if (!Array.isArray(this.state.items) || this.state.items.length === 0) {
+			this.state.items = [
+				{
+					title: 'No tasks',
+					isCompleted: false,
+					dateDueJson: new Date().toJSON(),
+					tag: 'home',
+					id: '1681315811826971',
+				},
+			];
+		}
 		const filteredItems = this.state.items.filter((item) =>
 			item.title.toLowerCase().includes(this.state.searchRequest.toLowerCase())
 		);
@@ -68,24 +104,8 @@ class App extends Component {
 				new Component().render({
 					children: [
 						new Component('h1').render({ children: 'To Do List' }),
-						new Component().render({
-							children: [
-								new Component().render({
-									className: 'weather-icon',
-									style: {
-										backgroundImage: `url(${currentWeather.current.condition.icon})`,
-									},
-								}),
-								new Component('p').render({
-									children: currentWeather.current.temp_c + '°',
-									className: 'weather-temp',
-								}),
-								new Component('p').render({
-									children: currentWeather.location.name,
-									className: 'weather-city',
-								}),
-							],
-							className: 'weather-widget',
+						new WeatherWidget().render({
+							weather: this.state.latestWeather,
 						}),
 					],
 					className: 'title',
@@ -183,27 +203,33 @@ class App extends Component {
 					}),
 				],
 				onAgree: () => {
-					/* this.setState({
-						...this.state,
-						items: [
-							...this.state.items,
-							{
-								title: input.value,
-								isCompleted: false,
-								dateDueJson: new Date(dateInput.value).toJSON(),
-								tag: selectedTag,
-								id: Date.now(),
-							},
-						],
-					}); */
-					addNewTask({
-						title: input.value,
-						isCompleted: false,
-						dateDueJson: new Date(dateInput.value).toJSON(),
-						tag: selectedTag,
-						id: Date.now(),
-					});
-					super.render();
+					try {
+						addNewTask({
+							title: input.value,
+							isCompleted: false,
+							dateDueJson: new Date(dateInput.value).toJSON(),
+							tag: selectedTag,
+							id: Date.now(),
+						});
+						this.update();
+					} catch (error) {
+						console.log('Sorry, there seems to be a connection error: ', error);
+						this.setState({
+							...this.state,
+							items: [
+								...this.state.items,
+								{
+									title: input.value,
+									isCompleted: false,
+									dateDueJson: new Date(dateInput.value).toJSON(),
+									tag: selectedTag,
+									id: Date.now(),
+								},
+							],
+						});
+					} finally {
+						this.state.localItemsLastUpdated = Date.now();
+					}
 				},
 				inputElement: input,
 			})
@@ -213,33 +239,42 @@ class App extends Component {
 	};
 
 	removeItem = (id) => {
-		this.setState({
-			...this.state,
-			items: this.state.items.filter((item) => item.id !== id),
-		});
-		deleteTaskById(id);
+		try {
+			deleteTaskById(id);
+			this.update();
+		} catch (error) {
+			console.log('Sorry, there seems to be a connection error: ', error);
+			this.setState({
+				...this.state,
+				items: this.state.items.filter((item) => item.id !== id),
+			});
+		} finally {
+			this.state.localItemsLastUpdated = Date.now();
+		}
 	};
+
 	clickCheckbox = async (id) => {
 		let [itemStorage] = this.state.items.filter((item) => item.id === id);
-
-		/* this.setState({
-			...this.state,
-			items: this.state.items.map((item) => {
-				if (item.id === id) {
-					itemStorage = item;
-					return { ...item, isCompleted: !item.isCompleted };
-				} else return item;
-			}),
-		}); */
 		try {
 			updateTaskById(id, {
 				...itemStorage,
 				isCompleted: !itemStorage.isCompleted,
 			});
+			this.update();
 		} catch (error) {
-			console.log('Sorry, there seems to be an error: ', error);
+			console.log('Sorry, there seems to be a connection error: ', error);
+			this.setState({
+				...this.state,
+				items: this.state.items.map((item) => {
+					if (item.id === id) {
+						itemStorage = item;
+						return { ...item, isCompleted: !item.isCompleted };
+					} else return item;
+				}),
+			});
+		} finally {
+			this.state.localItemsLastUpdated = Date.now();
 		}
-		this.update();
 	};
 	showDaily = () => {
 		const today = new Date();
@@ -280,5 +315,5 @@ class App extends Component {
 	};
 }
 const app = new App();
-const appAsync = await app.render();
-document.getElementById('root').appendChild(appAsync);
+const appRender = await app.render();
+document.getElementById('root').append(appRender);

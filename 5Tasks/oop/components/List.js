@@ -23,7 +23,6 @@ export default class List extends Component {
 						item: item,
 						clickCheckbox: props.clickCheckbox,
 						removeItem: props.removeItem,
-						//? prop drilling, but it's not deep and simple and in the same file so probably ok
 					})
 				),
 			],
@@ -89,19 +88,3 @@ class ListItem extends Component {
 		return super.render(props);
 	}
 }
-/*
-				{
-					title: '1 I am 1',
-					isCompleted: false,
-					id: new Date().getTime() + '1',
-				},
-				{
-					title: '2 number 2',
-					isCompleted: true,
-					id: new Date().getTime() + '2',
-				},
-				{
-					title: '3 is 3',
-					isCompleted: false,
-					id: new Date().getTime() + '3',
-				}, */

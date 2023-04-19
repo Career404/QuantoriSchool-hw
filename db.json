@@ -15,13 +15,6 @@
       "id": "16813158826972"
     },
     {
-      "title": "Tasks are saved in localStorage",
-      "isCompleted": false,
-      "dateDueJson": "2023-04-11T16:11:22.697Z",
-      "tag": "health",
-      "id": "16813158826973"
-    },
-    {
       "title": "Modifying server data directly modifies the visible task list",
       "isCompleted": true,
       "dateDueJson": "2023-04-11T00:00:00.000Z",
@@ -29,11 +22,28 @@
       "id": 1681315930193
     },
     {
-      "title": "Ther also is a tab with tasks saved localStorage",
+      "title": "1",
       "isCompleted": false,
-      "dateDueJson": "2023-04-15T00:00:00.000Z",
-      "tag": "home",
-      "id": 1681550095549
+      "dateDueJson": "2023-04-19T00:00:00.000Z",
+      "tag": "health",
+      "id": 1681899723951
+    },
+    {
+      "title": "23",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-19T00:00:00.000Z",
+      "tag": "health",
+      "id": 1681899762142
+    },
+    {
+      "title": "123",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-19T00:00:00.000Z",
+      "tag": "health",
+      "id": 1681900829384
     }
+  ],
+  "lastUpdated": [
+    0
   ]
 }

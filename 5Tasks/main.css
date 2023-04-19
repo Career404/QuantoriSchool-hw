@@ -152,6 +152,7 @@ End tabs
 	align-items: center;
 }
 .weather-widget {
+	cursor: pointer;
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
@@ -196,7 +197,7 @@ End tabs
 	border-radius: 12px;
 }
 .list-item {
-	max-width: 500px;
+	max-width: 84%;
 	padding: 10px;
 	display: flex;
 	flex-flow: row nowrap;
@@ -499,5 +500,8 @@ body:has(.fullscreen) {
 	}
 	.search-bar input[type='text'] {
 		min-height: 54px;
+	}
+	.list-item {
+		max-width: 98%;
 	}
 }
