@@ -119,7 +119,7 @@ import { formatDate } from '../helpers.js';
 				checkbox.addEventListener('change', () => checkCallback(item.id));
 				const label = document.createElement('label');
 				label.htmlFor = checkbox.id;
-				label.classList.add('completed-label');
+				label.classList.add('label');
 				const liEl = document.createElement('li');
 				liEl.classList.add('item-info');
 				const text = document.createElement('p');

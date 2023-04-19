@@ -176,7 +176,7 @@ End tabs
 	justify-content: space-between;
 	align-items: center;
 }
-.completed-label {
+.label {
 	flex-grow: 1;
 	cursor: pointer;
 	display: flex;
@@ -296,8 +296,11 @@ End tabs
 	background-color: #f5f5f5;
 	color: #838383;
 }
+body:has(.fullscreen) {
+	overflow: hidden;
+}
 .fullscreen {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	bottom: 0;
 	left: 0;
