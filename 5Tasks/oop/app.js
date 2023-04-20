@@ -2,7 +2,6 @@ import {
 	getLastUpdated,
 	setLastUpdated,
 	getAllTasks,
-	updateAllTasks,
 	addNewTask,
 	deleteTaskById,
 	updateTaskById,
@@ -47,7 +46,7 @@ class App extends Component {
 
 	render(props) {
 		//
-		console.log(this.state);
+		//console.log(this.state);
 		//
 		const filteredItems = this.state.items.filter((item) =>
 			item.title.toLowerCase().includes(this.state.searchRequest.toLowerCase())
@@ -105,23 +104,22 @@ class App extends Component {
 		});
 	}
 
-	loadItems = () => {
-		getAllTasks((tasks) => {
+	loadItems = async () => {
+		try {
+			const tasks = await getAllTasks();
 			return tasks;
-		}).catch((err) => {
+		} catch (err) {
 			throw err;
-			//state.items are loaded from localStorage by default, so leaving this block empty
-		});
+		}
 	};
 
-	uploadItems = (tasks) => {
-		updateAllTasks(tasks).then(() => {
-			const date = Date.now();
-			setLastUpdated(date);
-			this.state.lastUpdated = date;
-			console.log('success: updated local ' + date + ' to server data');
-			super.updateStorage();
+	addUpdateDate = () => {
+		const date = Date.now();
+		setLastUpdated(date).catch((err) => {
+			throw err;
 		});
+		this.state.lastUpdated = date;
+		super.updateStorage();
 	};
 
 	isLocalNewer = (remoteDate) => {
@@ -135,7 +133,9 @@ class App extends Component {
 		return isNewer;
 	};
 
-	updateList = () => {
+	/* updateList = () => {
+		// I'd rather code everythingfrom scratch again and allow partial re-renders with virtual DOM than use crotches like this
+		// re-rendering the whole app is okay as of now
 		const filteredItems = this.state.items.filter((item) =>
 			item.title.toLowerCase().includes(this.state.searchRequest.toLowerCase())
 		);
@@ -149,16 +149,17 @@ class App extends Component {
 			items: notcompletedItems,
 			removeItem: this.removeItem,
 			clickCheckbox: this.clickCheckbox,
-			className: 'list-new',
+			id: 'listUndone',
 		});
 		const newDone = new List().render({
 			items: completedItems,
 			clickCheckbox: this.clickCheckbox,
 			className: 'list-completed',
+			id: 'listDone',
 		});
-		document.getElementById('listunDone').replaceWith(newUndone);
+		document.getElementById('listUndone').replaceWith(newUndone);
 		document.getElementById('listDone').replaceWith(newDone);
-	};
+	}; */
 
 	addItem = () => {
 		const availableTags = ['health', 'work', 'home', 'other'];
@@ -223,20 +224,17 @@ class App extends Component {
 					}),
 				],
 				onAgree: () => {
-					this.setState({
-						...this.state,
-						items: [
-							...this.state.items,
-							{
-								title: input.value,
-								isCompleted: false,
-								dateDueJson: new Date(dateInput.value).toJSON(),
-								tag: selectedTag,
-								id: new Date().getTime(),
-							},
-						],
-					});
-					this.uploadItems(this.state.items);
+					const newTask = {
+						title: input.value,
+						isCompleted: false,
+						dateDueJson: new Date(dateInput.value).toJSON(),
+						tag: selectedTag,
+						id: new Date().getTime(),
+					};
+					this.state.items = [...this.state.items, newTask];
+					addNewTask(newTask);
+					this.addUpdateDate();
+					this.update();
 				},
 				inputElement: input,
 			})
@@ -247,51 +245,76 @@ class App extends Component {
 
 	removeItem = (id) => {
 		this.state.items = this.state.items.filter((item) => item.id !== id);
-		this.updateList();
-		this.uploadItems(this.state.items);
+		deleteTaskById(id);
+		this.addUpdateDate();
+		this.update();
 	};
 	clickCheckbox = (id) => {
+		const checkedItem = this.state.items.find((item) => item.id === id);
 		this.state.items = this.state.items.map((item) =>
 			item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
 		);
-		this.uploadItems(this.state.items);
+		updateTaskById(id, checkedItem);
+		this.addUpdateDate();
+		this.update();
+	};
+
+	checkUpdates = () => {
+		getLastUpdated()
+			.then((date) => {
+				const isNewer = this.isLocalNewer(date);
+				if (isNewer === 'equal') {
+					console.log('everything up to date');
+				} else if (isNewer) {
+					//no re-render needed
+					const idArray = this.state.items.map((item) => item.id);
+					idArray.forEach((id, index) => {
+						setTimeout(() => {
+							deleteTaskById(id)
+								.catch((err) => console.log(err))
+								.finally(() =>
+									setTimeout(
+										addNewTask,
+										250,
+										...this.state.items.filter((item) => item.id === id)
+									)
+								);
+						}, index * 250);
+						// calls too often crash the server - timeouts help, however there must be a better solution
+						//safe to close before calls are over because even if server loses data, local is saved, and server only updates from local
+
+						//Maybe load tasks from server with getAllTasks,
+						//compare to local,
+						//update tasks with difference?
+						// it's potentially lighter on the server, but complex
+					});
+					this.addUpdateDate();
+					console.log('update server from local');
+				} else {
+					this.loadItems()
+						.then((items) => {
+							this.state.items = items;
+							console.log('update local from server');
+							this.state.lastUpdated = date;
+							this.updateStorage();
+						})
+						.finally(this.update);
+				}
+			})
+			.catch((error) => console.log(error))
+			.finally(() => {
+				//this.displayStatus()
+				console.log(this);
+			});
 	};
 }
 
 const app = new App();
 document.getElementById('root').appendChild(app.render());
+app.checkUpdates();
 
-getLastUpdated()
-	.then((date) => {
-		console.log(
-			'lastServerUpdate ' +
-				date +
-				' last local update: ' +
-				app.state.lastUpdated
-		);
-		const isNewer = app.isLocalNewer(date);
-		if (isNewer === 'equal') {
-			console.log('everything up to date');
-		} else if (isNewer) {
-			app.uploadItems().catch((err) => console.log('failed upload', err));
-			console.log('update server from local');
-		} else {
-			app.loadItems().then((items) => {
-				app.state.items = items;
-				app.state.lastUpdated = date;
-				console.log('update local from server with: ', items);
-			});
-			app.updateStorage();
-			app.updateList();
-		}
-	})
-	.catch((error) => console.log(error))
-	.finally(() => {
-		//app.displayStatus)
-		console.log(app);
-	});
 /*
-app opens up with local date,
+app opens up with local data,
 then if local is newer, local items are sent to server
 otherwise re-renders with server-loaded data
 

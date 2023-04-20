@@ -27,17 +27,6 @@ export async function getAllTasks() {
 		throw err;
 	}
 }
-export async function updateAllTasks(tasks) {
-	try {
-		const response = await fetch('http://localhost:3004/tasks', {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(tasks),
-		});
-	} catch (err) {
-		throw err;
-	}
-}
 export async function addNewTask(task) {
 	try {
 		const response = await fetch('http://localhost:3004/tasks', {
