@@ -7,6 +7,9 @@ import {
 	updateTaskById,
 } from '../API/dbOps.js';
 import { getGeo, getWeather } from '../API/weather.js';
+import checkDaily from '../dailyReminder/daily.js';
+import { getTimeOfDay } from '../helpers.js';
+
 import Component from './base_classes.js';
 import List from './components/List.js';
 import Modal from './components/Modal.js';
@@ -133,6 +136,7 @@ class App extends Component {
 					id: 'listDone',
 				}),
 			],
+			onLoad: setTimeout(checkDaily, 100, this.showDaily),
 		});
 	}
 
@@ -263,20 +267,21 @@ class App extends Component {
 					tag: selectedTag,
 					id: new Date().getTime(),
 				};
-				this.state.items = [...this.state.items, newTask];
+				this.setState({
+					items: [...this.state.items, newTask],
+				});
 				addNewTask(newTask);
 				this.props.children = this.props.children.filter(
 					(node) => node != newTaskModal
 				);
-				console.log(this.props);
 				this.addUpdateDate();
-				this.update();
+				newTaskModal.remove();
 			},
 			onCancel: () => {
 				this.props.children = this.props.children.filter(
 					(node) => node != newTaskModal
 				);
-				this.update();
+				newTaskModal.remove();
 			},
 			inputElement: input,
 		});
@@ -286,19 +291,21 @@ class App extends Component {
 	};
 
 	removeItem = (id) => {
-		this.state.items = this.state.items.filter((item) => item.id !== id);
+		this.setState({
+			items: this.state.items.filter((item) => item.id !== id),
+		});
 		deleteTaskById(id);
 		this.addUpdateDate();
-		this.update();
 	};
 	clickCheckbox = (id) => {
+		this.setState({
+			items: this.state.items.map((item) =>
+				item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+			),
+		});
 		const checkedItem = this.state.items.find((item) => item.id === id);
-		this.state.items = this.state.items.map((item) =>
-			item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
-		);
 		updateTaskById(id, checkedItem);
 		this.addUpdateDate();
-		this.update();
 	};
 
 	loadWeather = async () => {
@@ -314,12 +321,54 @@ class App extends Component {
 
 		this.state.weatherLastUpdated =
 			// this.state.latestWeather.current.last_updated_epoch * 1000;
-			// as cool as the idea seems to be, reality is that
-			//weatherAPI does not update weather as often as they claim in their FAQ(every 10 - 15 minutes),
-			//and this way the function occasionally results in an endless loop
+			// even though using API data would be cool, reality is that
+			//weatherAPI does not update weather nearly as often as they claim in their FAQ(every 10 - 15 minutes),
+			//and this way the function often results in an endless loop
 			Date.now();
 
 		this.updateStorage();
+	};
+
+	showDaily = () => {
+		const today = new Date();
+		const todaysTasks = this.state.items.filter(
+			(item) =>
+				new Date(item.dateDueJson).toLocaleDateString() ===
+					today.toLocaleDateString() && !item.isCompleted
+		);
+
+		if (todaysTasks.length > 0) {
+			const dailyModal = new Modal().render({
+				title: 'Good ' + getTimeOfDay(today),
+				children: [
+					new Component().render({
+						className: 'todaysTasks',
+						children: [
+							new Component('p').render({
+								children: 'You have the next planned tasks for today: ',
+							}),
+							new Component('ul').render({
+								children: todaysTasks.map((task) => {
+									return new Component('li').render({
+										children: [task.title],
+									});
+								}),
+							}),
+						],
+					}),
+				],
+
+				onAgree: () => {
+					this.props.children = this.props.children.filter(
+						(node) => node != dailyModal
+					);
+					dailyModal.remove();
+				},
+				agreeText: 'Ok',
+			});
+			this.props.children.push(dailyModal);
+			super.render(this.props);
+		}
 	};
 
 	checkUpdates = () => {
@@ -354,17 +403,13 @@ class App extends Component {
 					this.addUpdateDate();
 					console.log('update server from local');
 				} else {
-					this.loadItems()
-						.then((items) => {
-							this.state.items = items;
-							this.state.lastUpdated = date;
-							this.updateStorage();
-							console.log('update local from server');
-						})
-						.finally(() => {
-							console.log('update with new data');
-							this.update();
+					this.loadItems().then((items) => {
+						this.setState({
+							items: items,
+							lastUpdated: date,
 						});
+						console.log('update local from server');
+					});
 				}
 			})
 			.catch((error) => console.log(error))
