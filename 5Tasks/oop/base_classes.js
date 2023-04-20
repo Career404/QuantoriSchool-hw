@@ -33,6 +33,9 @@ export default class Component {
 		if (props.onClick) {
 			el.onclick = props.onClick;
 		}
+		if (props.onLoad) {
+			el.onload = setTimeout(props.onLoad, 0);
+		}
 		if (props.onFocus) {
 			el.onfocus = props.onFocus;
 		}
@@ -53,7 +56,7 @@ export default class Component {
 		}
 
 		if (props.style) {
-			el.style = props.style;
+			Object.assign(el.style, props.style);
 		}
 		if (props.className) {
 			const classes = Array.isArray(props.className)
@@ -108,6 +111,7 @@ export default class Component {
 	}
 
 	update() {
+		console.log('update');
 		this.render(this.props);
 	}
 }

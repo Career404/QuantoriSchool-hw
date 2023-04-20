@@ -6,16 +6,19 @@ import {
 	deleteTaskById,
 	updateTaskById,
 } from '../API/dbOps.js';
+import { getGeo, getWeather } from '../API/weather.js';
 import Component from './base_classes.js';
 import List from './components/List.js';
 import Modal from './components/Modal.js';
+import WeatherWidget from './components/WeatherWidget.js';
 class App extends Component {
 	constructor() {
 		super('div', 'oopStateStorage');
 		this.state = {
 			items: [
 				{
-					title: 'Task 1 - default',
+					title:
+						'If weather is not displayed correctly, click it to load new data',
 					isCompleted: false,
 					dateDueJson: '2023-04-13T16:11:22.697Z',
 					tag: 'home',
@@ -29,13 +32,27 @@ class App extends Component {
 					id: '16813158826972',
 				},
 				{
-					title: 'Tasks are saved in localStorage',
+					title:
+						'These tasks are saved in localStorage, but will update from server when server will come online',
 					isCompleted: false,
 					dateDueJson: '2023-04-11T16:11:22.697Z',
 					tag: 'health',
 					id: '16813158826973',
 				},
 			],
+			geo: [41.716667, 44.783333], //Tbilisi coordinates
+			weatherLastUpdated: 900000,
+			latestWeather: {
+				current: {
+					condition: {
+						icon: "data:image/svg+xml,%3Csvg version='1.1' id='L9' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 100 100' enable-background='new 0 0 0 0' xml:space='preserve'%3E%3Cpath fill='%23808080' d='M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50'%3E%3CanimateTransform attributeName='transform' attributeType='XML' type='rotate' dur='1s' from='0 50 50' to='360 50 50' repeatCount='indefinite' /%3E%3C/path%3E%3C/svg%3E",
+					},
+					temp_c: 0,
+				},
+				location: {
+					name: 'Loading',
+				},
+			},
 			searchRequest: '',
 			searchInputFocus: false,
 			lastUpdated: 0,
@@ -71,10 +88,25 @@ class App extends Component {
 				});
 			},
 		});
-
 		return super.render({
 			children: [
-				new Component('h1').render({ children: 'To Do List' }),
+				new Component('h1').render({
+					children: [
+						new Component('h1').render({ children: 'To Do List' }),
+						new WeatherWidget().render({
+							weather: this.state.latestWeather,
+							onLoad: () => {
+								if (Date.now() - this.state.weatherLastUpdated >= 600000) {
+									this.loadWeather().then(() => this.update());
+								}
+							},
+							onClick: () => {
+								this.loadWeather().then(() => this.update());
+							},
+						}),
+					],
+					className: 'title',
+				}),
 				new Component().render({
 					className: 'search-bar',
 					children: [
@@ -119,7 +151,7 @@ class App extends Component {
 			throw err;
 		});
 		this.state.lastUpdated = date;
-		super.updateStorage();
+		this.updateStorage();
 	};
 
 	isLocalNewer = (remoteDate) => {
@@ -208,37 +240,47 @@ class App extends Component {
 			],
 			className: 'tagSelector',
 		});
-		this.props.children.push(
-			new Modal().render({
-				title: 'New Task',
-				children: [
-					new Component().render({
-						children: [
-							input,
-							new Component().render({
-								children: [selectTags, dateInput],
-								className: 'newTask-more',
-							}),
-						],
-						className: 'taskCreator',
-					}),
-				],
-				onAgree: () => {
-					const newTask = {
-						title: input.value,
-						isCompleted: false,
-						dateDueJson: new Date(dateInput.value).toJSON(),
-						tag: selectedTag,
-						id: new Date().getTime(),
-					};
-					this.state.items = [...this.state.items, newTask];
-					addNewTask(newTask);
-					this.addUpdateDate();
-					this.update();
-				},
-				inputElement: input,
-			})
-		);
+
+		const newTaskModal = new Modal().render({
+			title: 'New Task',
+			children: [
+				new Component().render({
+					children: [
+						input,
+						new Component().render({
+							children: [selectTags, dateInput],
+							className: 'newTask-more',
+						}),
+					],
+					className: 'taskCreator',
+				}),
+			],
+			onAgree: () => {
+				const newTask = {
+					title: input.value,
+					isCompleted: false,
+					dateDueJson: new Date(dateInput.value).toJSON(),
+					tag: selectedTag,
+					id: new Date().getTime(),
+				};
+				this.state.items = [...this.state.items, newTask];
+				addNewTask(newTask);
+				this.props.children = this.props.children.filter(
+					(node) => node != newTaskModal
+				);
+				console.log(this.props);
+				this.addUpdateDate();
+				this.update();
+			},
+			onCancel: () => {
+				this.props.children = this.props.children.filter(
+					(node) => node != newTaskModal
+				);
+				this.update();
+			},
+			inputElement: input,
+		});
+		this.props.children.push(newTaskModal);
 		super.render(this.props);
 		input.focus();
 	};
@@ -257,6 +299,27 @@ class App extends Component {
 		updateTaskById(id, checkedItem);
 		this.addUpdateDate();
 		this.update();
+	};
+
+	loadWeather = async () => {
+		console.log('loadWeather() called');
+		try {
+			const position = await getGeo();
+			this.state.geo = [position.coords.latitude, position.coords.longitude];
+		} catch (err) {
+			console.log('Geolocation failed, ', err);
+		}
+		const weather = await getWeather(this.state.geo);
+		this.state.latestWeather = weather;
+
+		this.state.weatherLastUpdated =
+			// this.state.latestWeather.current.last_updated_epoch * 1000;
+			// as cool as the idea seems to be, reality is that
+			//weatherAPI does not update weather as often as they claim in their FAQ(every 10 - 15 minutes),
+			//and this way the function occasionally results in an endless loop
+			Date.now();
+
+		this.updateStorage();
 	};
 
 	checkUpdates = () => {
@@ -294,11 +357,14 @@ class App extends Component {
 					this.loadItems()
 						.then((items) => {
 							this.state.items = items;
-							console.log('update local from server');
 							this.state.lastUpdated = date;
 							this.updateStorage();
+							console.log('update local from server');
 						})
-						.finally(this.update);
+						.finally(() => {
+							console.log('update with new data');
+							this.update();
+						});
 				}
 			})
 			.catch((error) => console.log(error))
@@ -321,4 +387,10 @@ otherwise re-renders with server-loaded data
 every time a new task is created, task is checked or removed,
 local is updated via setState, which causes re-renders of the app,
 then all items are uploaded to the server
+
+Problem: if server connection is lost, creating tasks and other actions works fine - they are saved in LS
+However when server connection is back online page MUST BE reloaded.
+if page is not reloaded and something else happens (new task, complete task, delete task)
+changes made while offline will forever be in LS only
+momentarily losing connection is a common scenario, fixing this is important
 */

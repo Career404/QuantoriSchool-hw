@@ -9,7 +9,9 @@ export default class Modal extends Component {
 	render(props) {
 		const cancelButton = new Component('button').render({
 			children: 'Cancel',
-			onClick: () => this.element.remove(),
+			onClick: () => {
+				props.onCancel ? props.onCancel() : this.element.remove();
+			},
 			className: ['button', 'cancel-button'],
 		});
 
@@ -22,6 +24,7 @@ export default class Modal extends Component {
 					props.agreeCallbackParam
 						? props.onAgree(props.agreeCallbackParam)
 						: props.onAgree();
+					this.element.remove();
 				},
 				className: ['button', 'agree-button'],
 			});
