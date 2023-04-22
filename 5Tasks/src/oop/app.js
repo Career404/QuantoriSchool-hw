@@ -14,7 +14,7 @@ import Component from './base_classes.js';
 import List from './components/List.js';
 import Modal from './components/Modal.js';
 import WeatherWidget from './components/WeatherWidget.js';
-class App extends Component {
+export default class App extends Component {
 	constructor() {
 		super('div', 'oopStateStorage');
 		this.state = {
@@ -419,10 +419,6 @@ class App extends Component {
 			});
 	};
 }
-
-const app = new App();
-document.getElementById('root').appendChild(app.render());
-app.checkUpdates();
 
 /*
 app opens up with local data,

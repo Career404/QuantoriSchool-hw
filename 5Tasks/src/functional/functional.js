@@ -1,7 +1,7 @@
 import { setStorage, getStorage } from '../localStorage/localstorage.js';
 import { formatDate } from '../helpers.js';
 
-(function () {
+export default function funcApp() {
 	const state = {};
 	/**
 	 * Global application state
@@ -416,4 +416,4 @@ import { formatDate } from '../helpers.js';
 
 	// initial render
 	renderApp();
-})();
+}
