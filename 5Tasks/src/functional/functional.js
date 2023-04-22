@@ -224,7 +224,8 @@ export default function funcApp() {
 			setSearchRequest,
 			isFocused,
 			setIsFocused;
-		if (stateStore === false) {
+		if (!stateStore) {
+			console.log('no storage');
 			const today = new Date();
 			const tomorrow = new Date(today);
 			tomorrow.setDate(tomorrow.getDate() + 1);
