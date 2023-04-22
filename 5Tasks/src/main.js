@@ -1,6 +1,8 @@
 import App from './oop/app.js';
 import funcApp from './functional/functional.js';
 
+import './main.css';
+
 document.body.innerHTML = `
 <input class="radioTab" id="func" name="group" type="radio" />
 <input class="radioTab" id="oop" name="group" type="radio" checked />
