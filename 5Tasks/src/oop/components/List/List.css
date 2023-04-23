@@ -1,0 +1,118 @@
+.list-item {
+	max-width: 500px;
+	padding: 10px;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;
+}
+.list-item input[type='checkbox'] {
+	cursor: pointer;
+	position: absolute;
+	opacity: 0;
+}
+.list-item label::before {
+	content: '';
+	position: relative;
+	display: inline-block;
+	width: 21px;
+	height: 21px;
+	background: transparent url(./CheckboxUnchecked.svg) center no-repeat;
+	background-size: contain;
+}
+.list-item:has(input[type='checkbox']:focus-visible) label::before
+/* ,
+.list-item label:hover::before  */ {
+	content: '';
+	position: relative;
+	display: inline-block;
+	width: 21px;
+	height: 21px;
+	background: transparent url(./CheckboxUnchecked.svg) center no-repeat;
+	background-size: contain;
+	outline: 2px solid black;
+}
+.list-item:has(input[type='checkbox']:active) label::before {
+	content: '';
+	position: relative;
+	display: inline-block;
+	width: 21px;
+	height: 21px;
+	background: transparent url(./CheckboxChecked.svg) center no-repeat;
+	background-size: contain;
+}
+.list-item:has(input[type='checkbox']:checked) label::before {
+	content: '';
+	position: relative;
+	display: inline-block;
+	width: 21px;
+	height: 21px;
+	background: transparent url(./CheckboxDisabled.svg) center no-repeat;
+	background-size: contain;
+}
+
+.label {
+	flex-grow: 1;
+	cursor: pointer;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+.label:hover {
+	text-shadow: 0 0 30px #0053cf;
+}
+.label li {
+	flex: 1 1 100%;
+	list-style: none;
+	padding-left: 20px;
+}
+.label li p {
+	max-width: 440px;
+}
+.item-info {
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 9px;
+	font-size: 18px;
+}
+.li-more {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	gap: 10px;
+}
+
+.li-date {
+	font-weight: 500;
+	font-size: 12px;
+	color: #838383;
+}
+/*
+these classes are redundant (same classes are used for new task creator tags)
+.li-tag {
+	width: fit-content;
+	padding: 2px 8px;
+	border: none;
+	border-radius: 6px;
+	background: #ffecc7;
+	font-size: 12px;
+	color: var(--other-accent);
+}
+.li-tag-home {
+	background-color: #e2f7e2;
+	color: var(--home-accent);
+}
+.li-tag-work {
+	background: #e8d7ff;
+	color: var(--work-accent);
+}
+.li-tag-health {
+	background: rgba(60, 134, 244, 0.31);
+	color: var(--health-accent);
+} */
+
+@media (max-width: 769px) {
+	.list-item {
+		max-width: 98%;
+	}
+}

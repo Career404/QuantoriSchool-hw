@@ -1,6 +1,8 @@
-import Component from '../base_classes.js';
-import Icon from './Icon.js';
-import { formatDate } from '../../helpers.js';
+import Component from '../../base_classes.js';
+import Icon from '../Icon/Icon.js';
+import { formatDate } from '../../../helpers';
+
+import './List.css';
 
 export default class List extends Component {
 	constructor() {
@@ -33,10 +35,6 @@ export default class List extends Component {
 }
 
 class ListItem extends Component {
-	constructor() {
-		super();
-		this.element.classList.add('list-item');
-	}
 	render(props) {
 		const checkbox = new Component('input').render({
 			id: `is${props.item.id}Completed`,
@@ -72,6 +70,8 @@ class ListItem extends Component {
 			onClick: () => props.clickCheckbox(props.item.id),
 		});
 		label.htmlFor = checkbox.id;
+
+		this.element.classList.add('list-item');
 		if (props.removeItem) {
 			const icon = new Icon().render({
 				onClick: () => props.removeItem(props.item.id),
@@ -83,25 +83,8 @@ class ListItem extends Component {
 			});
 			props.children = [label, icon];
 		} else {
-			props.children = label;
+			props.children = [label];
 		}
-
 		return super.render(props);
 	}
 }
-/*
-				{
-					title: '1 I am 1',
-					isCompleted: false,
-					id: new Date().getTime() + '1',
-				},
-				{
-					title: '2 number 2',
-					isCompleted: true,
-					id: new Date().getTime() + '2',
-				},
-				{
-					title: '3 is 3',
-					isCompleted: false,
-					id: new Date().getTime() + '3',
-				}, */
