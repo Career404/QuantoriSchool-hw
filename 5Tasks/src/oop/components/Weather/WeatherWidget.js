@@ -1,4 +1,6 @@
-import Component from '../base_classes.js';
+import Component from '../../base_classes';
+
+import './WeatherWidget.css';
 
 export default class WeatherWidget extends Component {
 	render(props) {
