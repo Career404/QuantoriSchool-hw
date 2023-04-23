@@ -220,7 +220,8 @@
 }
 .notification * {
 	display: none;
-	margin-left: 10%;
+	margin: 10px;
+	color: white;
 }
 .notification:hover {
 	width: fit-content;

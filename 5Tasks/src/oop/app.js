@@ -2,6 +2,7 @@ import {
 	getLastUpdated,
 	setLastUpdated,
 	getAllTasks,
+	setAllTasks,
 	addNewTask,
 	deleteTaskById,
 	updateTaskById,
@@ -32,7 +33,8 @@ export default class App extends Component {
 					id: '16813158826971',
 				},
 				{
-					title: 'This page can be navigated with a keyboard',
+					title:
+						'Try to connect with the server by clicking on the round status icon in the top-right of the screen',
 					isCompleted: false,
 					dateDueJson: '2023-04-12T16:11:22.697Z',
 					tag: 'work',
@@ -61,8 +63,6 @@ export default class App extends Component {
 				},
 			},
 			searchRequest: '',
-			searchInputFocus: false,
-			lastUpdated: 0,
 			...this.state,
 		};
 		this.element.classList.add('main');
@@ -172,34 +172,6 @@ export default class App extends Component {
 		console.log('is local newer?', isNewer);
 		return isNewer;
 	};
-
-	/* updateList = () => {
-		// I'd rather code everythingfrom scratch again and allow partial re-renders with virtual DOM than use crotches like this
-		// re-rendering the whole app is okay as of now
-		const filteredItems = this.state.items.filter((item) =>
-			item.title.toLowerCase().includes(this.state.searchRequest.toLowerCase())
-		);
-		const notcompletedItems = filteredItems.filter(
-			(item) => item.isCompleted !== true
-		);
-		const completedItems = filteredItems.filter(
-			(item) => item.isCompleted === true
-		);
-		const newUndone = new List().render({
-			items: notcompletedItems,
-			removeItem: this.removeItem,
-			clickCheckbox: this.clickCheckbox,
-			id: 'listUndone',
-		});
-		const newDone = new List().render({
-			items: completedItems,
-			clickCheckbox: this.clickCheckbox,
-			className: 'list-completed',
-			id: 'listDone',
-		});
-		document.getElementById('listUndone').replaceWith(newUndone);
-		document.getElementById('listDone').replaceWith(newDone);
-	}; */
 
 	addItem = () => {
 		const availableTags = ['health', 'work', 'home', 'other'];
@@ -387,10 +359,18 @@ export default class App extends Component {
 			children: new Component('p').render({
 				children: text,
 			}),
+			onClick: () => {
+				this.props.children = this.props.children.filter(
+					(node) => node != statusEl
+				);
+				statusEl.remove();
+				this.checkUpdates();
+			},
 		});
 		this.props.children.push(statusEl);
 		super.render(this.props);
 	};
+
 	checkUpdates = () => {
 		let haveConnection;
 		getLastUpdated()
@@ -400,44 +380,20 @@ export default class App extends Component {
 				if (isNewer === 'equal') {
 					console.log('everything up to date');
 				} else if (isNewer) {
-					function spaceOutFunctionCalls(callback, spacer = 1) {
-						return new Promise((res, rej) => {
-							setTimeout(() => {
-								callback();
-								res();
-							}, 250 * spacer);
-						});
-					}
-					const idArray = this.state.items.map((item) => item.id);
-					idArray.forEach((id, index) => {
-						spaceOutFunctionCalls(() => {
-							deleteTaskById(id)
-								.catch((err) => console.log(err))
-								.finally(
-									spaceOutFunctionCalls(() =>
-										addNewTask(
-											...this.state.items.filter((item) => item.id === id)
-										)
-									)
-								);
-						});
-						// calls too often crash the server - timeouts help, however there must be a better solution
-						//safe to close before calls are over because even if server loses data, local is saved, and server only updates from local
-
-						//Maybe load tasks from server with getAllTasks,
-						//compare to local,
-						//update tasks with difference?
-						// it's potentially lighter on the server, but complex
-					});
+					//Load tasks from server with getAllTasks,
+					//compare to local,
+					//update tasks with differences?
+					setAllTasks(this.state.items);
 					this.addUpdateDate();
-					console.log('update server from local');
+					console.log('updated server from local');
 				} else {
 					this.loadItems().then((items) => {
 						this.setState({
-							items: items,
+							...this.state,
+							items: [...items],
 							lastUpdated: date,
 						});
-						console.log('update local from server');
+						console.log('updated local from server');
 					});
 				}
 			})
