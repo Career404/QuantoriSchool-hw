@@ -121,16 +121,7 @@ End tabs
 	background-color: #3c86f4;
 	color: white;
 }
-.icon-interactive {
-	border: none;
-	cursor: pointer;
-}
-.icon-interactive:hover {
-	scale: 1.1;
-}
-.icon-interactive:active {
-	scale: 1.2;
-}
+
 .main input[type='checkbox'] {
 	accent-color: #0053cf;
 }
@@ -311,17 +302,6 @@ End tabs
 }
 .list-completed .li-tag {
 	background-color: #f5f5f5;
-}
-.delete-icon {
-	height: 1rem;
-	width: 1rem;
-	background: transparent url(./assets/Delete.svg);
-}
-.delete-icon:hover {
-	background: transparent url(./assets/DeleteHover.svg);
-}
-.delete-icon:active {
-	background: transparent url(./assets/DeleteActive.svg);
 }
 .completed-list .list-item {
 	color: #838383;

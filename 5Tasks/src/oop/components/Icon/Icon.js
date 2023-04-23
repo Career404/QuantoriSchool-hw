@@ -1,4 +1,6 @@
-import Component from '../base_classes.js';
+import Component from '../../base_classes';
+
+import './Icon.css';
 
 export default class Icon extends Component {
 	render(props) {
