@@ -11,7 +11,9 @@ export default class Icon extends Component {
 			this.element.classList.add('icon-interactive');
 			this.element.tabIndex = 0;
 		}
-		props.children = text;
+		if (props.text) {
+			props.children = text;
+		}
 		return super.render(props);
 	}
 }

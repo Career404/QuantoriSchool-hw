@@ -218,18 +218,18 @@
 	border-radius: 50%;
 	background-color: red;
 }
-.notification .notification-content {
+.notification * {
 	display: none;
 	margin-left: 10%;
 }
 .notification:hover {
-	width: 50%;
+	width: fit-content;
 	height: fit-content;
 	border-radius: 15px;
 	border: 1px solid rgba(255, 0, 0, 0.5);
 	background-color: rgba(128, 128, 128, 0.1);
 }
-.notification:hover .notification-content {
+.notification:hover * {
 	display: block;
 }
 

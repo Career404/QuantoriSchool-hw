@@ -16,6 +16,8 @@ import Modal from './components/Modal/Modal.js';
 import WeatherWidget from './components/Weather/WeatherWidget.js';
 
 import './app.css';
+import Icon from './components/Icon/Icon.js';
+import styled from 'styled-components';
 export default class App extends Component {
 	constructor() {
 		super('div', 'oopStateStorage');
@@ -373,27 +375,52 @@ export default class App extends Component {
 		}
 	};
 
+	displayStatus = (isOnline) => {
+		const statusColor = isOnline ? 'green' : 'red';
+		const text = isOnline ? 'Connected' : 'No connection';
+		const statusEl = new Icon().render({
+			icon: 'status',
+			style: {
+				backgroundColor: statusColor,
+			},
+			className: 'notification',
+			children: new Component('p').render({
+				children: text,
+			}),
+		});
+		this.props.children.push(statusEl);
+		super.render(this.props);
+	};
 	checkUpdates = () => {
+		let haveConnection;
 		getLastUpdated()
 			.then((date) => {
+				haveConnection = !!date;
 				const isNewer = this.isLocalNewer(date);
 				if (isNewer === 'equal') {
 					console.log('everything up to date');
 				} else if (isNewer) {
-					//no re-render needed
+					function spaceOutFunctionCalls(callback, spacer = 1) {
+						return new Promise((res, rej) => {
+							setTimeout(() => {
+								callback();
+								res();
+							}, 250 * spacer);
+						});
+					}
 					const idArray = this.state.items.map((item) => item.id);
 					idArray.forEach((id, index) => {
-						setTimeout(() => {
+						spaceOutFunctionCalls(() => {
 							deleteTaskById(id)
 								.catch((err) => console.log(err))
-								.finally(() =>
-									setTimeout(
-										addNewTask,
-										250,
-										...this.state.items.filter((item) => item.id === id)
+								.finally(
+									spaceOutFunctionCalls(() =>
+										addNewTask(
+											...this.state.items.filter((item) => item.id === id)
+										)
 									)
 								);
-						}, index * 250);
+						});
 						// calls too often crash the server - timeouts help, however there must be a better solution
 						//safe to close before calls are over because even if server loses data, local is saved, and server only updates from local
 
@@ -416,7 +443,7 @@ export default class App extends Component {
 			})
 			.catch((error) => console.log(error))
 			.finally(() => {
-				//this.displayStatus()
+				this.displayStatus(haveConnection);
 				console.log(this);
 			});
 	};
