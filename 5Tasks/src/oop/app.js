@@ -11,9 +11,11 @@ import checkDaily from '../dailyReminder/daily.js';
 import { getTimeOfDay } from '../helpers.js';
 
 import Component from './base_classes.js';
-import List from './components/List.js';
-import Modal from './components/Modal.js';
-import WeatherWidget from './components/WeatherWidget.js';
+import List from './components/List/List.js';
+import Modal from './components/Modal/Modal.js';
+import WeatherWidget from './components/Weather/WeatherWidget.js';
+
+import './app.css';
 export default class App extends Component {
 	constructor() {
 		super('div', 'oopStateStorage');
