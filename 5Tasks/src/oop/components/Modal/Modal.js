@@ -1,12 +1,11 @@
-import Component from '../base_classes.js';
+import Component from '../../base_classes';
+
+import './Modal.css';
 
 export default class Modal extends Component {
-	constructor() {
-		super();
+	render(props) {
 		this.element.classList.add('fullscreen');
 		this.element.onclick = () => this.element.remove();
-	}
-	render(props) {
 		if (props.onCancel) {
 			this.element.onclick = props.onCancel;
 		}
@@ -79,6 +78,7 @@ export default class Modal extends Component {
 				],
 			}),
 		];
+
 		return super.render(props);
 	}
 }
