@@ -8,9 +8,9 @@ document.body.innerHTML = `
 <input class="radioTab" id="oop" name="group" type="radio" checked />
 <div class="tab-wrapper">
   <label class="tab" id="func-tab" for="func" tabindex="1"
-    >Functional</label
+    >Private</label
   >
-  <label class="tab" id="oop-tab" for="oop" tabindex="1">OOP </label>
+  <label class="tab" id="oop-tab" for="oop" tabindex="1">Server</label>
 </div>
 <div class="panels-wrapper">
   <div class="panel" id="func-panel">

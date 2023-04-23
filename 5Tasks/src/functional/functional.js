@@ -234,31 +234,13 @@ export default function funcApp() {
 		if (!stateStore) {
 			console.log('no storage');
 			const today = new Date();
-			const tomorrow = new Date(today);
-			tomorrow.setDate(tomorrow.getDate() + 1);
-			const yesterday = new Date(today);
-			yesterday.setDate(yesterday.getDate() - 1);
 			[items, setItems] = useState('items', [
 				{
-					title: 'Task 1 - default',
+					title: 'Tasks in this tab only exist on this device',
 					isCompleted: false,
-					dateDueJson: tomorrow.toJSON(),
+					dateDueJson: today.toJSON(),
 					tag: 'home',
 					id: Date.now() + '1',
-				},
-				{
-					title: 'This page can be navigated with a keyboard',
-					isCompleted: true,
-					dateDueJson: today.toJSON(),
-					tag: 'work',
-					id: Date.now() + '2',
-				},
-				{
-					title: 'Tasks are saved in localStorage',
-					isCompleted: false,
-					dateDueJson: yesterday.toJSON(),
-					tag: 'health',
-					id: Date.now() + '3',
 				},
 			]);
 
@@ -384,7 +366,6 @@ export default function funcApp() {
 		search.addEventListener('blur', () => {
 			state.inputFocus = false;
 		});
-		//! setState is terrible for keyboard navigation because focus causes re-renders. Manually setting state (bad practice in React terms) works just fine
 
 		const flexDiv = document.createElement('div');
 		flexDiv.classList.add('search-bar');
