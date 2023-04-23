@@ -1,6 +1,13 @@
 import { setStorage, getStorage } from '../localStorage/localstorage.js';
 import { formatDate } from '../helpers.js';
 
+import '../oop/components/Icon/Icon.css';
+import '../oop/components/List/List.css';
+import '../oop/components/Modal/Modal.css';
+import '../oop/components/Weather/WeatherWidget.css';
+import '../oop/app.css';
+//this could be done with a separate functional.css, would be cleaner. Maybe this file and functional/oop tabs should be fully dropped from the project.
+
 export default function funcApp() {
 	const state = {};
 	/**
