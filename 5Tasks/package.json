@@ -6,6 +6,9 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack serve",
+    "jsonServer": "json-server --watch db.json --port 3004",
+    "json-dev": "(start /b json-server --watch db.json --port 3004) & (start /b webpack serve)",
+    "json-dev-unix": "json-server --watch db.json --port 3004 & webpack serve",
     "test": "echo \\\"Error: no test specified\\\" && exit 1"
   },
   "keywords": [
