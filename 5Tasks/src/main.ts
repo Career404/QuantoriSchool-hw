@@ -1,5 +1,5 @@
-import App from './oop/app.js';
-import funcApp from './functional/functional.js';
+import App from './oop/app';
+import funcApp from './functional/functional';
 
 import './main.css';
 
@@ -24,8 +24,10 @@ document.body.innerHTML = `
 const labels = document.querySelectorAll('label');
 labels.forEach((label) => {
 	label.addEventListener('keydown', (e) => {
-		if (e.code === 'Space' || e.code === 'Enter') {
-			e.target.click();
+		if (e.target instanceof HTMLElement) {
+			if (e.code === 'Space' || e.code === 'Enter') {
+				e.target.click();
+			}
 		}
 	});
 });

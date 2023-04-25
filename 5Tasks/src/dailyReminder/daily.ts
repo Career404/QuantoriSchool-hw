@@ -1,4 +1,4 @@
-import { setStorage, getStorage } from '../localStorage/localstorage.js';
+import { setStorage, getStorage } from '../localStorage/localstorage';
 
 export default function checkDaily(showDailyCallback) {
 	const dailySettings = getStorage('dailySettings');

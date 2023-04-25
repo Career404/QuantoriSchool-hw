@@ -1,5 +1,5 @@
-import Component from '../../base_classes.js';
-import Icon from '../Icon/Icon.js';
+import Component from '../../base_classes';
+import Icon from '../Icon/Icon';
 import { formatDate } from '../../../helpers';
 
 import './List.css';
@@ -41,7 +41,7 @@ class ListItem extends Component {
 			type: 'checkbox',
 			checked: props.item.isCompleted,
 		});
-		const label = new Component('label').render({
+		const label = <HTMLLabelElement>new Component('label').render({
 			className: 'label',
 			children: [
 				checkbox,

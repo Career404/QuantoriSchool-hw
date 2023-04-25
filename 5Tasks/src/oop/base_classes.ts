@@ -1,5 +1,10 @@
-import { setStorage, getStorage } from '../localStorage/localstorage.js';
+import { setStorage, getStorage } from '../localStorage/localstorage';
+
 export default class Component {
+	storageName: string | undefined;
+	state: anyObj;
+	props: anyObj;
+	element: HTMLElement;
 	constructor(element = 'div', stateStorageName = undefined) {
 		this.storageName = stateStorageName;
 		const stateStore = getStorage(stateStorageName);
@@ -8,7 +13,7 @@ export default class Component {
 		this.element = document.createElement(element);
 	}
 
-	setState(state) {
+	setState(state: State) {
 		this.state = { ...this.state, ...state };
 		if (this.storageName) {
 			setStorage(this.storageName, this.state);
@@ -27,14 +32,14 @@ export default class Component {
 	 * @param props
 	 * @returns {HTMLElement}
 	 */
-	render(props = {}) {
+	render(props: any = {}) {
 		this.props = { ...props };
 		const el = this.element;
 		if (props.onClick) {
 			el.onclick = props.onClick;
 		}
 		if (props.onLoad) {
-			el.onload = setTimeout(props.onLoad, 0);
+			el.onload = () => setTimeout(props.onLoad, 0);
 		}
 		if (props.onFocus) {
 			el.onfocus = props.onFocus;
@@ -69,37 +74,39 @@ export default class Component {
 		if (props.id) {
 			el.id = props.id;
 		}
-		if (props.minLength) {
-			el.minlength = props.minLength;
+		if (el instanceof HTMLInputElement) {
+			if (props.minLength) {
+				el.minLength = props.minLength;
+			}
+			if (props.name) {
+				el.name = props.name;
+			}
+			if (props.type) {
+				el.type = props.type;
+			}
+			if (props.value) {
+				el.value = props.value;
+			}
+			if (props.placeholder) {
+				el.placeholder = props.placeholder;
+			}
+			if (props.checked) {
+				el.checked = props.checked;
+			}
 		}
-		if (props.name) {
-			el.name = props.name;
-		}
-		if (props.type) {
-			el.type = props.type;
-		}
-		if (props.value) {
-			el.value = props.value;
-		}
-		if (props.placeholder) {
-			el.placeholder = props.placeholder;
-		}
-		if (props.checked) {
-			el.checked = props.checked;
-		}
-		if (props.htmlFor) {
-			el.htmlFor = props.htmlFor;
+		if (el instanceof HTMLLabelElement) {
+			if (props.htmlFor) {
+				el.htmlFor = props.htmlFor;
+			}
 		}
 		if (props.tabindex) {
 			el.tabIndex = props.tabindex;
 		}
-
 		if (props.focus === true) {
 			setTimeout(() => {
 				el.focus();
 			}, 0);
 		}
-
 		el.innerHTML = '';
 		const children = props.children
 			? Array.isArray(props.children)

@@ -6,20 +6,20 @@ import {
 	addNewTask,
 	deleteTaskById,
 	updateTaskById,
-} from '../API/dbOps.js';
-import { getGeo, getWeather } from '../API/weather.js';
-import checkDaily from '../dailyReminder/daily.js';
-import { getTimeOfDay } from '../helpers.js';
+} from '../API/dbOps';
+import { getGeo, getWeather } from '../API/Weather';
+import checkDaily from '../dailyReminder/daily';
+import { getTimeOfDay } from '../helpers';
 
-import Component from './base_classes.js';
-import List from './components/List/List.js';
-import Modal from './components/Modal/Modal.js';
-import WeatherWidget from './components/Weather/WeatherWidget.js';
+import Icon from './components/Icon/Icon';
+import Component from './base_classes';
+import List from './components/List/List';
+import Modal from './components/Modal/Modal';
+import WeatherWidget from './components/Weather/WeatherWidget';
 
 import './app.css';
-import Icon from './components/Icon/Icon.js';
-import styled from 'styled-components';
 export default class App extends Component {
+	state: appState;
 	constructor() {
 		super('div', 'oopStateStorage');
 		this.state = {
@@ -68,7 +68,7 @@ export default class App extends Component {
 		this.element.classList.add('main');
 	}
 
-	render(props) {
+	render(props?) {
 		//
 		//console.log(this.state);
 		//
@@ -175,7 +175,7 @@ export default class App extends Component {
 
 	addItem = () => {
 		const availableTags = ['health', 'work', 'home', 'other'];
-		const input = new Component('input').render({
+		const input = <HTMLInputElement>new Component('input').render({
 			type: 'text',
 			placeholder: 'Task Title',
 			className: 'newTaskTitle',
@@ -183,7 +183,7 @@ export default class App extends Component {
 			minLength: '1',
 			name: 'taskTitle',
 		});
-		const dateInput = new Component('input').render({
+		const dateInput = <HTMLInputElement>new Component('input').render({
 			type: 'date',
 			value: new Date().toJSON().slice(0, 10),
 			className: 'datePicker',
@@ -287,7 +287,7 @@ export default class App extends Component {
 	loadWeather = async () => {
 		console.log('loadWeather() called');
 		try {
-			const position = await getGeo();
+			const position: anyObj = await getGeo();
 			this.state.geo = [position.coords.latitude, position.coords.longitude];
 		} catch (err) {
 			console.log('Geolocation failed, ', err);

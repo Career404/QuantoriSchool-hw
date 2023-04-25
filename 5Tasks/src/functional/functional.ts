@@ -1,5 +1,5 @@
-import { setStorage, getStorage } from '../localStorage/localstorage.js';
-import { formatDate } from '../helpers.js';
+import { setStorage, getStorage } from '../localStorage/localstorage';
+import { formatDate } from '../helpers';
 
 import '../oop/components/Icon/Icon.css';
 import '../oop/components/List/List.css';
@@ -9,7 +9,7 @@ import '../oop/app.css';
 //this could be done with a separate functional.css, would be cleaner. Maybe this file and functional/oop tabs should be fully dropped from the project.
 
 export default function funcApp() {
-	const state = {};
+	const state: anyObj = {};
 	/**
 	 * Global application state
 	 * @template T
@@ -107,7 +107,13 @@ export default function funcApp() {
 	function List(
 		{
 			items = [
-				{ title: 'Oops! Items are empty', isCompleted: false, id: 'default' },
+				{
+					title: 'Oops! Items are empty',
+					isCompleted: false,
+					id: 'default',
+					dateDueJson: '2023-04-13T16:11:22.697Z',
+					tag: 'home',
+				},
 			],
 		},
 		searchRequest = '',
@@ -166,7 +172,7 @@ export default function funcApp() {
 		[...children] = [],
 		agreeText = 'Continue',
 		agreeCallback = null,
-		agreeCallbackParam = [null]
+		agreeCallbackParam = null
 	) {
 		const fullscreen = document.createElement('div');
 		fullscreen.classList.add('fullscreen');
@@ -265,10 +271,10 @@ export default function funcApp() {
 
 			const taskCreator = document.createElement('div');
 			taskCreator.classList.add('taskCreator');
-			const input = document.createElement('input');
+			const input = <HTMLInputElement>document.createElement('input');
 			input.classList.add('newTaskTitle');
 			input.type = 'text';
-			input.minLength = '1';
+			input.minLength = 1;
 			input.name = 'taskTitle';
 			input.id = 'taskTitle';
 			input.placeholder = 'Task Title';
@@ -287,7 +293,6 @@ export default function funcApp() {
 				radio.checked = checkFirst;
 				radio.classList.add('radioTab');
 				const label = document.createElement('label');
-				label.name = 'tag';
 				label.classList.add('li-tag', 'newTaskTag', `li-tag-${tag}`);
 				label.tabIndex = 0;
 				label.innerText = tag;
@@ -396,9 +401,11 @@ export default function funcApp() {
 		appContainer.append(App());
 		//* since this renders the entire app, there's no way to track focus other than here (cleaner with virtual DOM and independently rendered components)
 		if (state.inputFocus === true) {
-			const search = document
-				.getElementsByClassName('search-bar')[0]
-				.querySelector('input[type="text"]');
+			const search = <HTMLElement>(
+				document
+					.getElementsByClassName('search-bar')[0]
+					.querySelector('input[type="text"]')
+			);
 			search.focus();
 		}
 	}
