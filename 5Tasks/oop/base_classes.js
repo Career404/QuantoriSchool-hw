@@ -1,7 +1,7 @@
 import { setStorage, getStorage } from '../localStorage/localstorage.js';
 export default class Component {
-	constructor(element = 'div', stateStorageName = '') {
-		this.storageName = stateStorageName === '' ? false : stateStorageName;
+	constructor(element = 'div', stateStorageName = undefined) {
+		this.storageName = stateStorageName;
 		const stateStore = getStorage(stateStorageName);
 		this.state = stateStore ? stateStore : {};
 		this.props = {};
@@ -10,11 +10,16 @@ export default class Component {
 
 	setState(state) {
 		this.state = { ...this.state, ...state };
-		if (this.storageName !== false) {
+		if (this.storageName) {
 			setStorage(this.storageName, this.state);
 		}
-
 		this.update();
+	}
+	updateStorage() {
+		//console.log('update LS', this);
+		if (this.storageName) {
+			setStorage(this.storageName, this.state);
+		}
 	}
 
 	/**
@@ -27,6 +32,9 @@ export default class Component {
 		const el = this.element;
 		if (props.onClick) {
 			el.onclick = props.onClick;
+		}
+		if (props.onLoad) {
+			el.onload = setTimeout(props.onLoad, 0);
 		}
 		if (props.onFocus) {
 			el.onfocus = props.onFocus;
@@ -48,7 +56,7 @@ export default class Component {
 		}
 
 		if (props.style) {
-			el.style = props.style;
+			Object.assign(el.style, props.style);
 		}
 		if (props.className) {
 			const classes = Array.isArray(props.className)
@@ -103,6 +111,7 @@ export default class Component {
 	}
 
 	update() {
+		console.log('update');
 		this.render(this.props);
 	}
 }

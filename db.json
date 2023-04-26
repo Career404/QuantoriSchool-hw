@@ -1,0 +1,105 @@
+{
+  "tasks": [
+    {
+      "title": "Task 1 - default",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-20T00:00:00.000Z",
+      "tag": "health",
+      "id": 1682004081864
+    },
+    {
+      "title": "This page can be navigated with a keyboard",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-20T00:00:00.000Z",
+      "tag": "health",
+      "id": 1682004086244
+    },
+    {
+      "title": "tasks are also saved in localStorage",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-20T00:00:00.000Z",
+      "tag": "health",
+      "id": 1682008336582
+    },
+    {
+      "title": "tasks are saved via json-server",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-20T00:00:00.000Z",
+      "tag": "health",
+      "id": 1682008366680
+    },
+    {
+      "title": "#1 - If I create the task when the server is offline, the app will remember that and update server data when page is reloaded with servers online",
+      "isCompleted": true,
+      "dateDueJson": "2023-04-20T00:00:00.000Z",
+      "tag": "health",
+      "id": 1682008431616
+    },
+    {
+      "title": "#2 - Now let's see what happens when new data is added before page reload, but after new task is created and server is on again",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-20T00:00:00.000Z",
+      "tag": "health",
+      "id": 1682008898110
+    },
+    {
+      "title": "#3 - new task is added, older task is still in localstorage, not added with page reload because local and server lastUpdated are set by task#2",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-20T00:00:00.000Z",
+      "tag": "health",
+      "id": 1682008986042
+    },
+    {
+      "title": "app can't detect difference between data in LS and server, and LS always overrides server data",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-20T00:00:00.000Z",
+      "tag": "health",
+      "id": 1682009072905
+    },
+    {
+      "title": "#4 - multiple page reloads and #1 is still in LS only. 'checkupdates' relies on lastUpdated, so it won't help",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-20T00:00:00.000Z",
+      "tag": "health",
+      "id": 1682009173950
+    },
+    {
+      "title": "If weather is not displayed correctly, click it to load new data",
+      "isCompleted": true,
+      "dateDueJson": "2023-04-13T16:11:22.697Z",
+      "tag": "home",
+      "id": "16813158826971"
+    },
+    {
+      "title": "This page can be navigated with a keyboard",
+      "isCompleted": true,
+      "dateDueJson": "2023-04-12T16:11:22.697Z",
+      "tag": "work",
+      "id": "16813158826972"
+    },
+    {
+      "title": "These tasks are saved in localStorage, but will update from server when server will come online",
+      "isCompleted": true,
+      "dateDueJson": "2023-04-11T16:11:22.697Z",
+      "tag": "health",
+      "id": "16813158826973"
+    },
+    {
+      "title": "#5 - if localStorage is deleted, servers are off, page reloaded, default tasks are displayed. These tasks are then added to the server, when they come online and page is reloaded, but it seems like tasks from server are not loaded into LS - LS always wins, Server tasks are not deleted because their IDs are unknown to app with empty LS",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-20T00:00:00.000Z",
+      "tag": "health",
+      "id": 1682015358696
+    },
+    {
+      "title": "TODO: add 'sync with server' button - load local to server and server to local",
+      "isCompleted": false,
+      "dateDueJson": "2023-04-20T00:00:00.000Z",
+      "tag": "health",
+      "id": 1682015419769
+    }
+  ],
+  "lastUpdated": {
+    "date": 1682015419770
+  }
+}
