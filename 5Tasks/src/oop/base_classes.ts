@@ -12,7 +12,7 @@ export default class Component {
 	) {
 		this.storageName = stateStorageName;
 		const stateStore = getStorage(stateStorageName);
-		this.state = stateStore ? stateStore : {};
+		this.state = stateStore ?? {};
 		this.element = document.createElement(element);
 	}
 
