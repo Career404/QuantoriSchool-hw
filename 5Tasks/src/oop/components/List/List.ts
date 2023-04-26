@@ -17,10 +17,10 @@ export default class List extends Component {
 	 * @param props.addItem {function}
 	 * @returns {HTMLElement}
 	 */
-	render(props) {
+	render(props: ListProps) {
 		return super.render({
 			children: [
-				...props.items.map((item) =>
+				...props.items.map((item: Task) =>
 					new ListItem().render({
 						item: item,
 						clickCheckbox: props.clickCheckbox,
@@ -35,7 +35,7 @@ export default class List extends Component {
 }
 
 class ListItem extends Component {
-	render(props) {
+	render(props: ListItemProps) {
 		const checkbox = new Component('input').render({
 			id: `is${props.item.id}Completed`,
 			type: 'checkbox',
@@ -75,7 +75,7 @@ class ListItem extends Component {
 		if (props.removeItem) {
 			const icon = new Icon().render({
 				onClick: () => props.removeItem(props.item.id),
-				onKeydown: (e) => {
+				onKeydown: (e: KeyboardEvent) => {
 					if (e.code === 'Space' || e.key === 'Enter') {
 						props.removeItem(props.item.id);
 					}

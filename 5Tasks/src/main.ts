@@ -35,5 +35,5 @@ labels.forEach((label) => {
 funcApp();
 
 const app = new App();
-document.getElementById('root').appendChild(app.render());
+document.getElementById('root').appendChild(app.render(app.props));
 app.checkUpdates();

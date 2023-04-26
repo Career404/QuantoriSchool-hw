@@ -7,7 +7,7 @@ export async function getLastUpdated() {
 		throw err;
 	}
 }
-export async function setLastUpdated(date) {
+export async function setLastUpdated(date: number) {
 	try {
 		const response = await fetch(`http://localhost:3004/lastUpdated`, {
 			method: 'PUT',
@@ -27,7 +27,7 @@ export async function getAllTasks() {
 		throw err;
 	}
 }
-export async function setAllTasks(taskArray) {
+export async function setAllTasks(taskArray: Task[]) {
 	try {
 		const response = await fetch('http://localhost:3004/tasks', {
 			method: 'POST',
@@ -40,7 +40,7 @@ export async function setAllTasks(taskArray) {
 		throw err;
 	}
 }
-export async function addNewTask(task) {
+export async function addNewTask(task: Task) {
 	try {
 		const response = await fetch('http://localhost:3004/tasks', {
 			method: 'POST',
@@ -51,7 +51,7 @@ export async function addNewTask(task) {
 		throw err;
 	}
 }
-export async function deleteTaskById(id) {
+export async function deleteTaskById(id: string) {
 	try {
 		const response = await fetch(`http://localhost:3004/tasks/${id}`, {
 			method: 'DELETE',
@@ -60,7 +60,7 @@ export async function deleteTaskById(id) {
 		throw err;
 	}
 }
-export async function updateTaskById(id, updates) {
+export async function updateTaskById(id: string, updates: Task) {
 	try {
 		const response = await fetch(`http://localhost:3004/tasks/${id}`, {
 			method: 'PUT',

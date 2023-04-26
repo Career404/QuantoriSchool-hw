@@ -6,20 +6,15 @@ import '../oop/components/List/List.css';
 import '../oop/components/Modal/Modal.css';
 import '../oop/components/Weather/WeatherWidget.css';
 import '../oop/app.css';
-//this could be done with a separate functional.css, would be cleaner. Maybe this file and functional/oop tabs should be fully dropped from the project.
+//this could be done with a separate functional.css, would be cleaner. Maybe this file and functional/oop tabs should be dropped from the project completely.
+//currently this file is updated to the 'working' condition, but it is not maintained. The tabs will remain, but both tabs will be implemented with class-based approach
 
 export default function funcApp() {
-	const state: anyObj = {};
-	/**
-	 * Global application state
-	 * @template T
-	 * @param name {string}
-	 * @param {T} initialValue
-	 * @returns {[T, function(T): void]}
-	 */
-	function useState(name, initialValue) {
+	const state: FuncState = {};
+
+	function useState(name: string, initialValue: any): [any, Function] {
 		state[name] = state[name] || initialValue;
-		const setValue = (newValue) => {
+		const setValue = (newValue: any) => {
 			state[name] = newValue;
 			renderApp();
 		};
@@ -27,25 +22,25 @@ export default function funcApp() {
 		return [state[name], setValue];
 	}
 
-	/**
-	 * Title component
-	 * @param text {string}
-	 * @param size {number}
-	 * @returns {HTMLHeadingElement} - Heading element
-	 */
-	function Title({ text, size }) {
-		const title = document.createElement(`h${size}`);
+	function Title({
+		text,
+		size,
+	}: {
+		text: string;
+		size: 1 | 2 | 3 | 4 | 5 | 6;
+	}): HTMLElement {
+		const title = document.createElement(`h${size.toString()}`);
 		title.innerHTML = text;
 		return title;
 	}
 
-	/**
-	 * InputText component
-	 * @param placeholder {string}
-	 * @param text {string}
-	 * @returns {HTMLInputElement} - Input element
-	 */
-	function InputText({ placeholder, text = '' }) {
+	function InputText({
+		placeholder,
+		text = '',
+	}: {
+		placeholder: string;
+		text: string;
+	}) {
 		const InputText = document.createElement('input');
 		InputText.type = 'text';
 		InputText.placeholder = placeholder;
@@ -53,15 +48,12 @@ export default function funcApp() {
 		return InputText;
 	}
 
-	/**
-	 * Icon component
-	 * @param icon {'delete'}
-	 * @param text {string}
-	 * @param onClick {Function}
-	 * @param callbackParam {any}
-	 * @returns {HTMLDivElement} - Div element
-	 */
-	function Icon(icon, text, onClick, callbackParam) {
+	function Icon(
+		icon: string,
+		text: string,
+		onClick: Function,
+		callbackParam: any
+	) {
 		const iconEl = document.createElement('div');
 		iconEl.classList.add(`${icon}-icon`);
 		if (text) {
@@ -83,27 +75,17 @@ export default function funcApp() {
 		return iconEl;
 	}
 
-	/**
-	 * Button component
-	 * @param text {string}
-	 * @param onClick {function}
-	 * @returns {HTMLButtonElement} - Button element
-	 */
-	function Button(text, onClick) {
+	function Button(text: string, onClick: Function) {
 		const button = document.createElement('button');
 		button.classList.add('button');
 		button.innerHTML = text;
-		button.onclick = onClick;
+		button.onclick = onClick as (
+			this: GlobalEventHandlers,
+			ev: MouseEvent
+		) => any;
 		return button;
 	}
 
-	/**
-	 * Functional component for the list
-	 * @param items {{title: String, isCompleted: Boolean, id: String}[]}
-	 * @param searchRequest {string}
-	 * @param deleteCallback {Function}
-	 * @returns {HTMLElement} - List element
-	 */
 	function List(
 		{
 			items = [
@@ -117,8 +99,8 @@ export default function funcApp() {
 			],
 		},
 		searchRequest = '',
-		checkCallback,
-		deleteCallback
+		checkCallback: Function,
+		deleteCallback: any
 	) {
 		const listItems = items
 			.filter((item) => item.title.toLowerCase().includes(searchRequest))
@@ -158,21 +140,12 @@ export default function funcApp() {
 		return ul;
 	}
 
-	/**
-	 * Modal component
-	 * @param title {string} - Modal title (h3)
-	 * @param [...children] {HTMLElement[]} - HTML elements array with contents of the
-	 * @param agreeText {string} - Modal has "Cancel" and "Continue" buttons by default. This will be used instead of "Continue"
-	 * @param agreeCallback {Function}
-	 * @param agreeCallbackParam {{tag: string, [key: string]: any}}
-	 * @returns {HTMLDivElement} - Heading element
-	 */
 	function Modal(
-		title,
-		[...children] = [],
+		title: string,
+		children: (string | HTMLElement)[] = [],
 		agreeText = 'Continue',
-		agreeCallback = null,
-		agreeCallbackParam = null
+		agreeCallback: Function = null,
+		agreeCallbackParam: any = null
 	) {
 		const fullscreen = document.createElement('div');
 		fullscreen.classList.add('fullscreen');
@@ -191,7 +164,7 @@ export default function funcApp() {
 		const cancelButton = Button('Cancel', () => fullscreen.remove());
 		cancelButton.type = 'button';
 		cancelButton.classList.add('cancel-button');
-		let agreeButton;
+		let agreeButton: HTMLButtonElement;
 		if (agreeCallbackParam && agreeCallbackParam.tag === 'addTask') {
 			agreeButton = Button(agreeText, () => {
 				agreeCallbackParam
@@ -225,18 +198,14 @@ export default function funcApp() {
 		}
 	}
 
-	/**
-	 * App container
-	 * @returns {HTMLDivElement} - The app container
-	 */
 	function App() {
 		const stateStore = getStorage('funcState');
-		let items,
-			setItems,
-			searchRequest,
-			setSearchRequest,
-			isFocused,
-			setIsFocused;
+		let items: Task[],
+			setItems: Function,
+			searchRequest: string,
+			setSearchRequest: Function,
+			isFocused: boolean,
+			setIsFocused: Function;
 		if (!stateStore) {
 			console.log('no storage');
 			const today = new Date();
@@ -312,7 +281,7 @@ export default function funcApp() {
 				'New Task',
 				[taskCreator],
 				'Add Task',
-				(newTitle, newTag, newDateJson) =>
+				(newTitle: string, newTag: string, newDateJson: string) =>
 					setItems([
 						...items,
 						{
@@ -320,17 +289,17 @@ export default function funcApp() {
 							isCompleted: false,
 							tag: newTag,
 							dateDueJson: newDateJson,
-							id: Date.now(),
+							id: Date.now().toString,
 						},
 					]),
 				{ tag: 'addTask', input, dateInput, selectedTag }
 			);
 		}
 
-		function removeItem(removedItem) {
+		function removeItem(removedItem: Task) {
 			setItems(items.filter((item) => item.id !== removedItem.id));
 		}
-		function clickCheckbox(id) {
+		function clickCheckbox(id: string) {
 			setItems(
 				items.map((item) =>
 					item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
@@ -340,12 +309,12 @@ export default function funcApp() {
 
 		const div = document.createElement('div');
 		div.classList.add('main');
-		const appTitle = Title({ text: 'To Do List', size: '1' });
+		const appTitle = Title({ text: 'To Do List', size: 1 });
 		const search = InputText({
 			placeholder: 'Search Task',
 			text: searchRequest,
 		});
-		const allTitle = Title({ text: 'All Tasks', size: '2' });
+		const allTitle = Title({ text: 'All Tasks', size: 2 });
 
 		const list = List(
 			{ items: notcompletedItems },
@@ -355,7 +324,7 @@ export default function funcApp() {
 		);
 
 		const button = Button('+ New Task', addItem);
-		const completedTitle = Title({ text: 'Completed Tasks', size: '2' });
+		const completedTitle = Title({ text: 'Completed Tasks', size: 2 });
 		const completedList = List(
 			{ items: completedItems },
 			searchRequest,
@@ -386,10 +355,6 @@ export default function funcApp() {
 		return div;
 	}
 
-	/**
-	 * Render the app.
-	 * On change whole app is re-rendered.
-	 */
 	function renderApp() {
 		//
 		// console.log('state:', state);
@@ -410,6 +375,5 @@ export default function funcApp() {
 		}
 	}
 
-	// initial render
 	renderApp();
 }

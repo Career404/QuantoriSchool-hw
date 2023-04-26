@@ -1,15 +1,18 @@
 import { setStorage, getStorage } from '../localStorage/localstorage';
 
 export default class Component {
-	storageName: string | undefined;
-	state: anyObj;
-	props: anyObj;
-	element: HTMLElement;
-	constructor(element = 'div', stateStorageName = undefined) {
+	storageName?: string | undefined;
+	state: State = {};
+	props: Props = {};
+	element?: HTMLElement;
+
+	constructor(
+		element: string = 'div',
+		stateStorageName: string | undefined = undefined
+	) {
 		this.storageName = stateStorageName;
 		const stateStore = getStorage(stateStorageName);
 		this.state = stateStore ? stateStore : {};
-		this.props = {};
 		this.element = document.createElement(element);
 	}
 
@@ -27,12 +30,25 @@ export default class Component {
 		}
 	}
 
-	/**
-	 *
-	 * @param props
-	 * @returns {HTMLElement}
-	 */
-	render(props: any = {}) {
+	addChild(child: string | HTMLElement) {
+		if (Array.isArray(this.props.children)) {
+			this.props.children.push(child);
+		} else {
+			this.props.children = [child];
+		}
+	}
+
+	removeChild(child: string | HTMLElement) {
+		if (Array.isArray(this.props.children)) {
+			this.props.children = this.props.children.filter(
+				(node) => node !== child
+			);
+		} else if (this.props.children === child) {
+			this.props.children = undefined;
+		}
+	}
+
+	render(props: Props = {}) {
 		this.props = { ...props };
 		const el = this.element;
 		if (props.onClick) {
@@ -67,7 +83,7 @@ export default class Component {
 			const classes = Array.isArray(props.className)
 				? props.className
 				: [props.className];
-			classes.forEach((className) => {
+			classes.forEach((className: string) => {
 				el.classList.add(className);
 			});
 		}

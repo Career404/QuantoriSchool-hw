@@ -9,7 +9,7 @@ import {
 } from '../API/dbOps';
 import { getGeo, getWeather } from '../API/Weather';
 import checkDaily from '../dailyReminder/daily';
-import { getTimeOfDay } from '../helpers';
+import { childrenArray, getTimeOfDay } from '../helpers';
 
 import Icon from './components/Icon/Icon';
 import Component from './base_classes';
@@ -19,7 +19,7 @@ import WeatherWidget from './components/Weather/WeatherWidget';
 
 import './app.css';
 export default class App extends Component {
-	state: appState;
+	state: AppState;
 	constructor() {
 		super('div', 'oopStateStorage');
 		this.state = {
@@ -68,7 +68,7 @@ export default class App extends Component {
 		this.element.classList.add('main');
 	}
 
-	render(props?) {
+	render(props: Props) {
 		//
 		//console.log(this.state);
 		//
@@ -91,7 +91,7 @@ export default class App extends Component {
 				this.setState({
 					...this.state,
 					searchInputFocus: true,
-					searchRequest: e.target.value,
+					searchRequest: (e.target as HTMLInputElement).value,
 				});
 			},
 		});
@@ -140,7 +140,7 @@ export default class App extends Component {
 					id: 'listDone',
 				}),
 			],
-			onLoad: setTimeout(checkDaily, 100, this.showDaily),
+			onLoad: () => setTimeout(checkDaily, 100, this.showDaily),
 		});
 	}
 
@@ -162,7 +162,7 @@ export default class App extends Component {
 		this.updateStorage();
 	};
 
-	isLocalNewer = (remoteDate) => {
+	isLocalNewer = (remoteDate: number) => {
 		const isNewer =
 			this.state.lastUpdated > remoteDate
 				? true
@@ -180,7 +180,7 @@ export default class App extends Component {
 			placeholder: 'Task Title',
 			className: 'newTaskTitle',
 			id: 'taskTitle',
-			minLength: '1',
+			minLength: 1,
 			name: 'taskTitle',
 		});
 		const dateInput = <HTMLInputElement>new Component('input').render({
@@ -198,16 +198,16 @@ export default class App extends Component {
 						checked: checkFirst,
 						id: tag,
 						name: 'tag',
-						children: [tag],
+						children: tag,
 						className: 'radioTab',
 					});
 					const label = new Component('label').render({
 						name: 'tag',
 						children: [tag, radio],
 						className: ['li-tag', 'newTaskTag', `li-tag-${tag}`],
-						tabindex: '0',
+						tabindex: 0,
 						onClick: () => (selectedTag = tag),
-						onKeydown: (e) => {
+						onKeydown: (e: KeyboardEvent) => {
 							if (e.code === 'Space' || e.key === 'Enter') {
 								label.click();
 							}
@@ -241,39 +241,35 @@ export default class App extends Component {
 					isCompleted: false,
 					dateDueJson: new Date(dateInput.value).toJSON(),
 					tag: selectedTag,
-					id: new Date().getTime(),
+					id: new Date().getTime().toString(),
 				};
 				this.setState({
 					items: [...this.state.items, newTask],
 				});
 				addNewTask(newTask);
-				this.props.children = this.props.children.filter(
-					(node) => node != newTaskModal
-				);
+				this.removeChild(newTaskModal);
 				this.addUpdateDate();
 				newTaskModal.remove();
 			},
 			onCancel: () => {
-				this.props.children = this.props.children.filter(
-					(node) => node != newTaskModal
-				);
+				this.removeChild(newTaskModal);
 				newTaskModal.remove();
 			},
-			inputElement: input,
+			inputElementRef: input,
 		});
-		this.props.children.push(newTaskModal);
+		this.addChild(newTaskModal);
 		super.render(this.props);
 		input.focus();
 	};
 
-	removeItem = (id) => {
+	removeItem = (id: string) => {
 		this.setState({
 			items: this.state.items.filter((item) => item.id !== id),
 		});
 		deleteTaskById(id);
 		this.addUpdateDate();
 	};
-	clickCheckbox = (id) => {
+	clickCheckbox = (id: string) => {
 		this.setState({
 			items: this.state.items.map((item) =>
 				item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
@@ -287,7 +283,7 @@ export default class App extends Component {
 	loadWeather = async () => {
 		console.log('loadWeather() called');
 		try {
-			const position: anyObj = await getGeo();
+			const position = await getGeo();
 			this.state.geo = [position.coords.latitude, position.coords.longitude];
 		} catch (err) {
 			console.log('Geolocation failed, ', err);
@@ -335,19 +331,17 @@ export default class App extends Component {
 				],
 
 				onAgree: () => {
-					this.props.children = this.props.children.filter(
-						(node) => node != dailyModal
-					);
+					this.removeChild(dailyModal);
 					dailyModal.remove();
 				},
 				agreeText: 'Ok',
 			});
-			this.props.children.push(dailyModal);
+			this.addChild(dailyModal);
 			super.render(this.props);
 		}
 	};
 
-	displayStatus = (isOnline) => {
+	displayStatus = (isOnline: boolean) => {
 		const statusColor = isOnline ? 'green' : 'red';
 		const text = isOnline ? 'Connected' : 'No connection';
 		const statusEl = new Icon().render({
@@ -360,19 +354,17 @@ export default class App extends Component {
 				children: text,
 			}),
 			onClick: () => {
-				this.props.children = this.props.children.filter(
-					(node) => node != statusEl
-				);
+				this.removeChild(statusEl);
 				statusEl.remove();
 				this.checkUpdates();
 			},
 		});
-		this.props.children.push(statusEl);
+		this.addChild(statusEl);
 		super.render(this.props);
 	};
 
 	checkUpdates = () => {
-		let haveConnection;
+		let haveConnection: boolean;
 		getLastUpdated()
 			.then((date) => {
 				haveConnection = !!date;

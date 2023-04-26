@@ -3,7 +3,7 @@ import Component from '../../base_classes';
 import './Icon.css';
 
 export default class Icon extends Component {
-	render(props) {
+	render(props: IconProps) {
 		const icon = (props && props.icon) || 'delete';
 		const text = (props && props.text) || '';
 		this.element.classList.add(`${icon}-icon`);
