@@ -9,7 +9,7 @@ import {
 } from '../API/dbOps';
 import { getGeo, getWeather } from '../API/Weather';
 import checkDaily from '../dailyReminder/daily';
-import { childrenArray, getTimeOfDay } from '../helpers';
+import { getTimeOfDay } from '../helpers';
 
 import Icon from './components/Icon/Icon';
 import Component from './base_classes';
@@ -172,16 +172,12 @@ export default class App extends Component {
 		this.updateStorage();
 	};
 
-	isLocalNewer = (remoteDate: number) => {
-		const isNewer =
-			this.state.lastUpdated > remoteDate
-				? true
-				: this.state.lastUpdated === remoteDate
-				? 'equal'
-				: false;
-		console.log('is local newer?', isNewer);
-		return isNewer;
-	};
+	isLocalNewer = (remoteDate: number) =>
+		this.state.lastUpdated > remoteDate
+			? true
+			: this.state.lastUpdated === remoteDate
+			? 'equal'
+			: false;
 
 	addItem = () => {
 		const availableTags = ['health', 'work', 'home', 'other'];
@@ -378,10 +374,10 @@ export default class App extends Component {
 		getLastUpdated()
 			.then((date) => {
 				haveConnection = !!date;
-				const isNewer = this.isLocalNewer(date);
-				if (isNewer === 'equal') {
+				const isNewerOrEqual = this.isLocalNewer(date);
+				if (isNewerOrEqual === 'equal') {
 					console.log('everything up to date');
-				} else if (isNewer) {
+				} else if (isNewerOrEqual) {
 					//Load tasks from server with getAllTasks,
 					//compare to local,
 					//update tasks with differences?

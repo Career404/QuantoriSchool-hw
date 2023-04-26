@@ -1,10 +1,4 @@
-export function childrenIsArray(
-	children: string | HTMLElement | (string | HTMLElement)[]
-): children is (string | HTMLElement)[] {
-	return Array.isArray(children);
-}
-
-export function childrenArray(
+export function getChildrenArray(
 	children?: string | HTMLElement | Array<HTMLElement | string>
 ): Array<HTMLElement | string> {
 	if (Array.isArray(children)) {

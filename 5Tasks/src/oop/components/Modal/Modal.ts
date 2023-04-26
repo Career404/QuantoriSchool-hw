@@ -1,5 +1,5 @@
 import Component from '../../base_classes';
-import { childrenArray } from '../../../helpers';
+import { getChildrenArray } from '../../../helpers';
 
 import './Modal.css';
 
@@ -83,7 +83,7 @@ export default class Modal extends Component {
 				onClick: (e) => e.stopPropagation(),
 				children: [
 					new Component('h3').render({ children: props.title }),
-					...childrenArray(props.children),
+					...getChildrenArray(props.children),
 					new Component().render({
 						className: 'buttons-container',
 						children: displayedButtons,
