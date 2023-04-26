@@ -55,7 +55,7 @@ export default class Component {
 			el.onclick = props.onClick;
 		}
 		if (props.onLoad) {
-			el.onload = () => setTimeout(props.onLoad, 0);
+			setTimeout(props.onLoad, 0);
 		}
 		if (props.onFocus) {
 			el.onfocus = props.onFocus;

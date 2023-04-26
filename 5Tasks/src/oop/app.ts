@@ -150,7 +150,11 @@ export default class App extends Component {
 					id: 'listDone',
 				}),
 			],
-			onLoad: () => setTimeout(checkDaily, 100, this.showDaily),
+			onLoad: () => {
+				checkDaily(this.showDaily);
+				console.log('onload - showdaily');
+			},
+			...props,
 		});
 	}
 
@@ -287,7 +291,6 @@ export default class App extends Component {
 	};
 
 	loadWeather = async () => {
-		console.log('loadWeather() called');
 		try {
 			const position = await getGeo();
 			this.state.geo = [position.coords.latitude, position.coords.longitude];
@@ -397,8 +400,8 @@ export default class App extends Component {
 			})
 			.catch((error) => console.log(error))
 			.finally(() => {
-				this.displayStatus(haveConnection);
-				console.log(this);
+				this.displayStatus(haveConnection); /*
+				console.log(this); */
 			});
 	};
 }

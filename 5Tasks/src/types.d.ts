@@ -3,7 +3,7 @@ interface State {
 }
 interface Props {
 	onClick?: EventListener;
-	onLoad?: EventListener;
+	onLoad?: Function;
 	onFocus?: EventListener;
 	onBlur?: EventListener;
 	onInput?: EventListener;
