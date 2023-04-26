@@ -21,7 +21,7 @@ export default class Component {
 		if (this.storageName) {
 			setStorage(this.storageName, this.state);
 		}
-		this.update();
+		this.render(this.state);
 	}
 	updateStorage() {
 		//console.log('update LS', this);
@@ -48,7 +48,8 @@ export default class Component {
 		}
 	}
 
-	render(props: Props = {}) {
+	render(props?: Props) {
+		props = props ?? this.props;
 		this.props = { ...props };
 		const el = this.element;
 		if (props.onClick) {
@@ -131,10 +132,5 @@ export default class Component {
 			: [];
 		el.append(...children);
 		return el;
-	}
-
-	update() {
-		console.log('update');
-		this.render(this.props);
 	}
 }

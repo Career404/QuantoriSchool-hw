@@ -78,7 +78,7 @@ export default class App extends Component {
 		this.element.classList.add('main');
 	}
 
-	render(props: Props) {
+	render(props?: Props) {
 		//
 		//console.log(this.state);
 		//
@@ -114,11 +114,11 @@ export default class App extends Component {
 							weather: this.state.latestWeather,
 							onLoad: () => {
 								if (Date.now() - this.state.weatherLastUpdated >= 600000) {
-									this.loadWeather().then(() => this.update());
+									this.loadWeather().then(() => this.render());
 								}
 							},
 							onClick: () => {
-								this.loadWeather().then(() => this.update());
+								this.loadWeather().then(() => this.render());
 							},
 						}),
 					],
@@ -150,10 +150,7 @@ export default class App extends Component {
 					id: 'listDone',
 				}),
 			],
-			onLoad: () => {
-				checkDaily(this.showDaily);
-				console.log('onload - showdaily');
-			},
+			onLoad: () => checkDaily(this.showDaily),
 			...props,
 		});
 	}
@@ -296,18 +293,18 @@ export default class App extends Component {
 			this.state.geo = [position.coords.latitude, position.coords.longitude];
 		} catch (err) {
 			console.log('Geolocation failed, ', err);
+		} finally {
+			const weather = await getWeather(this.state.geo);
+			this.state.latestWeather = weather;
+
+			this.state.weatherLastUpdated =
+				// this.state.latestWeather.current.last_updated_epoch * 1000;
+				// even though using API data would be cool, reality is that
+				//weatherAPI does not update weather nearly as often as they claim in their FAQ(every 10 - 15 minutes),
+				//and this way the function often results in an endless loop
+				Date.now();
+			this.updateStorage();
 		}
-		const weather = await getWeather(this.state.geo);
-		this.state.latestWeather = weather;
-
-		this.state.weatherLastUpdated =
-			// this.state.latestWeather.current.last_updated_epoch * 1000;
-			// even though using API data would be cool, reality is that
-			//weatherAPI does not update weather nearly as often as they claim in their FAQ(every 10 - 15 minutes),
-			//and this way the function often results in an endless loop
-			Date.now();
-
-		this.updateStorage();
 	};
 
 	showDaily = () => {
@@ -391,7 +388,7 @@ export default class App extends Component {
 					this.loadItems().then((items) => {
 						this.setState({
 							...this.state,
-							items: [...items],
+							items: items,
 							lastUpdated: date,
 						});
 						console.log('updated local from server');
