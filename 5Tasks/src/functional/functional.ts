@@ -10,7 +10,7 @@ import '../oop/app.css';
 //currently this file is updated to the 'working' condition, but it is not maintained. The tabs will remain, but both tabs will be implemented with class-based approach
 
 export default function funcApp() {
-	const state: FuncState = {};
+	const state: State = {};
 
 	function useState(name: string, initialValue: any): [any, Function] {
 		state[name] = state[name] || initialValue;

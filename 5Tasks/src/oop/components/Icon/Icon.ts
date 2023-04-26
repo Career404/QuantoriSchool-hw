@@ -2,6 +2,11 @@ import Component from '../../base_classes';
 
 import './Icon.css';
 
+interface IconProps extends Props {
+	icon?: string;
+	text?: string;
+}
+
 export default class Icon extends Component {
 	render(props: IconProps) {
 		const icon = (props && props.icon) || 'delete';

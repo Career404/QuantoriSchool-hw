@@ -3,6 +3,15 @@ import { childrenArray } from '../../../helpers';
 
 import './Modal.css';
 
+interface ModalProps extends Props {
+	title?: string;
+	onCancel?: Function;
+	agreeText?: string;
+	onAgree?: Function;
+	agreeCallbackParam?: any;
+	inputElementRef?: HTMLInputElement;
+}
+
 export default class Modal extends Component {
 	render(props: ModalProps) {
 		this.element.classList.add('fullscreen');

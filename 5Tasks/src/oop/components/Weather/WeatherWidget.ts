@@ -2,6 +2,10 @@ import Component from '../../base_classes';
 
 import './WeatherWidget.css';
 
+interface WeatherWidgetProps extends Props {
+	weather: LatestWeather;
+}
+
 export default class WeatherWidget extends Component {
 	render(props: WeatherWidgetProps) {
 		return new Component().render({

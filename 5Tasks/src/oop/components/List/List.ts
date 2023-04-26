@@ -4,19 +4,23 @@ import { formatDate } from '../../../helpers';
 
 import './List.css';
 
+interface ListProps extends Props {
+	items: Task[];
+	clickCheckbox: Function;
+	removeItem?: Function;
+}
+interface ListItemProps extends Props {
+	item: Task;
+	clickCheckbox: Function;
+	removeItem: Function;
+}
+
 export default class List extends Component {
 	constructor() {
 		super();
 		this.element = document.createElement('ul');
 	}
 
-	/**
-	 * @override
-	 * @param props
-	 * @param props.items {{title: String, isCompleted: Boolean, id: String}[]}
-	 * @param props.addItem {function}
-	 * @returns {HTMLElement}
-	 */
 	render(props: ListProps) {
 		return super.render({
 			children: [

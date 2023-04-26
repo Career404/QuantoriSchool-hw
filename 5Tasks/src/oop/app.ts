@@ -18,6 +18,16 @@ import Modal from './components/Modal/Modal';
 import WeatherWidget from './components/Weather/WeatherWidget';
 
 import './app.css';
+
+interface AppState {
+	items: Task[];
+	geo: [number, number];
+	weatherLastUpdated?: number;
+	lastUpdated?: number;
+	latestWeather: LatestWeather;
+	searchRequest: string;
+	searchInputFocus?: boolean;
+}
 export default class App extends Component {
 	state: AppState;
 	constructor() {
