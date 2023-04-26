@@ -4,13 +4,14 @@ The purpose of this task tracker is to be available at all times. It will not be
 ### Features:
 
 * See current weather provided by WeatherAPI and plan your day accordingly *display more data*
-* Integration of localStorage and REST API allows for a smooth online/offline experience
+* Smooth online/offline experience with localStorage and REST API
 * Separate tab for private data that only exists on your device *add password lock?*
 
 ### Possible features:
 * Layout improvements (limit max width for widescreen, remove task width limit, move trash icon to the start of the task)
 * Personalization (dark theme, user background, colors and fonts, layout options)
 * More task field options (textarea with md support, custom notifications for tasks)
+* Refactor functional file into [composition-based components](https://www.youtube.com/watch?v=wfMtDGfHWpA&t=429s&ab_channel=FunFunFunction)
 ## HW6 - Async, promises, API calls
 -------------------------------
 
