@@ -30,13 +30,15 @@ The app will work with or without the json-server running. What was 'functional'
 ## HW7 - Webpack, TypeScript
 -------------------------------
 
+Interfaces that are only encountered in one file are declared in the same file. Interfaces that occur in multiple files, are declared globally in types.d.ts
+
 ### Done:
 * Added npm project (tasks) inside another npm project (Quantori-HW)
 * Added webpack, html-plugin and all necessary style modules, and webpack-dev-server
 * Added custom scripts for JSON-Server running in parallel with webpack-dev-server
 * Split the project into components (isolated component styles)
+* Project moved to typescript, minimal use of any
 
 ### TODO:
-* Migrate to TS - avoid any type, create separate file for interfaces
 * Refactor error handling, review promises in the code (excessive?)
 * ?*Possibly* optimize local vs. server interaction (compare and combine local to server, allow user to choose a winner?)
