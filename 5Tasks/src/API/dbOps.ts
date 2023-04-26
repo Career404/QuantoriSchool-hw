@@ -14,6 +14,7 @@ export async function setLastUpdated(date: number) {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ date: date }),
 		});
+		return response;
 	} catch (err) {
 		throw err;
 	}
@@ -47,6 +48,7 @@ export async function addNewTask(task: Task) {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(task),
 		});
+		return await response.json();
 	} catch (err) {
 		throw err;
 	}
@@ -56,6 +58,7 @@ export async function deleteTaskById(id: string) {
 		const response = await fetch(`http://localhost:3004/tasks/${id}`, {
 			method: 'DELETE',
 		});
+		return await response.json();
 	} catch (err) {
 		throw err;
 	}
@@ -67,6 +70,7 @@ export async function updateTaskById(id: string, updates: Task) {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(updates),
 		});
+		return await response.json();
 	} catch (err) {
 		throw err;
 	}
