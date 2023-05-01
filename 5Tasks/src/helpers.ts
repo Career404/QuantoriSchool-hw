@@ -1,4 +1,16 @@
-export function formatDate(date) {
+export function getChildrenArray(
+	children?: string | HTMLElement | Array<HTMLElement | string>
+): Array<HTMLElement | string> {
+	if (Array.isArray(children)) {
+		return children;
+	} else if (children) {
+		return [children];
+	} else {
+		return [];
+	}
+}
+
+export function formatDate(date: string | number | Date) {
 	date = new Date(date);
 	const today = new Date();
 	const tomorrow = new Date(today);
@@ -54,7 +66,7 @@ export function formatDate(date) {
 		return `${dayOfWeek}, ${dayOfMonth} ${monthName}`;
 	}
 }
-export function getTimeOfDay(date) {
+export function getTimeOfDay(date: Date) {
 	const hour = date.getHours();
 	if (hour >= 5 && hour < 12) {
 		return 'morning';

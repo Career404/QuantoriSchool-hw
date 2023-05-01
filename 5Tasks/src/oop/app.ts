@@ -2,19 +2,34 @@ import {
 	getLastUpdated,
 	setLastUpdated,
 	getAllTasks,
+	setAllTasks,
 	addNewTask,
 	deleteTaskById,
 	updateTaskById,
-} from '../API/dbOps.js';
-import { getGeo, getWeather } from '../API/weather.js';
-import checkDaily from '../dailyReminder/daily.js';
-import { getTimeOfDay } from '../helpers.js';
+} from '../API/dbOps';
+import { getGeo, getWeather } from '../API/Weather';
+import checkDaily from '../dailyReminder/daily';
+import { getTimeOfDay } from '../helpers';
 
-import Component from './base_classes.js';
-import List from './components/List.js';
-import Modal from './components/Modal.js';
-import WeatherWidget from './components/WeatherWidget.js';
-class App extends Component {
+import Icon from './components/Icon/Icon';
+import Component from './base_classes';
+import List from './components/List/List';
+import Modal from './components/Modal/Modal';
+import WeatherWidget from './components/Weather/WeatherWidget';
+
+import './app.css';
+
+interface AppState {
+	items: Task[];
+	geo: [number, number];
+	weatherLastUpdated?: number;
+	lastUpdated?: number;
+	latestWeather: LatestWeather;
+	searchRequest: string;
+	searchInputFocus?: boolean;
+}
+export default class App extends Component {
+	state: AppState;
 	constructor() {
 		super('div', 'oopStateStorage');
 		this.state = {
@@ -28,7 +43,8 @@ class App extends Component {
 					id: '16813158826971',
 				},
 				{
-					title: 'This page can be navigated with a keyboard',
+					title:
+						'Try to connect with the server by clicking on the round status icon in the top-right of the screen',
 					isCompleted: false,
 					dateDueJson: '2023-04-12T16:11:22.697Z',
 					tag: 'work',
@@ -57,14 +73,12 @@ class App extends Component {
 				},
 			},
 			searchRequest: '',
-			searchInputFocus: false,
-			lastUpdated: 0,
 			...this.state,
 		};
 		this.element.classList.add('main');
 	}
 
-	render(props) {
+	render(props?: Props) {
 		//
 		//console.log(this.state);
 		//
@@ -87,7 +101,7 @@ class App extends Component {
 				this.setState({
 					...this.state,
 					searchInputFocus: true,
-					searchRequest: e.target.value,
+					searchRequest: (e.target as HTMLInputElement).value,
 				});
 			},
 		});
@@ -100,11 +114,11 @@ class App extends Component {
 							weather: this.state.latestWeather,
 							onLoad: () => {
 								if (Date.now() - this.state.weatherLastUpdated >= 600000) {
-									this.loadWeather().then(() => this.update());
+									this.loadWeather().then(() => this.render());
 								}
 							},
 							onClick: () => {
-								this.loadWeather().then(() => this.update());
+								this.loadWeather().then(() => this.render());
 							},
 						}),
 					],
@@ -136,7 +150,8 @@ class App extends Component {
 					id: 'listDone',
 				}),
 			],
-			onLoad: setTimeout(checkDaily, 100, this.showDaily),
+			onLoad: () => checkDaily(this.showDaily),
+			...props,
 		});
 	}
 
@@ -158,56 +173,24 @@ class App extends Component {
 		this.updateStorage();
 	};
 
-	isLocalNewer = (remoteDate) => {
-		const isNewer =
-			this.state.lastUpdated > remoteDate
-				? true
-				: this.state.lastUpdated === remoteDate
-				? 'equal'
-				: false;
-		console.log('is local newer?', isNewer);
-		return isNewer;
-	};
-
-	/* updateList = () => {
-		// I'd rather code everythingfrom scratch again and allow partial re-renders with virtual DOM than use crotches like this
-		// re-rendering the whole app is okay as of now
-		const filteredItems = this.state.items.filter((item) =>
-			item.title.toLowerCase().includes(this.state.searchRequest.toLowerCase())
-		);
-		const notcompletedItems = filteredItems.filter(
-			(item) => item.isCompleted !== true
-		);
-		const completedItems = filteredItems.filter(
-			(item) => item.isCompleted === true
-		);
-		const newUndone = new List().render({
-			items: notcompletedItems,
-			removeItem: this.removeItem,
-			clickCheckbox: this.clickCheckbox,
-			id: 'listUndone',
-		});
-		const newDone = new List().render({
-			items: completedItems,
-			clickCheckbox: this.clickCheckbox,
-			className: 'list-completed',
-			id: 'listDone',
-		});
-		document.getElementById('listUndone').replaceWith(newUndone);
-		document.getElementById('listDone').replaceWith(newDone);
-	}; */
+	isLocalNewer = (remoteDate: number) =>
+		this.state.lastUpdated > remoteDate
+			? true
+			: this.state.lastUpdated === remoteDate
+			? 'equal'
+			: false;
 
 	addItem = () => {
 		const availableTags = ['health', 'work', 'home', 'other'];
-		const input = new Component('input').render({
+		const input = <HTMLInputElement>new Component('input').render({
 			type: 'text',
 			placeholder: 'Task Title',
 			className: 'newTaskTitle',
 			id: 'taskTitle',
-			minLength: '1',
+			minLength: 1,
 			name: 'taskTitle',
 		});
-		const dateInput = new Component('input').render({
+		const dateInput = <HTMLInputElement>new Component('input').render({
 			type: 'date',
 			value: new Date().toJSON().slice(0, 10),
 			className: 'datePicker',
@@ -222,16 +205,16 @@ class App extends Component {
 						checked: checkFirst,
 						id: tag,
 						name: 'tag',
-						children: [tag],
+						children: tag,
 						className: 'radioTab',
 					});
 					const label = new Component('label').render({
 						name: 'tag',
 						children: [tag, radio],
 						className: ['li-tag', 'newTaskTag', `li-tag-${tag}`],
-						tabindex: '0',
+						tabindex: 0,
 						onClick: () => (selectedTag = tag),
-						onKeydown: (e) => {
+						onKeydown: (e: KeyboardEvent) => {
 							if (e.code === 'Space' || e.key === 'Enter') {
 								label.click();
 							}
@@ -265,39 +248,35 @@ class App extends Component {
 					isCompleted: false,
 					dateDueJson: new Date(dateInput.value).toJSON(),
 					tag: selectedTag,
-					id: new Date().getTime(),
+					id: new Date().getTime().toString(),
 				};
 				this.setState({
 					items: [...this.state.items, newTask],
 				});
 				addNewTask(newTask);
-				this.props.children = this.props.children.filter(
-					(node) => node != newTaskModal
-				);
+				this.removeChild(newTaskModal);
 				this.addUpdateDate();
 				newTaskModal.remove();
 			},
 			onCancel: () => {
-				this.props.children = this.props.children.filter(
-					(node) => node != newTaskModal
-				);
+				this.removeChild(newTaskModal);
 				newTaskModal.remove();
 			},
-			inputElement: input,
+			inputElementRef: input,
 		});
-		this.props.children.push(newTaskModal);
+		this.addChild(newTaskModal);
 		super.render(this.props);
 		input.focus();
 	};
 
-	removeItem = (id) => {
+	removeItem = (id: string) => {
 		this.setState({
 			items: this.state.items.filter((item) => item.id !== id),
 		});
 		deleteTaskById(id);
 		this.addUpdateDate();
 	};
-	clickCheckbox = (id) => {
+	clickCheckbox = (id: string) => {
 		this.setState({
 			items: this.state.items.map((item) =>
 				item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
@@ -309,24 +288,23 @@ class App extends Component {
 	};
 
 	loadWeather = async () => {
-		console.log('loadWeather() called');
 		try {
 			const position = await getGeo();
 			this.state.geo = [position.coords.latitude, position.coords.longitude];
 		} catch (err) {
 			console.log('Geolocation failed, ', err);
+		} finally {
+			const weather = await getWeather(this.state.geo);
+			this.state.latestWeather = weather;
+
+			this.state.weatherLastUpdated =
+				// this.state.latestWeather.current.last_updated_epoch * 1000;
+				// even though using API data would be cool, reality is that
+				//weatherAPI does not update weather nearly as often as they claim in their FAQ(every 10 - 15 minutes),
+				//and this way the function often results in an endless loop
+				Date.now();
+			this.updateStorage();
 		}
-		const weather = await getWeather(this.state.geo);
-		this.state.latestWeather = weather;
-
-		this.state.weatherLastUpdated =
-			// this.state.latestWeather.current.last_updated_epoch * 1000;
-			// even though using API data would be cool, reality is that
-			//weatherAPI does not update weather nearly as often as they claim in their FAQ(every 10 - 15 minutes),
-			//and this way the function often results in an endless loop
-			Date.now();
-
-		this.updateStorage();
 	};
 
 	showDaily = () => {
@@ -359,70 +337,71 @@ class App extends Component {
 				],
 
 				onAgree: () => {
-					this.props.children = this.props.children.filter(
-						(node) => node != dailyModal
-					);
+					this.removeChild(dailyModal);
 					dailyModal.remove();
 				},
 				agreeText: 'Ok',
 			});
-			this.props.children.push(dailyModal);
+			this.addChild(dailyModal);
 			super.render(this.props);
 		}
 	};
 
+	displayStatus = (isOnline: boolean) => {
+		const statusColor = isOnline ? 'green' : 'red';
+		const text = isOnline ? 'Connected' : 'No connection';
+		const statusEl = new Icon().render({
+			icon: 'status',
+			style: {
+				backgroundColor: statusColor,
+			},
+			className: 'notification',
+			children: new Component('p').render({
+				children: text,
+			}),
+			onClick: () => {
+				this.removeChild(statusEl);
+				statusEl.remove();
+				this.checkUpdates();
+			},
+		});
+		this.addChild(statusEl);
+		super.render(this.props);
+	};
+
 	checkUpdates = () => {
+		let haveConnection: boolean;
 		getLastUpdated()
 			.then((date) => {
-				const isNewer = this.isLocalNewer(date);
-				if (isNewer === 'equal') {
+				haveConnection = !!date;
+				const isNewerOrEqual = this.isLocalNewer(date);
+				if (isNewerOrEqual === 'equal') {
 					console.log('everything up to date');
-				} else if (isNewer) {
-					//no re-render needed
-					const idArray = this.state.items.map((item) => item.id);
-					idArray.forEach((id, index) => {
-						setTimeout(() => {
-							deleteTaskById(id)
-								.catch((err) => console.log(err))
-								.finally(() =>
-									setTimeout(
-										addNewTask,
-										250,
-										...this.state.items.filter((item) => item.id === id)
-									)
-								);
-						}, index * 250);
-						// calls too often crash the server - timeouts help, however there must be a better solution
-						//safe to close before calls are over because even if server loses data, local is saved, and server only updates from local
-
-						//Maybe load tasks from server with getAllTasks,
-						//compare to local,
-						//update tasks with difference?
-						// it's potentially lighter on the server, but complex
-					});
+				} else if (isNewerOrEqual) {
+					//Load tasks from server with getAllTasks,
+					//compare to local,
+					//update tasks with differences?
+					setAllTasks(this.state.items);
 					this.addUpdateDate();
-					console.log('update server from local');
+					console.log('updated server from local');
 				} else {
 					this.loadItems().then((items) => {
 						this.setState({
+							...this.state,
 							items: items,
 							lastUpdated: date,
 						});
-						console.log('update local from server');
+						console.log('updated local from server');
 					});
 				}
 			})
 			.catch((error) => console.log(error))
 			.finally(() => {
-				//this.displayStatus()
-				console.log(this);
+				this.displayStatus(haveConnection); /*
+				console.log(this); */
 			});
 	};
 }
-
-const app = new App();
-document.getElementById('root').appendChild(app.render());
-app.checkUpdates();
 
 /*
 app opens up with local data,

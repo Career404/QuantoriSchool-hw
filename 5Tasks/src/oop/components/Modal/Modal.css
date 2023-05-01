@@ -1,0 +1,80 @@
+body:has(.fullscreen) {
+	overflow-y: hidden;
+	padding-right: 10px;
+}
+.fullscreen {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.495);
+}
+.modal {
+	height: max(50%, 371px);
+	width: max(50%, 524px);
+	padding: 22px 32px;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 24px;
+	background-color: white;
+}
+.modal h3 {
+	margin-bottom: 15px;
+	font-size: 24px;
+	text-align: center;
+}
+.modal .buttons-container {
+	width: 100%;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: stretch;
+	align-items: center;
+	gap: 10px;
+}
+.modal .buttons-container > * {
+	flex: 1 1 50%;
+}
+.modal .buttons-container .cancel-button {
+	background-color: transparent;
+}
+.modal .buttons-container .cancel-button:hover {
+	outline: 1px solid rgba(255, 60, 60);
+}
+.modal .buttons-container .cancel-button:active {
+	background-color: rgba(255, 60, 60, 0.9);
+}
+
+/*
+Redundant (mockup style guide tied to main.css)
+
+.button {
+	display: inline-block;
+	background-color: rgba(60, 134, 244, 0.15);
+	border-radius: 12px;
+	border: none;
+	padding: 1rem 0;
+	color: #0053cf;
+	font-size: 1rem;
+	font-weight: 800;
+	text-align: center;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+.button:disabled {
+	background-color: #d3d3d3;
+	color: white;
+}
+.button:hover {
+	background-color: rgba(60, 134, 244, 0.35);
+}
+.button:active {
+	background-color: #3c86f4;
+	color: white;
+}
+*/

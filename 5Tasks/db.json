@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "title": "Task 1 - default",
-      "isCompleted": false,
-      "dateDueJson": "2023-04-20T00:00:00.000Z",
-      "tag": "health",
-      "id": 1682004081864
-    },
-    {
       "title": "This page can be navigated with a keyboard",
       "isCompleted": false,
       "dateDueJson": "2023-04-20T00:00:00.000Z",
@@ -100,6 +93,6 @@
     }
   ],
   "lastUpdated": {
-    "date": 1682015419770
+    "date": 1682280719877
   }
 }

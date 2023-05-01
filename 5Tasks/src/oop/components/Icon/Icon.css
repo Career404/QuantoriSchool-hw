@@ -1,0 +1,24 @@
+.icon-interactive {
+	border: none;
+	cursor: pointer;
+}
+.icon-interactive:hover {
+	scale: 1.1;
+}
+.icon-interactive:active {
+	scale: 1.2;
+}
+
+.delete-icon {
+	height: 1rem;
+	width: 1rem;
+	background-image: url(./Delete.svg);
+}
+.delete-icon:hover {
+	filter: brightness(0) saturate(100%) invert(43%) sepia(59%) saturate(2368%)
+		hue-rotate(200deg) brightness(100%) contrast(92%);
+}
+.delete-icon:active {
+	filter: brightness(0) saturate(100%) invert(23%) sepia(80%) saturate(7099%)
+		hue-rotate(212deg) brightness(89%) contrast(100%);
+}

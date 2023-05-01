@@ -1,18 +1,30 @@
-import Component from '../base_classes.js';
+import Component from '../../base_classes';
+import { getChildrenArray } from '../../../helpers';
+
+import './Modal.css';
+
+interface ModalProps extends Props {
+	title?: string;
+	onCancel?: Function;
+	agreeText?: string;
+	onAgree?: Function;
+	agreeCallbackParam?: any;
+	inputElementRef?: HTMLInputElement;
+}
 
 export default class Modal extends Component {
-	constructor() {
-		super();
+	render(props: ModalProps) {
 		this.element.classList.add('fullscreen');
 		this.element.onclick = () => this.element.remove();
-	}
-	render(props) {
 		if (props.onCancel) {
-			this.element.onclick = props.onCancel;
+			this.element.onclick = props.onCancel as (
+				this: GlobalEventHandlers,
+				ev: MouseEvent
+			) => any;
 		}
 
-		let cancelButton;
-		let agreeButton;
+		let cancelButton: HTMLElement | HTMLButtonElement;
+		let agreeButton: HTMLElement | HTMLButtonElement;
 		let displayedButtons;
 
 		if (props.title === 'New Task') {
@@ -27,7 +39,7 @@ export default class Modal extends Component {
 				},
 				className: ['button', 'agree-button'],
 			});
-			agreeButton.disabled = true;
+			(agreeButton as HTMLButtonElement).disabled = true;
 
 			cancelButton = new Component('button').render({
 				children: 'Cancel',
@@ -39,13 +51,13 @@ export default class Modal extends Component {
 
 			displayedButtons = [cancelButton, agreeButton];
 
-			if (props.inputElement) {
-				props.inputElement.addEventListener('input', () =>
-					props.inputElement.value.length < 1
-						? (agreeButton.disabled = true)
-						: (agreeButton.disabled = false)
+			if (props.inputElementRef) {
+				props.inputElementRef.addEventListener('input', () =>
+					props.inputElementRef.value.length < 1
+						? ((agreeButton as HTMLButtonElement).disabled = true)
+						: ((agreeButton as HTMLButtonElement).disabled = false)
 				);
-				props.inputElement.addEventListener('keydown', (e) => {
+				props.inputElementRef.addEventListener('keydown', (e) => {
 					if (e.key === 'Enter') {
 						agreeButton.click();
 					}
@@ -71,7 +83,7 @@ export default class Modal extends Component {
 				onClick: (e) => e.stopPropagation(),
 				children: [
 					new Component('h3').render({ children: props.title }),
-					...props.children,
+					...getChildrenArray(props.children),
 					new Component().render({
 						className: 'buttons-container',
 						children: displayedButtons,
@@ -79,6 +91,7 @@ export default class Modal extends Component {
 				],
 			}),
 		];
+
 		return super.render(props);
 	}
 }

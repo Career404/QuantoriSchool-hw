@@ -1,92 +1,45 @@
-Starting with lecture 5, you will be working on a to-do app.
+# To-do list PWA
 
-**It is important to note that next homeworks are building on top of each other. 
-You can't skip any homeworks from now on. 
-All basic functionality is mandatory**
+The purpose of this task tracker is to be available at all times. It will not be deployed as is - but refactored and integrated into branch `main` project later
+### Features:
 
-Mockups: https://www.figma.com/file/zWxBciks6tnS4SMqcXgqaP/Untitled?node-id=0-1
+* See current weather provided by WeatherAPI and plan your day accordingly *display more data*
+* Smooth online/offline experience with localStorage and REST API
+* Separate tab for private data that only exists on your device *add password lock?*
 
-## Basic requirements
+### Possible features:
+* Layout improvements (limit max width for widescreen, remove task width limit, move trash icon to the start of the task)
+* Personalization (dark theme, user background, colors and fonts, layout options)
+* More task field options (textarea with md support, custom notifications for tasks)
+* Refactor functional file into [composition-based components](https://www.youtube.com/watch?v=wfMtDGfHWpA&t=429s&ab_channel=FunFunFunction)
+## HW6 - Async, promises, API calls
+-------------------------------
 
-### Implementation
+The app will work with or without the json-server running. What was 'functional', became 'local' - strictly offline. OOP is the developed option, and everything said below is related to it.
 
-Use either boilerplate from functional.js or components.js files.
+* The app saves the last known location of the user in localStorage, defaults to Tbilisi if the user never shared geo data (delete local storage -> disable geolocation -> reload the page (Tbilisi) -> enable geolocation -> click on the widget to reload weather data (Yerevan) -> disable geo, reload the page (still Yerevan))
+* The weather is updated when the app is loaded, and on re-renders once every 10 minutes(weather API FAQ: How often is data updated? Realtime weather is updated every 10-15 minutes - This is tracked within the API response... unfortunately  weather is updated by this provider much rarer than that, and there's a high chance to fall into an endless loop of API calls while relying on that data)
+* Tasks are stored both on the server and in localStorage.
+* Connectivity state is displayed with an icon. In case the servers are off - When the server comes online, localStorage data overrides server data
+* Daily modal is shown the first time user opens the app, and every 24 hours from then
 
-You can update base classes as needed, but you must not use any frameworks or libraries, just plain JS.
+### TODO:
+* FIX: When the server comes online, user has to reload the page immediately, before making any further changes to the tasks - otherwise all local changes between __*server-off*__ and __*first-action-with-server-on*__ will be lost.
+* FEATURE: user configurable notification time for daily modal
+* FEATURE: option to display pop-up instead of modal for daily
 
-### General layout
+## HW7 - Webpack, TypeScript
+-------------------------------
 
-- App should have a header
-- App should have a search field
-- Next to the search field there should be a button to add a new task
-- In the content section, there should be a list of all unfinished tasks
-- Under the list of unfinished tasks, there should be a list of all finished tasks
+Interfaces that are only encountered in one file are declared in the same file. Interfaces that occur in multiple files, are declared globally in types.d.ts
 
-### Scenario 1: Adding a new task
+### Done:
+* Added npm project (tasks) inside another npm project (Quantori-HW)
+* Added webpack, html-plugin and all necessary style modules, and webpack-dev-server
+* Added custom scripts for JSON-Server running in parallel with webpack-dev-server
+* Split the project into components (isolated component styles)
+* Project moved to typescript, minimal use of any
 
-When the user clicks on the "Add task" button, a modal window should appear. 
-The modal window should have the following fields:
-- Title
-- Input field for the task title
-- Cancel button
-- Add button
-
-When the user clicks on the "Add" button, the modal window should close and the task should be added to the list of unfinished tasks.
-
-When the user clicks on the "Cancel" button, the modal window should close. No changes should be made to the task list.
-
-### Scenario 2: Marking a task as finished
-
-When the user sees an unfinished task in the list, they should be able to mark it as finished by clicking on the checkbox next to the task title.
-
-When the user clicks on the checkbox, the task should be moved to the list of finished tasks.
-
-### Scenario 3: Deleting a task
-
-When the user sees a task in the list, they should be able to delete it by clicking on the "Delete" button next to the task title.
-
-When the user clicks on the "Delete" button, the task should be removed from the list.
-
-### Scenario 4: Searching for a task
-
-When the user types a search query into the search field, the list of unfinished tasks should be filtered by the search query.
-
-Tasks are updated in real time as the user types the search query.
-
-
-These are basic requirements and are worth 1 point. If they are not met, the homework will be rejected.
-
-## UI improvements - 2 points
-
-Make the app look like the mockups.
-
-Please use only vanilla CSS. No CSS frameworks are allowed.
-
-# Possible extensions
-
-## Local storage - 2 points
-
-Make app persistent.
-
-Store the tasks in the local storage. When the user reloads the page, the tasks should be loaded from the local storage.
-
-## Implement logic using both OOP and FP - 2 points
-
-There are 2 examples on how to approach the app logic: functional and object-oriented.
-
-If you implement logic using both approaches, you will get 2 points.
-
-## Don't lose children's state on parent's rerender - 2 points
-
-Current implementation of the class-based components lose state for their children.
-
-I.e. if you have an input inside a list, and list rerenders, text in input will be lost. 
-
-Make a solution that will preserve state of children components.
-
-# How to complete the homework
-
-1. Clone this to your local computer, checkout master branch
-2. Checkout master branch in your repository for assignments. Create `HW5` folder there and copy all content of this repo to `HW5` folder. Commit your changes.
-3. Checkout a new branch `HW5` in your repository, start doing the assignment. Later you will create a PR from `HW5` to master and this PR will contain only the code you have added to the assignment code.
-4. Describe which extensions you have implemented in the PR description.
+### TODO:
+* Refactor error handling, review promises in the code (excessive?)
+* ?*Possibly* optimize local vs. server interaction (compare and combine local to server, allow user to choose a winner?)
