@@ -1,7 +1,7 @@
 //import Icon from '../Icon/Icon';
 import { formatDate } from '../../../utility/helpers';
 
-import './List.css';
+import './ListItem.css';
 
 interface ListItemProps extends Props {
 	item: Task;

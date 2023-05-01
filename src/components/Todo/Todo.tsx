@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import ListItem from './List/List';
+import ListItem from './ListItem/ListItem';
 
 export default function Todo({
 	offlineInstance = false,
