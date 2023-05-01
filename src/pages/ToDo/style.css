@@ -131,6 +131,7 @@ Tabs
 }
 .main ul {
 	margin-bottom: 1rem;
+	list-style: none;
 	word-break: break-word;
 }
 .title {

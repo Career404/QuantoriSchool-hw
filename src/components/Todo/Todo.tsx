@@ -44,6 +44,17 @@ export default function Todo({
 		(item) => item.isCompleted === true
 	);
 
+	const handleCheckbox = (id: string) => {
+		const newItems = items.map((item) =>
+			item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+		);
+		setItems(newItems);
+	};
+	const handleRemove = (id: string) => {
+		const newItems = items.filter((item) => item.id !== id);
+		setItems(newItems);
+	};
+
 	return (
 		<div className="main">
 			<div className="title">
@@ -67,19 +78,21 @@ export default function Todo({
 			<ul>
 				{notcompletedItems.map((item) => (
 					<ListItem
+						key={item.id}
 						item={item}
-						clickCheckbox={() => console.log(item.id)}
-						removeItem={() => console.log(item.dateDueJson)}
+						clickCheckbox={() => handleCheckbox(item.id)}
+						removeItem={() => handleRemove(item.id)}
 					/>
 				))}
 			</ul>
 			<h2>Completed Tasks</h2>
-			<ul>
+			<ul className="completed-list">
 				{completedItems.map((item) => (
 					<ListItem
+						key={item.id}
 						item={item}
-						clickCheckbox={() => console.log(item.id)}
-						removeItem={() => console.log(item.dateDueJson)}
+						clickCheckbox={() => handleCheckbox(item.id)}
+						removeItem={() => handleRemove(item.id)}
 					/>
 				))}
 			</ul>
