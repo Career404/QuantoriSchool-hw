@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import ListItem from './ListItem/ListItem';
+import Modal from './Modal/Modal';
 
 export default function Todo({
 	offlineInstance = false,
@@ -33,6 +34,7 @@ export default function Todo({
 		},
 	]);
 	const [searchRequest, setSearchRequest] = useState('');
+	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
 
 	const filteredItems = items.filter((item) =>
 		item.title.toLowerCase().includes(searchRequest.toLowerCase())
@@ -55,6 +57,10 @@ export default function Todo({
 		setItems(newItems);
 	};
 
+	const createNewTask = (task: Task) => {
+		setItems([...items, task]);
+	};
+
 	return (
 		<div className="main">
 			<div className="title">
@@ -70,7 +76,7 @@ export default function Todo({
 					value={searchRequest}
 					onChange={(e) => setSearchRequest(e.target.value)}
 				/>
-				<button className="button" onClick={() => console.log('clicked Add')}>
+				<button className="button" onClick={() => setNewTaskIsOpen(true)}>
 					+ New Task
 				</button>
 			</div>
@@ -96,6 +102,104 @@ export default function Todo({
 					/>
 				))}
 			</ul>
+			{newTaskIsOpen && (
+				<Modal onClose={() => setNewTaskIsOpen(false)}>
+					<h3>New Task</h3>
+					<TaskCreator
+						close={() => setNewTaskIsOpen(false)}
+						accept={createNewTask}
+					/>
+				</Modal>
+			)}
 		</div>
+	);
+}
+
+function TaskCreator({
+	close = () => {
+		console.log('No close behaviour specified');
+	},
+	accept = (task: Task) => {
+		console.log('No accept behaviour specified');
+	},
+}) {
+	//No point in making this a separate component (this is only done to re-render less on setNewTaskTitle)
+	const [newTaskTitle, setNewTaskTitle] = useState('');
+
+	const newTaskInputRef = useRef<HTMLInputElement>(null);
+	const newTaskButtonRef = useRef<HTMLButtonElement>(null);
+	const availableTags = ['health', 'work', 'home', 'other'];
+	let selectedTag: string = 'health';
+	let selectedDate: string = new Date().toJSON().slice(0, 10);
+
+	return (
+		<>
+			<div className="taskCreator">
+				<input
+					type="text"
+					ref={newTaskInputRef}
+					className="newTaskTitle"
+					id="newTaskTitle"
+					placeholder="Task Title"
+					minLength={1}
+					onChange={(e) => {
+						setNewTaskTitle(e.target.value);
+					}}
+				/>
+				<div className="newTask-more">
+					<div className="tagSelector">
+						{availableTags.map((tag, index) => (
+							<label
+								className={`li-tag newTaskTag li-tag-${tag}`}
+								tabIndex={0}
+								key={tag}
+							>
+								<input
+									type="radio"
+									id="tag"
+									name="tag"
+									className="radioTab"
+									defaultChecked={index === 0}
+									onClick={() => {
+										selectedTag = tag;
+									}}
+								></input>{' '}
+								{tag}
+							</label>
+						))}
+					</div>
+					<input
+						type="date"
+						className="datePicker"
+						defaultValue={selectedDate}
+						onChange={(e) => {
+							selectedDate = e.target.value;
+						}}
+					/>
+				</div>
+			</div>
+			<div className="buttons-container">
+				<button className="button cancel-button" onClick={close}>
+					Cancel
+				</button>
+				<button
+					ref={newTaskButtonRef}
+					className="button agree-button"
+					onClick={() => {
+						accept({
+							title: newTaskTitle,
+							isCompleted: false,
+							dateDueJson: new Date(selectedDate).toJSON(),
+							tag: selectedTag,
+							id: new Date().getTime().toString(),
+						});
+						close();
+					}}
+					disabled={!!!newTaskTitle}
+				>
+					Add Task
+				</button>
+			</div>
+		</>
 	);
 }
