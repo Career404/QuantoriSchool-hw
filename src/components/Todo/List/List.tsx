@@ -1,44 +1,20 @@
-import Component from '../../base_classes';
-import Icon from '../Icon/Icon';
-import { formatDate } from '../../../helpers';
+//import Icon from '../Icon/Icon';
+import { formatDate } from '../../../utility/helpers';
 
 import './List.css';
 
-interface ListProps extends Props {
-	items: Task[];
-	clickCheckbox: Function;
-	removeItem?: Function;
-}
 interface ListItemProps extends Props {
 	item: Task;
 	clickCheckbox: Function;
-	removeItem: Function;
+	removeItem?: Function;
 }
 
-export default class List extends Component {
-	constructor() {
-		super();
-		this.element = document.createElement('ul');
-	}
-
-	render(props: ListProps) {
-		return super.render({
-			children: [
-				...props.items.map((item: Task) =>
-					new ListItem().render({
-						item: item,
-						clickCheckbox: props.clickCheckbox,
-						removeItem: props.removeItem,
-						//? prop drilling, but it's not deep and simple and in the same file so probably ok
-					})
-				),
-			],
-			...props,
-		});
-	}
-}
-
-class ListItem extends Component {
+export default function ListItem({
+	item,
+	clickCheckbox,
+	removeItem,
+}: ListItemProps) {
+	return <li>{item.title}</li>; /*
 	render(props: ListItemProps) {
 		const checkbox = new Component('input').render({
 			id: `is${props.item.id}Completed`,
@@ -90,5 +66,5 @@ class ListItem extends Component {
 			props.children = [label];
 		}
 		return super.render(props);
-	}
+	} */
 }
