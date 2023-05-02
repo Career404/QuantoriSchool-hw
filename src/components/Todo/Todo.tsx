@@ -245,14 +245,24 @@ export default function Todo(
 			)}
 			{showDaily ? (
 				<Modal onClose={() => setShowDailyDate(Date.now())}>
-					<h3>Good {getTimeOfDay(today)}</h3>
-					<div className="todaysTasks">
-						<p>You have the next planned tasks for today: </p>{' '}
-						<ul>
-							{todaysTasks.map((task) => (
-								<li>{task.title}</li>
-							))}
-						</ul>
+					<div>
+						<h3>Good {getTimeOfDay(today)}</h3>
+						<div className="todaysTasks">
+							<p>You have the next planned tasks for today: </p>{' '}
+							<ul>
+								{todaysTasks.map((task) => (
+									<li>{task.title}</li>
+								))}
+							</ul>
+						</div>
+					</div>
+					<div className="buttons-container">
+						<button
+							className="button agree-button"
+							onClick={() => setShowDailyDate(Date.now())}
+						>
+							Ok
+						</button>
 					</div>
 				</Modal>
 			) : null}
