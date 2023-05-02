@@ -57,9 +57,11 @@ Interfaces that are only encountered in one file are declared in the same file. 
 * ?*Possibly* optimize local vs. server interaction (compare and combine local to server, allow user to choose a winner?)
 
 ## HW8 - React
-
+-----------------------
+Not to brag, but useLocalStorage hook works flawlessly, all PWA features transferred to React.
 ### Done:
 * Integrated the app into the main project
+* Refactored the app into React
+* Cleanup: removed 5Tasks folder
 ### TODO:
-* Refactor the app into React
-* Cleanup: remove 5Tasks folder
+* ?work on auth feature

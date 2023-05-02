@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getGeo, getWeather } from '../../../utility/API/Weather';
 import useLocalStorage from '../../../utility/localStorage/localstorage';
 
@@ -44,7 +44,6 @@ export default function WeatherWidget() {
 			console.log('Geolocation failed ', err);
 			weatherAccessDataAccumulator.geoAccess = false;
 		} finally {
-			console.log('loadweather runs');
 			const weather = await getWeather(
 				weatherAccessDataAccumulator.geo as [number, number]
 			);
@@ -55,7 +54,16 @@ export default function WeatherWidget() {
 	}
 
 	return (
-		<div className="weather-widget" onClick={loadWeather}>
+		<div
+			className="weather-widget"
+			onClick={loadWeather}
+			tabIndex={0}
+			onKeyDown={(e) => {
+				if (e.code === 'Space' || e.code === 'Enter') {
+					loadWeather();
+				}
+			}}
+		>
 			<div
 				className="weather-icon"
 				style={{
@@ -63,7 +71,9 @@ export default function WeatherWidget() {
 				}}
 			></div>
 			<p className="weather-temp">{latestWeather.current.temp_c + '°'}</p>
-			<p className="weather-city">{latestWeather.location.name}</p>
+			<p className="weather-city">
+				{latestWeather.location.name + (weatherAccessData.geoAccess ? '' : '?')}
+			</p>
 		</div>
 	);
 }

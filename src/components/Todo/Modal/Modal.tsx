@@ -8,7 +8,17 @@ interface ModalProps extends PropsWithChildren {
 
 export default function Modal({ onClose, children }: ModalProps) {
 	return (
-		<div className="fullscreen" onClick={onClose}>
+		<div
+			className="fullscreen"
+			onClick={onClose}
+			role="dialog"
+			aria-modal="true"
+			onKeyDown={(e) => {
+				if (e.key === 'Escape') {
+					onClose();
+				}
+			}}
+		>
 			<div className="modal" onClick={(e) => e.stopPropagation()}>
 				{children}
 			</div>

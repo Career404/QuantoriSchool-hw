@@ -6,11 +6,9 @@ export default function App() {
 	const [displayServer, setDisplayServer] = useState(true);
 	const [auth, setAuth] = useLocalStorage('instanceId', Date.now().toString());
 
-	useEffect(() => {
-		setAuth(auth);
-	}, []);
-	//authentification is not implemented here, but that's how I intend to do it
-	//this is currently tied to browser instance, not server
+	//authentification is not implemented here, but that's how I intend to do it, generally speaking
+	//this is currently tied to browser instance, not server,
+	//
 	return (
 		<>
 			<input
@@ -38,16 +36,16 @@ export default function App() {
 				</label>
 			</div>
 			<div className="panels-wrapper">
-				{!displayServer && (
+				{!displayServer ? (
 					<div className="panel" id="private-panel">
 						<Todo offlineInstance={true} />
 					</div>
-				)}
-				{displayServer && (
+				) : null}
+				{displayServer ? (
 					<div className="panel" id="server-panel">
 						<Todo userId={auth} />
 					</div>
-				)}
+				) : null}
 			</div>
 		</>
 	);

@@ -164,7 +164,7 @@ export default function Todo(
 		setItems(newItems);
 	};
 
-	const createNewTask = (task: Task) => {
+	const handleCreateNewTask = (task: Task) => {
 		if (!offlineInstance) {
 			addNewTask(task)
 				.then(() => {
@@ -203,7 +203,16 @@ export default function Todo(
 					+ New Task
 				</button>
 			</div>
-			<h2 onClick={() => setShowDailyDate(showDailyDate - ONE_DAY_IN_MS)}>
+			<h2
+				title="Click me to see today's tasks"
+				onClick={() => setShowDailyDate(showDailyDate - ONE_DAY_IN_MS)}
+				tabIndex={0}
+				onKeyDown={(e) => {
+					if (e.code === 'Space' || e.key === 'Enter') {
+						setShowDailyDate(showDailyDate - ONE_DAY_IN_MS);
+					}
+				}}
+			>
 				All Tasks
 			</h2>
 			<ul>
@@ -223,7 +232,6 @@ export default function Todo(
 						key={item.id}
 						item={item}
 						clickCheckbox={() => handleCheckbox(item.id)}
-						removeItem={() => handleRemove(item.id)}
 					/>
 				))}
 			</ul>
@@ -234,8 +242,8 @@ export default function Todo(
 				<Modal onClose={() => setNewTaskIsOpen(false)}>
 					<h3>New Task</h3>
 					<TaskCreator
-						close={() => setNewTaskIsOpen(false)}
-						accept={createNewTask}
+						onCancel={() => setNewTaskIsOpen(false)}
+						onAccept={handleCreateNewTask}
 					/>
 				</Modal>
 			)}
@@ -267,10 +275,10 @@ export default function Todo(
 }
 
 function TaskCreator({
-	close = () => {
+	onCancel = () => {
 		console.log('No close behaviour specified');
 	},
-	accept = (task: Task) => {
+	onAccept = (task: Task) => {
 		console.log('No accept behaviour specified');
 	},
 }) {
@@ -333,20 +341,20 @@ function TaskCreator({
 				</div>
 			</div>
 			<div className="buttons-container">
-				<button className="button cancel-button" onClick={close}>
+				<button className="button cancel-button" onClick={onCancel}>
 					Cancel
 				</button>
 				<button
 					className="button agree-button"
 					onClick={() => {
-						accept({
+						onAccept({
 							title: newTaskTitle,
 							isCompleted: false,
 							dateDueJson: new Date(selectedDate).toJSON(),
 							tag: selectedTag,
 							id: new Date().getTime().toString(),
 						});
-						close();
+						onCancel();
 					}}
 					disabled={!!!newTaskTitle}
 				>
@@ -362,15 +370,15 @@ function StatusIcon({
 	clickCallback = () => console.log('click Notification'),
 }) {
 	const statusColor = isOnline ? 'green' : 'red';
-	const text = isOnline ? 'Connected' : 'No connection';
+	const text = `${isOnline ? 'Connected' : 'No connection'}`;
 
 	return (
-		<div
+		<button
 			className="notification"
 			style={{ backgroundColor: statusColor }}
 			onClick={clickCallback}
 		>
 			<p>{text}</p>
-		</div>
+		</button>
 	);
 }
