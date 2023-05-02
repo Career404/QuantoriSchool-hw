@@ -1,15 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
+import useLocalStorage from '../../utility/localStorage/localstorage';
 
 import ListItem from './ListItem/ListItem';
 import Modal from './Modal/Modal';
 import WeatherWidget from './Weather/WeatherWidget';
 
 export default function Todo(
-	{ offlineInstance = false } /* : {
+	{ offlineInstance = false, userId = 'genericUserId' } /* : {
 	offlineInstance?: boolean;
 } */
 ) {
-	const [items, setItems] = useState([
+	const [items, setItems] = useLocalStorage(`${userId}-Items`, [
 		{
 			title: 'If weather is not displayed correctly, click it to load new data',
 			isCompleted: false,
@@ -36,6 +37,12 @@ export default function Todo(
 	]);
 	const [searchRequest, setSearchRequest] = useState('');
 	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
+
+	useEffect(() => {
+		if (!offlineInstance && navigator.onLine) {
+			console.log('online!');
+		}
+	}, [offlineInstance]);
 
 	const filteredItems = items.filter((item) =>
 		item.title.toLowerCase().includes(searchRequest.toLowerCase())

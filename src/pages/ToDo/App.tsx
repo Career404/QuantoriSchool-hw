@@ -1,9 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import useLocalStorage from '../../utility/localStorage/localstorage';
 import Todo from '../../components/Todo/Todo';
 
 export default function App() {
 	const [displayServer, setDisplayServer] = useState(true);
+	const [auth, setAuth] = useLocalStorage('instanceId', Date.now().toString());
 
+	useEffect(() => {
+		setAuth(auth);
+	}, []);
+	//authentification is not implemented here, but that's how I intend to do it
+	//this is currently tied to browser instance, not server
 	return (
 		<>
 			<input
@@ -38,7 +45,7 @@ export default function App() {
 				)}
 				{displayServer && (
 					<div className="panel" id="server-panel">
-						<Todo />
+						<Todo userId={auth} />
 					</div>
 				)}
 			</div>
