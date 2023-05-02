@@ -1,5 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import useLocalStorage from '../../utility/localStorage/localstorage';
+import {
+	getLastUpdatedServer,
+	setLastUpdatedServer,
+	getAllTasks,
+	setAllTasks,
+	addNewTask,
+	deleteTaskById,
+	updateTaskById,
+} from '../../utility/API/dbOps';
 
 import ListItem from './ListItem/ListItem';
 import Modal from './Modal/Modal';
@@ -35,12 +44,51 @@ export default function Todo(
 			id: '16813158826973',
 		},
 	]);
+	const [lastUpdated, setLastUpdated] = useLocalStorage(
+		`${userId}-lastUpdated`,
+		0
+	);
+	const [isOnline, setIsOnline] = useState(false);
 	const [searchRequest, setSearchRequest] = useState('');
 	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
 
+	const isLocalNewer = (remoteDate: number) =>
+		lastUpdated > remoteDate
+			? true
+			: lastUpdated === remoteDate
+			? 'equal'
+			: false;
+
+	const addUpdateDate = () => {
+		const date = Date.now();
+		if (!offlineInstance) {
+			setLastUpdatedServer(date);
+		}
+
+		setLastUpdated(date);
+	};
+
 	useEffect(() => {
 		if (!offlineInstance && navigator.onLine) {
-			console.log('online!');
+			getLastUpdatedServer()
+				.then((date) => {
+					setIsOnline(true);
+					const isNewerOrEqual = isLocalNewer(date);
+					if (isNewerOrEqual === 'equal') {
+						console.log('everything up to date');
+					} else if (isNewerOrEqual) {
+						setAllTasks(items);
+						addUpdateDate();
+						console.log('updated server from local');
+					} else {
+						getAllTasks().then((tasks) => {
+							setItems(tasks);
+							setLastUpdated(date);
+							console.log('updated local from server');
+						});
+					}
+				})
+				.catch((err) => console.log(err));
 		}
 	}, [offlineInstance]);
 
@@ -58,14 +106,63 @@ export default function Todo(
 		const newItems = items.map((item) =>
 			item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
 		);
+		if (!offlineInstance) {
+			const checkedItem = items.find((item) => item.id === id);
+			updateTaskById(id, checkedItem!)
+				.then(() => {
+					console.log('updatedTaskToServer');
+					if (!isOnline) {
+						setIsOnline(true);
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+					if (isOnline) {
+						setIsOnline(false);
+					}
+				});
+		}
+		addUpdateDate();
 		setItems(newItems);
 	};
 	const handleRemove = (id: string) => {
 		const newItems = items.filter((item) => item.id !== id);
+		if (!offlineInstance) {
+			deleteTaskById(id)
+				.then(() => {
+					console.log('deletedTaskToServer');
+					if (!isOnline) {
+						setIsOnline(true);
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+					if (isOnline) {
+						setIsOnline(false);
+					}
+				});
+		}
+		addUpdateDate();
 		setItems(newItems);
 	};
 
 	const createNewTask = (task: Task) => {
+		if (!offlineInstance) {
+			addNewTask(task)
+				.then(() => {
+					console.log('newTaskToServer');
+					if (!isOnline) {
+						setIsOnline(true);
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+					if (isOnline) {
+						setIsOnline(false);
+					}
+				});
+		}
+		addUpdateDate();
 		setItems([...items, task]);
 	};
 
@@ -110,6 +207,7 @@ export default function Todo(
 					/>
 				))}
 			</ul>
+			{!offlineInstance && <StatusIcon isOnline={isOnline} />}
 			{newTaskIsOpen && (
 				<Modal onClose={() => setNewTaskIsOpen(false)}>
 					<h3>New Task</h3>
@@ -147,6 +245,7 @@ function TaskCreator({
 					id="newTaskTitle"
 					placeholder="Task Title"
 					minLength={1}
+					autoFocus
 					onChange={(e) => {
 						setNewTaskTitle(e.target.value);
 					}}
@@ -158,6 +257,14 @@ function TaskCreator({
 								className={`li-tag newTaskTag li-tag-${tag}`}
 								tabIndex={0}
 								key={tag}
+								onClick={() => {
+									selectedTag = tag;
+								}}
+								onKeyDown={(e) => {
+									if (e.code === 'Space' || e.key === 'Enter') {
+										(e.target as HTMLElement).click();
+									}
+								}}
 							>
 								<input
 									type="radio"
@@ -165,10 +272,7 @@ function TaskCreator({
 									name="tag"
 									className="radioTab"
 									defaultChecked={index === 0}
-									onClick={() => {
-										selectedTag = tag;
-									}}
-								></input>{' '}
+								></input>
 								{tag}
 							</label>
 						))}
@@ -205,5 +309,20 @@ function TaskCreator({
 				</button>
 			</div>
 		</>
+	);
+}
+
+function StatusIcon({ isOnline = false }) {
+	const statusColor = isOnline ? 'green' : 'red';
+	const text = isOnline ? 'Connected' : 'No connection';
+
+	return (
+		<div
+			className="notification"
+			style={{ backgroundColor: statusColor }}
+			onClick={() => console.log('click Notification')}
+		>
+			<p>{text}</p>
+		</div>
 	);
 }

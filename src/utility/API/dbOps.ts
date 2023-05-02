@@ -1,4 +1,4 @@
-export async function getLastUpdated() {
+export async function getLastUpdatedServer() {
 	try {
 		const response = await fetch('http://localhost:3004/lastUpdated');
 		const date = await response.json();
@@ -7,7 +7,7 @@ export async function getLastUpdated() {
 		throw err;
 	}
 }
-export async function setLastUpdated(date: number) {
+export async function setLastUpdatedServer(date: number) {
 	try {
 		const response = await fetch(`http://localhost:3004/lastUpdated`, {
 			method: 'PUT',
