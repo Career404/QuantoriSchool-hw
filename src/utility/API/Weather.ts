@@ -1,14 +1,9 @@
 export async function getGeo(): Promise<GeolocationPosition> {
+	if (!navigator.geolocation) {
+		throw new Error('Geolocation unavailable');
+	}
 	return new Promise((resolve, reject) => {
-		if (!navigator.geolocation) {
-			reject('Geolocation  unavailable');
-		}
-		navigator.geolocation.getCurrentPosition(
-			(position) => {
-				resolve(position);
-			},
-			(error) => reject(error)
-		);
+		navigator.geolocation.getCurrentPosition(resolve, reject);
 	});
 }
 export async function getWeather([lat, long]: [number, number]) {

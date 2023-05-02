@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 
 import ListItem from './ListItem/ListItem';
 import Modal from './Modal/Modal';
+import WeatherWidget from './Weather/WeatherWidget';
 
-export default function Todo({
-	offlineInstance = false,
-}: {
+export default function Todo(
+	{ offlineInstance = false } /* : {
 	offlineInstance?: boolean;
-}) {
+} */
+) {
 	const [items, setItems] = useState([
 		{
 			title: 'If weather is not displayed correctly, click it to load new data',
@@ -65,7 +66,7 @@ export default function Todo({
 		<div className="main">
 			<div className="title">
 				<h1>To Do List</h1>
-				<h2 className="weather-widget">WeatherWidgetHere</h2>
+				<WeatherWidget />
 			</div>
 			<div className="search-bar">
 				<input
@@ -126,8 +127,6 @@ function TaskCreator({
 	//No point in making this a separate component (this is only done to re-render less on setNewTaskTitle)
 	const [newTaskTitle, setNewTaskTitle] = useState('');
 
-	const newTaskInputRef = useRef<HTMLInputElement>(null);
-	const newTaskButtonRef = useRef<HTMLButtonElement>(null);
 	const availableTags = ['health', 'work', 'home', 'other'];
 	let selectedTag: string = 'health';
 	let selectedDate: string = new Date().toJSON().slice(0, 10);
@@ -137,7 +136,6 @@ function TaskCreator({
 			<div className="taskCreator">
 				<input
 					type="text"
-					ref={newTaskInputRef}
 					className="newTaskTitle"
 					id="newTaskTitle"
 					placeholder="Task Title"
@@ -183,7 +181,6 @@ function TaskCreator({
 					Cancel
 				</button>
 				<button
-					ref={newTaskButtonRef}
 					className="button agree-button"
 					onClick={() => {
 						accept({
