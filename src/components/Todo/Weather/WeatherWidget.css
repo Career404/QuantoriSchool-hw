@@ -12,10 +12,12 @@
 	background-size: contain;
 }
 .weather-temp {
-	font-weight: bold;
+	font-weight: 700;
+	font-size: 18px;
 }
 .weather-city {
 	margin-left: 53px;
 	font-weight: 500;
+	font-size: 18px;
 	color: #838383;
 }
