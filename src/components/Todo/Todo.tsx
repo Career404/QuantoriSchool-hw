@@ -4,7 +4,7 @@ import {
 	getLastUpdatedServer,
 	setLastUpdatedServer,
 	getAllTasks,
-	setAllTasks,
+	updateAllTasks,
 	addNewTask,
 	deleteTaskById,
 	updateTaskById,
@@ -52,11 +52,15 @@ export default function Todo(
 	const [isOnline, setIsOnline] = useState(false);
 	const [searchRequest, setSearchRequest] = useState('');
 	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
-
 	const [showDailyDate, setShowDailyDate] = useLocalStorage(
 		`${userId}-dailyNotificationLastShown`,
 		0
 	);
+
+	useEffect(() => {
+		loadItems();
+	}, []);
+
 	const ONE_DAY_IN_MS = 8.64e7;
 	const today = new Date();
 	const todaysTasks = items.filter(
@@ -66,16 +70,6 @@ export default function Todo(
 	);
 	const showDaily =
 		showDailyDate <= Date.now() - ONE_DAY_IN_MS && todaysTasks.length > 0;
-	console.log(
-		'showDaily? ',
-		showDaily,
-		'bc Date',
-		showDailyDate,
-		'and now+day is',
-		Date.now() + ONE_DAY_IN_MS,
-		'or todaysTasks',
-		todaysTasks.length
-	);
 
 	const isLocalNewer = (remoteDate: number) =>
 		lastUpdated > remoteDate
@@ -91,8 +85,7 @@ export default function Todo(
 		}
 		setLastUpdated(date);
 	};
-
-	useEffect(() => {
+	const loadItems = () => {
 		if (!offlineInstance && navigator.onLine) {
 			getLastUpdatedServer()
 				.then((date) => {
@@ -101,7 +94,7 @@ export default function Todo(
 					if (isNewerOrEqual === 'equal') {
 						console.log('everything up to date');
 					} else if (isNewerOrEqual) {
-						setAllTasks(items);
+						updateAllTasks(items).catch((err) => console.log(err));
 						addUpdateDate();
 						console.log('updated server from local');
 					} else {
@@ -112,19 +105,20 @@ export default function Todo(
 						});
 					}
 				})
-				.catch((err) => console.log(err));
+				.catch((err) => {
+					console.log(err);
+					if (isOnline) {
+						setIsOnline(false);
+					}
+				});
 		}
-	}, [offlineInstance]);
+	};
 
 	const filteredItems = items.filter((item) =>
 		item.title.toLowerCase().includes(searchRequest.toLowerCase())
 	);
-	const notcompletedItems = filteredItems.filter(
-		(item) => item.isCompleted !== true
-	);
-	const completedItems = filteredItems.filter(
-		(item) => item.isCompleted === true
-	);
+	const notcompletedItems = filteredItems.filter((item) => !item.isCompleted);
+	const completedItems = filteredItems.filter((item) => item.isCompleted);
 
 	const handleCheckbox = (id: string) => {
 		const newItems = items.map((item) =>
@@ -233,7 +227,9 @@ export default function Todo(
 					/>
 				))}
 			</ul>
-			{!offlineInstance && <StatusIcon isOnline={isOnline} />}
+			{!offlineInstance && (
+				<StatusIcon isOnline={isOnline} clickCallback={loadItems} />
+			)}
 			{newTaskIsOpen && (
 				<Modal onClose={() => setNewTaskIsOpen(false)}>
 					<h3>New Task</h3>
@@ -361,7 +357,10 @@ function TaskCreator({
 	);
 }
 
-function StatusIcon({ isOnline = false }) {
+function StatusIcon({
+	isOnline = false,
+	clickCallback = () => console.log('click Notification'),
+}) {
 	const statusColor = isOnline ? 'green' : 'red';
 	const text = isOnline ? 'Connected' : 'No connection';
 
@@ -369,7 +368,7 @@ function StatusIcon({ isOnline = false }) {
 		<div
 			className="notification"
 			style={{ backgroundColor: statusColor }}
-			onClick={() => console.log('click Notification')}
+			onClick={clickCallback}
 		>
 			<p>{text}</p>
 		</div>

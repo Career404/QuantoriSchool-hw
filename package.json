@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "jsonServer": "json-server --watch db.json --port 3004",
+    "jsonServer": "json-server --watch db.json --port 3004 --host 127.0.0.1",
     "json-dev": "(start /b npm run dev) & (start /b npm run vite)",
     "json-dev-unix": "npm run jsonServer & npm run dev"
   },
