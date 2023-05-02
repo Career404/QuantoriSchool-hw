@@ -9,6 +9,7 @@ import {
 	deleteTaskById,
 	updateTaskById,
 } from '../../utility/API/dbOps';
+import { getTimeOfDay } from '../../utility/helpers';
 
 import ListItem from './ListItem/ListItem';
 import Modal from './Modal/Modal';
@@ -52,6 +53,30 @@ export default function Todo(
 	const [searchRequest, setSearchRequest] = useState('');
 	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
 
+	const [showDailyDate, setShowDailyDate] = useLocalStorage(
+		`${userId}-dailyNotificationLastShown`,
+		0
+	);
+	const ONE_DAY_IN_MS = 8.64e7;
+	const today = new Date();
+	const todaysTasks = items.filter(
+		(item) =>
+			new Date(item.dateDueJson).toLocaleDateString() ===
+				today.toLocaleDateString() && !item.isCompleted
+	);
+	const showDaily =
+		showDailyDate <= Date.now() - ONE_DAY_IN_MS && todaysTasks.length > 0;
+	console.log(
+		'showDaily? ',
+		showDaily,
+		'bc Date',
+		showDailyDate,
+		'and now+day is',
+		Date.now() + ONE_DAY_IN_MS,
+		'or todaysTasks',
+		todaysTasks.length
+	);
+
 	const isLocalNewer = (remoteDate: number) =>
 		lastUpdated > remoteDate
 			? true
@@ -64,7 +89,6 @@ export default function Todo(
 		if (!offlineInstance) {
 			setLastUpdatedServer(date);
 		}
-
 		setLastUpdated(date);
 	};
 
@@ -185,7 +209,9 @@ export default function Todo(
 					+ New Task
 				</button>
 			</div>
-			<h2>All Tasks</h2>
+			<h2 onClick={() => setShowDailyDate(showDailyDate - ONE_DAY_IN_MS)}>
+				All Tasks
+			</h2>
 			<ul>
 				{notcompletedItems.map((item) => (
 					<ListItem
@@ -217,6 +243,19 @@ export default function Todo(
 					/>
 				</Modal>
 			)}
+			{showDaily ? (
+				<Modal onClose={() => setShowDailyDate(Date.now())}>
+					<h3>Good {getTimeOfDay(today)}</h3>
+					<div className="todaysTasks">
+						<p>You have the next planned tasks for today: </p>{' '}
+						<ul>
+							{todaysTasks.map((task) => (
+								<li>{task.title}</li>
+							))}
+						</ul>
+					</div>
+				</Modal>
+			) : null}
 		</div>
 	);
 }
