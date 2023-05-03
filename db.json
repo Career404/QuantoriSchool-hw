@@ -22,13 +22,6 @@
       "id": 1682008366680
     },
     {
-      "title": "app can't detect difference between data in LS and server, and LS always overrides server data",
-      "isCompleted": true,
-      "dateDueJson": "2023-04-20T00:00:00.000Z",
-      "tag": "health",
-      "id": 1682009072905
-    },
-    {
       "title": "If weather is not displayed correctly, click it to load new data",
       "isCompleted": true,
       "dateDueJson": "2023-04-13T16:11:22.697Z",
@@ -48,23 +41,9 @@
       "dateDueJson": "2023-04-11T16:11:22.697Z",
       "tag": "health",
       "id": "16813158826973"
-    },
-    {
-      "title": "TODO: add 'sync with server' button - load local to server and server to local",
-      "isCompleted": true,
-      "dateDueJson": "2023-04-20T00:00:00.000Z",
-      "tag": "health",
-      "id": 1682015419769
-    },
-    {
-      "title": "1",
-      "isCompleted": false,
-      "dateDueJson": "2023-05-02T00:00:00.000Z",
-      "tag": "health",
-      "id": "1683050533162"
     }
   ],
   "lastUpdated": {
-    "date": 1683050533163
+    "date": 1683054664436
   }
 }

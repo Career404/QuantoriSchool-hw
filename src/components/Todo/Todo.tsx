@@ -94,7 +94,7 @@ export default function Todo(
 					if (isNewerOrEqual === 'equal') {
 						console.log('everything up to date');
 					} else if (isNewerOrEqual) {
-						updateAllTasks(items).catch((err) => console.log(err));
+						updateAllTasks(items);
 						addUpdateDate();
 						console.log('updated server from local');
 					} else {
@@ -134,7 +134,6 @@ export default function Todo(
 					}
 				})
 				.catch((err) => {
-					console.log(err);
 					if (isOnline) {
 						setIsOnline(false);
 					}
@@ -154,7 +153,6 @@ export default function Todo(
 					}
 				})
 				.catch((err) => {
-					console.log(err);
 					if (isOnline) {
 						setIsOnline(false);
 					}
@@ -174,7 +172,6 @@ export default function Todo(
 					}
 				})
 				.catch((err) => {
-					console.log(err);
 					if (isOnline) {
 						setIsOnline(false);
 					}

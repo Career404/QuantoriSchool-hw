@@ -6,6 +6,9 @@ export default function App() {
 	const [displayServer, setDisplayServer] = useState(true);
 	const [auth, setAuth] = useLocalStorage('instanceId', Date.now().toString());
 
+	useEffect(() => {
+		setAuth(auth);
+	}, []);
 	//authentification is not implemented here, but that's how I intend to do it, generally speaking
 	//this is currently tied to browser instance, not server,
 	//

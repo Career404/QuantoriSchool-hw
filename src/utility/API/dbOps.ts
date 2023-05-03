@@ -2,13 +2,15 @@
 // Possibly too many calls at once? click fast to replicate
 // Happens outside useEffect, React.strictMode is not a likely suspect
 // JSON-server to blame? no EADDRINUSE after the addition of --host flag
+
+//these catch blocks are only here to stop the error propagation to where the functions are called
 export async function getLastUpdatedServer() {
 	try {
 		const response = await fetch('http://localhost:3004/lastUpdated');
 		const date = await response.json();
 		return date.date;
 	} catch (err) {
-		throw err;
+		throw { message: 'failed getLastUpdatedServer', err };
 	}
 }
 export async function setLastUpdatedServer(date: number) {
@@ -20,7 +22,7 @@ export async function setLastUpdatedServer(date: number) {
 		});
 		return response;
 	} catch (err) {
-		throw err;
+		throw { message: 'failed setLastUpdatedServer', err };
 	}
 }
 export async function getAllTasks() {
@@ -29,7 +31,7 @@ export async function getAllTasks() {
 		const tasks = await response.json();
 		return tasks;
 	} catch (err) {
-		throw err;
+		throw { message: 'failed getAllTasks', err };
 	}
 }
 export async function updateAllTasks(taskArray: Task[]) {
@@ -58,7 +60,7 @@ export async function updateAllTasks(taskArray: Task[]) {
 		);
 		return updatedTasks;
 	} catch (err) {
-		throw err;
+		throw { message: 'failed getAllTasks', err };
 	}
 }
 
@@ -71,7 +73,7 @@ export async function addNewTask(task: Task) {
 		});
 		return await response.json();
 	} catch (err) {
-		throw err;
+		throw { message: 'failed addNewTask', err };
 	}
 }
 export async function deleteTaskById(id: string) {
@@ -81,7 +83,7 @@ export async function deleteTaskById(id: string) {
 		});
 		return await response.json();
 	} catch (err) {
-		throw err;
+		throw { message: 'failed deleteTaskById', err };
 	}
 }
 export async function updateTaskById(id: string, updates: Task) {
@@ -93,6 +95,6 @@ export async function updateTaskById(id: string, updates: Task) {
 		});
 		return await response.json();
 	} catch (err) {
-		throw err;
+		throw { message: 'failed updateTaskById', err };
 	}
 }
