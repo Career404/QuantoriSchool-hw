@@ -4,6 +4,12 @@ import { useEffect } from 'react';
 export default function App() {
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		if (/#\/?$/.test(window.location.href)) {
+			navigate('/server');
+		}
+	}, [navigate]);
+
 	return (
 		<>
 			<div className="tab-wrapper">

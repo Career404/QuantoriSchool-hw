@@ -7,6 +7,7 @@ import Todo from '../../components/Todo/Todo';
 import getAuth from '../../utility/auth/auth';
 
 import App from './routes/App';
+import { NotFound } from './routes/Error';
 
 const auth = getAuth();
 
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
 				<Route path="/" element={<App />}>
 					<Route path="/private" element={<Todo offlineInstance />} />
 					<Route path="/server" element={<Todo userId={auth} />} />
+					<Route path="/*" element={<NotFound />} />
 				</Route>
 			</Routes>
 		</HashRouter>
