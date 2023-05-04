@@ -5,7 +5,7 @@ export default function App() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (/#\/?$/.test(window.location.href)) {
+		if (/todo.html#?\/?$/.test(window.location.href)) {
 			navigate('/server');
 		}
 	}, [navigate]);
