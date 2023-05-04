@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import useLocalStorage from '../../utility/localStorage/localstorage';
 import {
 	getLastUpdatedServer,
@@ -14,6 +14,7 @@ import { getTimeOfDay } from '../../utility/helpers';
 import ListItem from './ListItem/ListItem';
 import Modal from './Modal/Modal';
 import WeatherWidget from './Weather/WeatherWidget';
+import { Outlet } from 'react-router-dom';
 
 export default function Todo(
 	{ offlineInstance = false, userId = 'genericUserId' } /* : {
@@ -234,6 +235,7 @@ export default function Todo(
 					/>
 				))}
 			</ul>
+			<Outlet />
 			{!offlineInstance && (
 				<StatusIcon isOnline={isOnline} clickCallback={loadItems} />
 			)}

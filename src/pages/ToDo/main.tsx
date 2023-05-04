@@ -16,8 +16,12 @@ ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
 		<HashRouter>
 			<Routes>
 				<Route path="/" element={<App />}>
-					<Route path="/private" element={<Todo offlineInstance />} />
-					<Route path="/server" element={<Todo userId={auth} />} />
+					<Route path="/private" element={<Todo offlineInstance />}>
+						<Route path=":tag" element={<div>Look, a tag!</div>} />
+					</Route>
+					<Route path="/server" element={<Todo userId={auth} />}>
+						<Route path=":tag" element={<div>Look, a tag!</div>} />
+					</Route>
 					<Route path="/*" element={<NotFound />} />
 				</Route>
 			</Routes>
