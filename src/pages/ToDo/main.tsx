@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { Children } from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { Routes, Route, HashRouter } from 'react-router-dom';
+import {
+	RouterProvider,
+	createHashRouter,
+	Route,
+	createRoutesFromElements,
+} from 'react-router-dom';
 import Todo from '../../components/Todo/Todo';
 
 import getAuth from '../../utility/auth/auth';
@@ -11,20 +16,38 @@ import { NotFound } from './routes/Error';
 
 const auth = getAuth();
 
+const router = createHashRouter([
+	{
+		path: '/',
+		element: <App />,
+		errorElement: <NotFound />,
+		children: [
+			{
+				path: '/private',
+				element: <Todo offlineInstance />,
+				children: [
+					{
+						path: '/private/*',
+						element: <div>Hello there!</div>,
+					},
+				],
+			},
+			{
+				path: '/server',
+				element: <Todo userId={auth} />,
+				children: [
+					{
+						path: '/server/*',
+						element: <div>Hello there!</div>,
+					},
+				],
+			},
+		],
+	},
+]);
+
 ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
 	<React.StrictMode>
-		<HashRouter>
-			<Routes>
-				<Route path="/" element={<App />}>
-					<Route path="/private" element={<Todo offlineInstance />}>
-						<Route path=":tag" element={<div>Look, a tag!</div>} />
-					</Route>
-					<Route path="/server" element={<Todo userId={auth} />}>
-						<Route path=":tag" element={<div>Look, a tag!</div>} />
-					</Route>
-					<Route path="/*" element={<NotFound />} />
-				</Route>
-			</Routes>
-		</HashRouter>
+		<RouterProvider router={router} />
 	</React.StrictMode>
 );
