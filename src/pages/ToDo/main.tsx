@@ -1,20 +1,11 @@
-import React, { Children } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-
-import {
-	RouterProvider,
-	createHashRouter,
-	Route,
-	createRoutesFromElements,
-} from 'react-router-dom';
-import Todo from '../../components/Todo/Todo';
-
-import getAuth from '../../utility/auth/auth';
+import { RouterProvider, createHashRouter, Navigate } from 'react-router-dom';
 
 import App from './routes/App';
+import Todo from '../../components/Todo/Todo';
+import todoLoader from '../../components/TodoLoader';
 import { NotFound } from './routes/Error';
-
-const auth = getAuth();
 
 const router = createHashRouter([
 	{
@@ -23,8 +14,13 @@ const router = createHashRouter([
 		errorElement: <NotFound />,
 		children: [
 			{
+				index: true,
+				element: <Navigate to="/server/" />,
+			},
+			{
 				path: '/private',
 				element: <Todo offlineInstance />,
+				loader: todoLoader,
 				children: [
 					{
 						path: '/private/*',
@@ -34,13 +30,18 @@ const router = createHashRouter([
 			},
 			{
 				path: '/server',
-				element: <Todo userId={auth} />,
+				element: <Todo />,
+				loader: todoLoader,
 				children: [
 					{
 						path: '/server/*',
 						element: <div>Hello there!</div>,
 					},
 				],
+			},
+			{
+				path: '/*',
+				element: <NotFound />,
 			},
 		],
 	},

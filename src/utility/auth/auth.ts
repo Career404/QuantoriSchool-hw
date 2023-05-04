@@ -6,3 +6,9 @@ export default function getAuth() {
 	}
 	return auth;
 }
+export const AUTH = getAuth();
+
+export const GENERIC_USER_ID = 'genericUserId';
+/*
+this is not under localStorage folder because it might be remade into a real auth mechanism later
+*/

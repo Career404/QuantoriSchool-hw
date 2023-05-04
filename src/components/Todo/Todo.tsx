@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import useLocalStorage from '../../utility/localStorage/localstorage';
+import useLocalStorage from '../../utility/localStorage/useLocalstorage';
 import {
 	getLastUpdatedServer,
 	setLastUpdatedServer,
@@ -14,47 +14,25 @@ import { getTimeOfDay } from '../../utility/helpers';
 import ListItem from './ListItem/ListItem';
 import Modal from './Modal/Modal';
 import WeatherWidget from './Weather/WeatherWidget';
-import { Outlet } from 'react-router-dom';
-
+import { Form, Outlet, useLoaderData, useSubmit } from 'react-router-dom';
+import { TodoLoader } from '../TodoLoader';
 export default function Todo(
-	{ offlineInstance = false, userId = 'genericUserId' } /* : {
+	{
+		offlineInstance = false,
+		setItems = (items: Task[]) => {
+			console.log('default setItems to: ', items);
+		},
+	} /* : {
 	offlineInstance?: boolean;
 } */
 ) {
-	const [items, setItems] = useLocalStorage(`${userId}-Items`, [
-		{
-			title: 'If weather is not displayed correctly, click it to load new data',
-			isCompleted: false,
-			dateDueJson: '2023-04-13T16:11:22.697Z',
-			tag: 'home',
-			id: '16813158826971',
-		},
-		{
-			title:
-				'Try to connect with the server by clicking on the round status icon in the top-right of the screen',
-			isCompleted: false,
-			dateDueJson: '2023-04-12T16:11:22.697Z',
-			tag: 'work',
-			id: '16813158826972',
-		},
-		{
-			title:
-				'These tasks are saved in localStorage, but will update from server when server will come online',
-			isCompleted: false,
-			dateDueJson: '2023-04-11T16:11:22.697Z',
-			tag: 'health',
-			id: '16813158826973',
-		},
-	]);
-	const [lastUpdated, setLastUpdated] = useLocalStorage(
-		`${userId}-lastUpdated`,
-		0
-	);
+	const submit = useSubmit();
+	const { items, q, id } = useLoaderData() as Awaited<ReturnType<TodoLoader>>;
+	const [lastUpdated, setLastUpdated] = useLocalStorage(`${id}-lastUpdated`, 0);
 	const [isOnline, setIsOnline] = useState(false);
-	const [searchRequest, setSearchRequest] = useState('');
 	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
 	const [showDailyDate, setShowDailyDate] = useLocalStorage(
-		`${userId}-dailyNotificationLastShown`,
+		`${id}-dailyNotificationLastShown`,
 		0
 	);
 
@@ -62,7 +40,11 @@ export default function Todo(
 		if (!offlineInstance) {
 			loadItems();
 		}
-	}, []);
+	}, [offlineInstance, id]);
+
+	useEffect(() => {
+		(document.getElementById('q') as HTMLInputElement).value = q ?? '';
+	}, [q]);
 
 	const ONE_DAY_IN_MS = 8.64e7;
 	const today = new Date();
@@ -117,11 +99,8 @@ export default function Todo(
 		}
 	};
 
-	const filteredItems = items.filter((item) =>
-		item.title.toLowerCase().includes(searchRequest.toLowerCase())
-	);
-	const notcompletedItems = filteredItems.filter((item) => !item.isCompleted);
-	const completedItems = filteredItems.filter((item) => item.isCompleted);
+	const notcompletedItems = items.filter((item) => !item.isCompleted);
+	const completedItems = items.filter((item) => item.isCompleted);
 
 	const handleCheckbox = (id: string) => {
 		const newItems = items.map((item) =>
@@ -188,18 +167,28 @@ export default function Todo(
 		<div className="main">
 			<div className="title">
 				<h1>To Do List</h1>
-				<WeatherWidget />
+				{/* <WeatherWidget /> */}
 			</div>
 			<div className="search-bar">
-				<input
-					type="text"
-					name="search"
-					id="search"
-					placeholder="Search Task"
-					value={searchRequest}
-					onChange={(e) => setSearchRequest(e.target.value)}
-				/>
-				<button className="button" onClick={() => setNewTaskIsOpen(true)}>
+				<Form className="search-form" id="search-form" role="search">
+					<input
+						id="q"
+						aria-label="Search tasks"
+						placeholder="Search Task"
+						type="search"
+						name="q"
+						className="search-input"
+						defaultValue={q?.toString()}
+						onChange={(e) => {
+							const isFirstSearch = q === null;
+							submit(e.currentTarget.form, { replace: !isFirstSearch });
+						}}
+					/>
+				</Form>
+				<button
+					className="button search-button"
+					onClick={() => setNewTaskIsOpen(true)}
+				>
 					+ New Task
 				</button>
 			</div>

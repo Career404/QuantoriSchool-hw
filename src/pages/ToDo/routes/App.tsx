@@ -1,15 +1,15 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useLocation } from 'react-router';
+import { Outlet, NavLink } from 'react-router-dom';
 
 export default function App() {
-	const navigate = useNavigate();
-
+	const location = useLocation();
 	useEffect(() => {
-		if (/todo.html#?\/?$/.test(window.location.href)) {
-			navigate('/server');
-		}
-	}, [navigate]);
-
+		let title = location.pathname.slice(1);
+		title = title.charAt(0).toUpperCase() + title.slice(1);
+		let searchString = location.search.slice(3).replaceAll('+', ' ');
+		document.title = title + ' ' + searchString;
+	});
 	return (
 		<>
 			<div className="tab-wrapper">
