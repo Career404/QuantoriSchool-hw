@@ -1,51 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider, createHashRouter, Navigate } from 'react-router-dom';
+import {
+	RouterProvider,
+	createHashRouter,
+	Navigate,
+	createRoutesFromElements,
+	Route,
+	Routes,
+} from 'react-router-dom';
 
-import App from './routes/App';
+import Layout from './routes/Layout';
 import Todo from '../../components/Todo/Todo';
 import todoLoader from '../../components/TodoLoader';
 import { NotFound } from './routes/Error';
 
-const router = createHashRouter([
-	{
-		path: '/',
-		element: <App />,
-		errorElement: <NotFound />,
-		children: [
-			{
-				index: true,
-				element: <Navigate to="/server/" />,
-			},
-			{
-				path: '/private',
-				element: <Todo offlineInstance />,
-				loader: todoLoader,
-				children: [
-					{
-						path: '/private/*',
-						element: <div>Hello there!</div>,
-					},
-				],
-			},
-			{
-				path: '/server',
-				element: <Todo />,
-				loader: todoLoader,
-				children: [
-					{
-						path: '/server/*',
-						element: <div>Hello there!</div>,
-					},
-				],
-			},
-			{
-				path: '/*',
-				element: <NotFound />,
-			},
-		],
-	},
-]);
+const router = createHashRouter(
+	createRoutesFromElements(
+		<Route path="/" element={<Layout />} errorElement={<NotFound />}>
+			<Route index element={<Navigate to="/server" />} />
+			<Route
+				path="/private"
+				element={<Todo offlineInstance />}
+				loader={todoLoader}
+			>
+				<Route path="/private/*" element={<div>Hello there!</div>} />
+			</Route>
+			<Route path="/server" element={<Todo />} loader={todoLoader}>
+				<Route path="/server/*" element={<div>Hello there!</div>} />
+			</Route>
+			<Route path="/*" element={<NotFound />} />
+		</Route>
+	)
+);
 
 ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
 	<React.StrictMode>

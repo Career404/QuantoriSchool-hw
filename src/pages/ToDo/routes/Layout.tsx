@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { Outlet, NavLink } from 'react-router-dom';
 
-export default function App() {
+export default function Layout() {
 	const location = useLocation();
 	useEffect(() => {
 		let title = location.pathname.slice(1);
