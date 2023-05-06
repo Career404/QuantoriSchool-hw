@@ -9,7 +9,7 @@ export default function Layout() {
 		title = title.charAt(0).toUpperCase() + title.slice(1);
 		let searchString = location.search.slice(3).replaceAll('+', ' ');
 		document.title = title + ' ' + searchString;
-	});
+	}, [location.pathname, location.search]);
 	return (
 		<>
 			<div className="tab-wrapper">
