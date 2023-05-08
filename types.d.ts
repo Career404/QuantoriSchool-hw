@@ -31,6 +31,9 @@ interface Task {
 	dateDueJson: string;
 	tag: string;
 	id: string;
+	//TODO remove optional flags
+	dateCreated?: string;
+	lastUpdated?: string;
 }
 interface LatestWeather {
 	current: {

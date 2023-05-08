@@ -14,6 +14,7 @@ export default function ListItem({
 	clickCheckbox,
 	removeItem,
 }: ListItemProps) {
+	const props = { item, clickCheckbox, removeItem };
 	return (
 		<li className="list-item">
 			<label className="label">

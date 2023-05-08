@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { isPrivateContext } from './context/context';
 import {
 	RouterProvider,
 	createHashRouter,
@@ -11,7 +12,6 @@ import { Provider } from 'react-redux';
 
 import Layout from './routes/Layout';
 import Todo from '../../components/Todo/Todo';
-import todoLoader from '../../components/Todo/TodoLoader';
 import { NotFound } from './routes/Error';
 import { store } from '../../todoStore/store';
 
@@ -21,12 +21,22 @@ const router = createHashRouter(
 			<Route index element={<Navigate to="/server" />} />
 			<Route
 				path="/private"
-				element={<Todo offlineInstance />}
-				loader={todoLoader}
+				element={
+					<isPrivateContext.Provider value={true}>
+						<Todo offlineInstance />
+					</isPrivateContext.Provider>
+				}
 			>
 				<Route path="/private/*" element={<div>Hello there!</div>} />
 			</Route>
-			<Route path="/server" element={<Todo />} loader={todoLoader}>
+			<Route
+				path="/server"
+				element={
+					<isPrivateContext.Provider value={false}>
+						<Todo />
+					</isPrivateContext.Provider>
+				}
+			>
 				<Route path="/server/*" element={<div>Hello there!</div>} />
 			</Route>
 			<Route path="/*" element={<NotFound />} />

@@ -5,7 +5,9 @@ import dailyReducer from './daily';
 export const store = configureStore({
 	reducer: {
 		tasks: tasksReducer,
+		privateTasks: tasksReducer,
 		daily: dailyReducer,
+		privateDaily: dailyReducer,
 	},
 });
 

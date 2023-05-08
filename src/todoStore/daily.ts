@@ -2,19 +2,29 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-//! add typing
+//! add typing to prefernces
 
 interface DailyStore {
 	lastShown: string;
 	preferences: Record<string, any>;
 }
 
-const initialState: DailyStore = {
-	lastShown: '0',
-	preferences: {
-		show: true,
-		showAsModal: true,
-		showAt: [],
+const initialState: { server: DailyStore; private: DailyStore } = {
+	server: {
+		lastShown: '0',
+		preferences: {
+			show: true,
+			showAsModal: true,
+			showAt: [],
+		},
+	},
+	private: {
+		lastShown: '0',
+		preferences: {
+			show: true,
+			showAsModal: true,
+			showAt: [],
+		},
 	},
 };
 
@@ -22,14 +32,26 @@ export const tasksSlice = createSlice({
 	name: 'tasks',
 	initialState,
 	reducers: {
-		updateDailyLastShown: (state, action: PayloadAction<string>) => {
-			state.lastShown = action.payload;
+		updateDailyLastShown: (
+			state,
+			action: PayloadAction<{ lastShown: string; isPrivate: boolean }>
+		) => {
+			if (action.payload.isPrivate) {
+				state.private.lastShown = action.payload.lastShown;
+			} else {
+				state.server.lastShown = action.payload.lastShown;
+			}
 		},
 	},
 });
-export const selectDailyLastShown = (state: RootState) => state.daily.lastShown;
+export const selectDailyLastShown = (state: RootState) =>
+	state.daily.server.lastShown;
 export const selectDailyPreferences = (state: RootState) =>
-	state.daily.preferences;
+	state.daily.server.preferences;
+export const selectDailyLastShownPrivate = (state: RootState) =>
+	state.daily.private.lastShown;
+export const selectDailyPreferencesPrivate = (state: RootState) =>
+	state.daily.private.preferences;
 
 export const { updateDailyLastShown } = tasksSlice.actions;
 export default tasksSlice.reducer;

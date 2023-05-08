@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-const initialState: { tasks: Task[] } = {
+const initialState: { tasks: Task[]; privateTasks: Task[] } = {
 	tasks: [
 		{
 			title: 'Default state',
@@ -14,29 +14,71 @@ const initialState: { tasks: Task[] } = {
 			lastUpdated: '1682004086244',
 		},
 	],
+	privateTasks: [
+		{
+			title: 'Default state',
+			isCompleted: false,
+			dateDueJson: '2023-04-20T00:00:00.000Z',
+			tag: 'health',
+			id: '1682004086244',
+			dateCreated: '2023-04-20T00:00:00.000Z',
+			lastUpdated: '1682004086244',
+		},
+	],
 };
+// 2 separate stores seems to be a better solution, but it's not recommended by Redux team and absolutely everybody else
+// https://stackoverflow.com/questions/33619775/redux-multiple-stores-why-not
+//? Make 'private' radically simpler, remove Redux store and so on
 
 export const tasksSlice = createSlice({
 	name: 'tasks',
 	initialState,
 	reducers: {
 		// Redux Toolkit (Immer) allows 'mutating' the reducers.
-		addTask: (state, action: PayloadAction<Task>) => {
-			state.tasks.push(action.payload);
+		setAllTasks: (
+			state,
+			action: PayloadAction<{ tasks: Task[]; isPrivate: boolean }>
+		) => {
+			if (action.payload.isPrivate) {
+				state.privateTasks = action.payload.tasks;
+			} else {
+				state.tasks = action.payload.tasks;
+			}
 		},
-		checkTask: (state, action: PayloadAction<string>) => {
-			const task = state.tasks.find((task) => task.id === action.payload);
+		addTask: (
+			state,
+			action: PayloadAction<{ task: Task; isPrivate: boolean }>
+		) => {
+			if (action.payload.isPrivate) {
+				state.privateTasks.push(action.payload.task);
+			} else {
+				state.tasks.push(action.payload.task);
+			}
+		},
+		checkTask: (
+			state,
+			action: PayloadAction<{ id: string; isPrivate: boolean }>
+		) => {
+			const tasks = action.payload.isPrivate ? state.privateTasks : state.tasks;
+			const task = tasks.find((task) => task.id === action.payload.id);
 			if (task) {
 				task.isCompleted = !task.isCompleted;
 			}
 		},
-		deleteTask: (state, action: PayloadAction<string>) => {
-			state.tasks = state.tasks.filter((task) => task.id !== action.payload);
+		deleteTask: (
+			state,
+			action: PayloadAction<{ id: string; isPrivate: boolean }>
+		) => {
+			const tasks = action.payload.isPrivate ? state.privateTasks : state.tasks;
+			state.tasks = tasks.filter((task) => task.id !== action.payload.id);
 		},
 	},
 });
-export const selectTasks = (state: RootState) => state.tasks;
+export const selectTasks = (state: RootState) => state.tasks.tasks;
+export const selectPrivateTasks = (state: RootState) =>
+	state.tasks.privateTasks;
 
 //createSlice creates actions as 'domain/eventName'
-export const { addTask, checkTask, deleteTask } = tasksSlice.actions;
+export const { setAllTasks, addTask, checkTask, deleteTask } =
+	tasksSlice.actions;
 export default tasksSlice.reducer;

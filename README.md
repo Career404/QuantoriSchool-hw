@@ -24,6 +24,7 @@ Latest tasks have me working on a classic to-do task tracker. I made it a PWA by
 * Personalization (dark theme, user background, colors and fonts, layout options)
 * More task field options (textarea with md support, custom notifications for tasks)
 * Caching with a service worker, background sync and push notifications for a native-like feel
+* switch to IndexedDB - larger capacite and ?better performance?, use complex queries
 ## HW6 - Async, promises, API calls
 -------------------------------
 

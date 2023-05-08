@@ -1,22 +1,18 @@
 import { useState } from 'react';
-import { useAppDispatch } from '../../../todoStore/hooks';
-import { addTask } from '../../../todoStore/tasks';
 
 export default function TaskCreator({
 	onCancel = () => {
 		console.log('No close behaviour specified');
 	},
+	onAccept = (placeholder?: any) => {
+		console.log('No accept behaviour specified');
+	},
 }) {
-	const dispatch = useAppDispatch();
 	const [newTaskTitle, setNewTaskTitle] = useState('');
 
 	const availableTags = ['health', 'work', 'home', 'other'];
 	let selectedTag: string = 'health';
 	let selectedDate: string = new Date().toJSON().slice(0, 10);
-
-	const handleAccept = (task: Task) => {
-		dispatch(addTask(task));
-	};
 
 	return (
 		<>
@@ -76,7 +72,7 @@ export default function TaskCreator({
 				<button
 					className="button agree-button"
 					onClick={() => {
-						handleAccept({
+						onAccept({
 							title: newTaskTitle,
 							isCompleted: false,
 							dateDueJson: new Date(selectedDate).toJSON(),
