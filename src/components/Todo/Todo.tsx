@@ -1,41 +1,43 @@
 import { useState, useEffect } from 'react';
 import useLocalStorage from '../../utility/localStorage/useLocalstorage';
-import {
-	getLastUpdatedServer,
-	setLastUpdatedServer,
-	getAllTasks,
-	updateAllTasks,
-	addNewTask,
-	deleteTaskById,
-	updateTaskById,
-} from '../../utility/API/dbOps';
 import { getTimeOfDay } from '../../utility/helpers';
 
 import ListItem from './ListItem/ListItem';
 import Modal from './Modal/Modal';
+import TaskCreator from './taskCreator/taskCreator';
 import WeatherWidget from './Weather/WeatherWidget';
+
 import { Form, Outlet, useLoaderData, useSubmit } from 'react-router-dom';
-import { TodoLoader } from '../TodoLoader';
+import { TodoLoader } from './TodoLoader';
+import { useAppDispatch, useAppSelector } from '../../todoStore/hooks';
+import { checkTask, deleteTask, selectTasks } from '../../todoStore/tasks';
+import {
+	selectDailyLastShown,
+	updateDailyLastShown,
+} from '../../todoStore/daily';
+
 export default function Todo(
-	{
-		offlineInstance = false,
-		setItems = (items: Task[]) => {
-			console.log('default setItems to: ', items);
-		},
-	} /* : {
+	{ offlineInstance = false } /* : {
 	offlineInstance?: boolean;
 } */
 ) {
 	const submit = useSubmit();
-	const { items, q, id } = useLoaderData() as Awaited<ReturnType<TodoLoader>>;
+	const { q, id } = useLoaderData() as Awaited<ReturnType<TodoLoader>>;
+	const { tasks } = useAppSelector(selectTasks);
+	//! remove this V line
+	const items = tasks;
+	const dispatch = useAppDispatch();
 	const [lastUpdated, setLastUpdated] = useLocalStorage(`${id}-lastUpdated`, 0);
 	const [isOnline, setIsOnline] = useState(false);
 	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
+	const showDailyDate = useAppSelector(selectDailyLastShown);
+
+	//!extract daily stuff
+	/*
 	const [showDailyDate, setShowDailyDate] = useLocalStorage(
 		`${id}-dailyNotificationLastShown`,
 		0
-	);
-
+	); */
 	useEffect(() => {
 		if (!offlineInstance) {
 			loadItems();
@@ -54,113 +56,26 @@ export default function Todo(
 				today.toLocaleDateString() && !item.isCompleted
 	);
 	const showDaily =
-		showDailyDate <= Date.now() - ONE_DAY_IN_MS && todaysTasks.length > 0;
-
-	const isLocalNewer = (remoteDate: number) =>
-		lastUpdated > remoteDate
-			? true
-			: lastUpdated === remoteDate
-			? 'equal'
-			: false;
-
-	const addUpdateDate = () => {
-		const date = Date.now();
-		if (!offlineInstance) {
-			setLastUpdatedServer(date);
-		}
-		setLastUpdated(date);
+		Number(showDailyDate) <= Date.now() - ONE_DAY_IN_MS &&
+		todaysTasks.length > 0;
+	const handleCloseDaily = {
+		closeDaily: () => dispatch(updateDailyLastShown(Date.now().toString())),
+		showDailyNow: () =>
+			dispatch(updateDailyLastShown((Date.now() - ONE_DAY_IN_MS).toString())),
 	};
+
 	const loadItems = () => {
-		if (!offlineInstance && navigator.onLine) {
-			getLastUpdatedServer()
-				.then((date) => {
-					setIsOnline(true);
-					const isNewerOrEqual = isLocalNewer(date);
-					if (isNewerOrEqual === 'equal') {
-						console.log('everything up to date');
-					} else if (isNewerOrEqual) {
-						updateAllTasks(items);
-						addUpdateDate();
-						console.log('updated server from local');
-					} else {
-						getAllTasks().then((tasks) => {
-							setItems(tasks);
-							setLastUpdated(date);
-							console.log('updated local from server');
-						});
-					}
-				})
-				.catch((err) => {
-					console.log(err);
-					if (isOnline) {
-						setIsOnline(false);
-					}
-				});
-		}
+		console.log('loadItems');
 	};
 
 	const notcompletedItems = items.filter((item) => !item.isCompleted);
 	const completedItems = items.filter((item) => item.isCompleted);
 
 	const handleCheckbox = (id: string) => {
-		const newItems = items.map((item) =>
-			item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
-		);
-		if (!offlineInstance) {
-			const checkedItem = items.find((item) => item.id === id);
-			updateTaskById(id, checkedItem!)
-				.then(() => {
-					console.log('updatedTaskToServer');
-					if (!isOnline) {
-						setIsOnline(true);
-					}
-				})
-				.catch((err) => {
-					if (isOnline) {
-						setIsOnline(false);
-					}
-				});
-		}
-		addUpdateDate();
-		setItems(newItems);
+		dispatch(checkTask(id));
 	};
 	const handleRemove = (id: string) => {
-		const newItems = items.filter((item) => item.id !== id);
-		if (!offlineInstance) {
-			deleteTaskById(id)
-				.then(() => {
-					console.log('deletedTaskToServer');
-					if (!isOnline) {
-						setIsOnline(true);
-					}
-				})
-				.catch((err) => {
-					if (isOnline) {
-						setIsOnline(false);
-					}
-				});
-		}
-		addUpdateDate();
-		setItems(newItems);
-	};
-
-	const handleCreateNewTask = (task: Task) => {
-		if (!offlineInstance) {
-			addNewTask(task)
-				.then(() => {
-					console.log('newTaskToServer');
-					if (!isOnline) {
-						setIsOnline(true);
-					}
-				})
-				.catch((err) => {
-					if (isOnline) {
-						setIsOnline(false);
-					}
-				});
-		}
-		addUpdateDate();
-		setItems([...items, task]);
+		dispatch(deleteTask(id));
 	};
 
 	return (
@@ -194,11 +109,11 @@ export default function Todo(
 			</div>
 			<h2
 				title="Click me to see today's tasks"
-				onClick={() => setShowDailyDate(showDailyDate - ONE_DAY_IN_MS)}
+				onClick={handleCloseDaily.showDailyNow}
 				tabIndex={0}
 				onKeyDown={(e) => {
 					if (e.code === 'Space' || e.key === 'Enter') {
-						setShowDailyDate(showDailyDate - ONE_DAY_IN_MS);
+						handleCloseDaily.showDailyNow;
 					}
 				}}
 			>
@@ -231,21 +146,18 @@ export default function Todo(
 			{newTaskIsOpen && (
 				<Modal onClose={() => setNewTaskIsOpen(false)}>
 					<h3>New Task</h3>
-					<TaskCreator
-						onCancel={() => setNewTaskIsOpen(false)}
-						onAccept={handleCreateNewTask}
-					/>
+					<TaskCreator onCancel={() => setNewTaskIsOpen(false)} />
 				</Modal>
 			)}
 			{showDaily ? (
-				<Modal onClose={() => setShowDailyDate(Date.now())}>
+				<Modal onClose={handleCloseDaily.closeDaily}>
 					<div>
 						<h3>Good {getTimeOfDay(today)}</h3>
 						<div className="todaysTasks">
 							<p>You have the next planned tasks for today: </p>{' '}
 							<ul>
 								{todaysTasks.map((task) => (
-									<li>{task.title}</li>
+									<li key={'todaysTasks' + task.id}>{task.title}</li>
 								))}
 							</ul>
 						</div>
@@ -253,7 +165,7 @@ export default function Todo(
 					<div className="buttons-container">
 						<button
 							className="button agree-button"
-							onClick={() => setShowDailyDate(Date.now())}
+							onClick={handleCloseDaily.closeDaily}
 						>
 							Ok
 						</button>
@@ -261,97 +173,6 @@ export default function Todo(
 				</Modal>
 			) : null}
 		</div>
-	);
-}
-
-function TaskCreator({
-	onCancel = () => {
-		console.log('No close behaviour specified');
-	},
-	onAccept = (task: Task) => {
-		console.log('No accept behaviour specified');
-	},
-}) {
-	//No point in making this a separate component (this is only done to re-render less on setNewTaskTitle)
-	const [newTaskTitle, setNewTaskTitle] = useState('');
-
-	const availableTags = ['health', 'work', 'home', 'other'];
-	let selectedTag: string = 'health';
-	let selectedDate: string = new Date().toJSON().slice(0, 10);
-
-	return (
-		<>
-			<div className="taskCreator">
-				<input
-					type="text"
-					className="newTaskTitle"
-					id="newTaskTitle"
-					placeholder="Task Title"
-					minLength={1}
-					autoFocus
-					onChange={(e) => {
-						setNewTaskTitle(e.target.value);
-					}}
-				/>
-				<div className="newTask-more">
-					<div className="tagSelector">
-						{availableTags.map((tag, index) => (
-							<label
-								className={`li-tag newTaskTag li-tag-${tag}`}
-								tabIndex={0}
-								key={tag}
-								onClick={() => {
-									selectedTag = tag;
-								}}
-								onKeyDown={(e) => {
-									if (e.code === 'Space' || e.key === 'Enter') {
-										(e.target as HTMLElement).click();
-									}
-								}}
-							>
-								<input
-									type="radio"
-									id="tag"
-									name="tag"
-									className="radioTab"
-									defaultChecked={index === 0}
-								></input>
-								{tag}
-							</label>
-						))}
-					</div>
-					<input
-						type="date"
-						className="datePicker"
-						defaultValue={selectedDate}
-						onChange={(e) => {
-							selectedDate = e.target.value;
-						}}
-					/>
-				</div>
-			</div>
-			<div className="buttons-container">
-				<button className="button cancel-button" onClick={onCancel}>
-					Cancel
-				</button>
-				<button
-					className="button agree-button"
-					onClick={() => {
-						onAccept({
-							title: newTaskTitle,
-							isCompleted: false,
-							dateDueJson: new Date(selectedDate).toJSON(),
-							tag: selectedTag,
-							id: new Date().getTime().toString(),
-						});
-						onCancel();
-					}}
-					disabled={!!!newTaskTitle}
-				>
-					Add Task
-				</button>
-			</div>
-		</>
 	);
 }
 

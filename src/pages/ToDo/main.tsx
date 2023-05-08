@@ -6,13 +6,14 @@ import {
 	Navigate,
 	createRoutesFromElements,
 	Route,
-	Routes,
 } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
 import Layout from './routes/Layout';
 import Todo from '../../components/Todo/Todo';
-import todoLoader from '../../components/TodoLoader';
+import todoLoader from '../../components/Todo/TodoLoader';
 import { NotFound } from './routes/Error';
+import { store } from '../../todoStore/store';
 
 const router = createHashRouter(
 	createRoutesFromElements(
@@ -35,6 +36,8 @@ const router = createHashRouter(
 
 ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<Provider store={store}>
+			<RouterProvider router={router} />
+		</Provider>
 	</React.StrictMode>
 );
