@@ -69,6 +69,7 @@ Not to brag, but useLocalStorage hook works flawlessly, all PWA features transfe
 
 ## HW9 - React Router, Redux
 -------------------------
+[This would have been so much easier](https://redux-offline.github.io/redux-offline/)
 ### Done:
 * Installed react-router, configured it to only work in the Todo Task page, used HashRouter for GitHub-pages
 * Transferred the App component to routes (private and server)

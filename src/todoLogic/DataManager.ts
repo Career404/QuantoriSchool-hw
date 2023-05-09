@@ -1,133 +1,66 @@
-interface httpRequest {
-	//? add typing with generics to body
-	url: string;
-	method?: string;
-	methodAlias?: string;
-	headers?: Record<string, string>;
-	cacheResponse?: boolean;
-	responseCallback?: (data: any) => void;
-}
-interface serverFunctionProps {
-	params?: string;
-	body?: string;
+interface ActionData {
+	name: string;
+	triggerActionType?: string;
+	ServerAction?: (data?: any) => Promise<any>;
+	cacheData?: boolean;
 }
 
-interface StorageManagerOptions {
+interface DataManagerOptions {
 	id: string;
-	server?: httpRequest[];
+	store: any;
+	actions: ActionData[];
 }
+/**
+ * creates a listener that calls a server function, saves the response body to localStorage and dispatches a specified action with the response body as payload
+ */
+class DataStream {
+	private id: string;
+	public store: any;
 
-function createServerFunction(request: httpRequest) {
-	const { url, method, headers } = request;
-	return async function (serverFunctionProps?: serverFunctionProps) {
-		const { body, params } = serverFunctionProps ?? {};
-		const fullUrl = params ? url + params : url;
-		const response = await fetch(fullUrl, {
-			method,
-			headers: headers ?? { 'Content-Type': 'application/json' },
-			body: body ? body : undefined,
+	constructor(id: string, store: any) {
+		this.id = id;
+		this.store = store;
+	}
+	newData = (data: any, name?: string) => {
+		localStorage.setItem(name || this.id, JSON.stringify(data));
+	};
+	getData = async (name?: string) => {
+		const result = localStorage.getItem(name || this.id);
+		return result ? await JSON.parse(result) : undefined;
+	};
+	createListener = (action: ActionData) => {
+		let { name, triggerActionType, ServerAction } = action;
+		triggerActionType = triggerActionType ?? name;
+
+		this.store.subscribe(() => {
+			const state = this.store.getState();
+			if (ServerAction) {
+				ServerAction()
+					.then((response) => {
+						console.log('Server action complete, ', response);
+					})
+					.catch((err) => console.log(err));
+			}
 		});
-		if (!response.ok) {
-			throw new Error(`server failed to ${method} ${url}`);
-		}
-		const data = await response.json();
-		return data;
+		console.log(this.store);
 	};
 }
 
 export default class DataManager {
 	private id: string;
-	serverOps: Record<
-		string,
-		(serverFunctionProps?: serverFunctionProps) => Promise<any>
-	> = {};
-	newData = (data: any, name?: string) => {
-		localStorage.setItem(name || this.id, JSON.stringify(data));
-	};
-	getData = async (name?: string) =>
-		await JSON.parse(
-			localStorage.getItem(name || this.id) ??
-				`{
-			"title": "No active tasks",
-			"isCompleted": false,
-			"dateDueJson": "2023-04-20T00:00:00.000Z",
-			"tag": "health",
-			"id": "1682004086244",
-			"dateCreated": "2023-04-20T00:00:00.000Z",
-			"lastUpdated": "1682004086244"
-		}`
-		);
+	dataStreams: Record<string, any> = {};
 
-	constructor(options: StorageManagerOptions) {
+	constructor(options: DataManagerOptions) {
 		this.id = options.id;
-		if (options.server) {
-			for (const request of options.server) {
-				request.method = request.method || 'GET';
-				const alias = request.methodAlias ?? request.method.toLowerCase();
-				const serverFunction = createServerFunction(request);
-				if (request.cacheResponse) {
-					this.serverOps[alias] = async () => {
-						let data;
-						try {
-							data = await serverFunction();
-							this.newData(data, this.id + '-' + alias);
-						} catch (err) {
-							console.log(err);
-							data = JSON.parse(localStorage.getItem(options.id) ?? 'null');
-						}
-						if (request.responseCallback) {
-							request.responseCallback(data);
-						}
-						return data;
-					};
-				} else {
-					this.serverOps[alias] = async () => {
-						try {
-							const data = await serverFunction();
-							if (request.responseCallback) {
-								request.responseCallback(data);
-							}
-							return data;
-						} catch (err) {
-							console.log(err);
-						}
-					};
-				}
-			}
+		for (let action of options.actions) {
+			this.dataStreams[action.name] = new DataStream(options.id, options.store);
+			this.dataStreams[action.name].createListener(action);
 		}
 	}
-}
-//const get = () =>
 
-/* export async function todoLoader({ request }: LoaderFunctionArgs) {
-	const url = new URL(request.url);
-	console.log('todoLoaderTriggered:', url);
-	const q = url.searchParams.get('q');
-	const id = url.href.includes('server') ? AUTH : GENERIC_USER_ID;
-	const items: Task[] = await getItems(id, q);
-	return { items, q, id };
+	sayHi = () => console.log('hi, I am your manager today', this);
 }
-
-export function getItems(userId: string, q?: string | null) {
-	const item = localStorage.getItem(`${userId}-Items`);
-	const result = item
-		? JSON.parse(item)
-		: [
-				{
-					title: 'no items in localStorage',
-					isCompleted: false,
-					dateDueJson: '2023-04-13T16:11:22.697Z',
-					tag: 'home',
-					id: '16813158826971',
-				},
-		  ];
-	//! Filtering by search query in get localStorage function! refactor - move filtering to a separate func
-	return q
-		? result.filter((item: Task) =>
-				item.title.toLowerCase().includes(q.toLowerCase())
-		  )
-		: result;
-}
+/*
 
 
 const isLocalNewer = (remoteDate: number) =>

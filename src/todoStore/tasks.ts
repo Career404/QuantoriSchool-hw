@@ -35,6 +35,9 @@ export const tasksSlice = createSlice({
 	initialState,
 	reducers: {
 		// Redux Toolkit (Immer) allows 'mutating' the reducers.
+		initTodo: (state, action: PayloadAction<{ isPrivate: boolean }>) => {
+			console.log(state);
+		},
 		setAllTasks: (
 			state,
 			action: PayloadAction<{ tasks: Task[]; isPrivate: boolean }>
@@ -80,6 +83,6 @@ export const selectPrivateTasks = (state: RootState) =>
 	state.tasks.privateTasks;
 
 //createSlice creates actions as 'domain/eventName'
-export const { setAllTasks, addTask, checkTask, deleteTask } =
+export const { initTodo, setAllTasks, addTask, checkTask, deleteTask } =
 	tasksSlice.actions;
 export default tasksSlice.reducer;

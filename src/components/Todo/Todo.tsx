@@ -6,10 +6,15 @@ import {
 	addTask,
 	checkTask,
 	deleteTask,
+	initTodo,
 	selectPrivateTasks,
 	selectTasks,
 	setAllTasks,
 } from '../../todoStore/tasks';
+
+import { store } from '../../todoStore/store';
+
+import { tasksManager } from '../../todoLogic/AppDataManagers';
 
 import ListItem from './ListItem/ListItem';
 import Modal from './Modal/Modal';
@@ -27,13 +32,14 @@ export default function Todo(
 	const tasks = useAppSelector(isPrivate ? selectPrivateTasks : selectTasks);
 	const submit = useSubmit();
 	const dispatch = useAppDispatch();
-
 	useEffect(() => {
 		(document.getElementById('q') as HTMLInputElement).value = q ?? '';
 	}, [q]);
 
 	const [isOnline, setIsOnline] = useState(false);
 	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
+
+	tasksManager.sayHi();
 
 	const handleNewTask = (task: Task) => {
 		const tasksBeforeNew = tasks;

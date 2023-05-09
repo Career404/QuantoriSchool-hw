@@ -36,18 +36,14 @@ export async function getLastUpdatedServer() {
 	}
 } */
 
-/* export async function getAllTasks() {
-	try {
-		const response = await fetch('http://localhost:3004/tasks');
-		if (!response.ok) {
-			throw new Error('server failed to load ALL TASKS');
-		}
-		const tasks = await response.json();
-		return tasks;
-	} catch (err) {
-		throw { message: 'failed getAllTasks', err };
+export async function getAllTasks() {
+	const response = await fetch('http://localhost:3004/tasks');
+	if (!response.ok) {
+		throw new Error('server failed to load ALL TASKS');
 	}
-} */
+	const tasks = await response.json();
+	return tasks;
+}
 
 /* export async function updateAllTasks(taskArray: Task[]) {
 	//!

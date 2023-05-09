@@ -1,27 +1,19 @@
+import { store } from '../todoStore/store';
 import { AUTH } from '../utility/auth/auth';
 import DataManager from './DataManager';
-
+import { getAllTasks } from './dbOps';
+/*
 export const dailyManager = new DataManager({
 	id: AUTH + '-daily',
-});
+}); */
 
 export const tasksManager = new DataManager({
 	id: AUTH + '-tasks',
-	server: [
+	store: store,
+	actions: [
 		{
-			url: 'http://localhost:3004/tasks',
-			methodAlias: 'getAllTasks',
-			cacheResponse: true,
-		},
-		{
-			url: 'http://localhost:3004/tasks',
-			methodAlias: 'addNewTask',
-			method: 'POST',
-		},
-		{
-			url: `http://localhost:3004/tasks/`,
-			methodAlias: 'deleteTaskById',
-			method: 'DELETE',
+			name: 'initTodo',
+			ServerAction: getAllTasks,
 		},
 	],
 });
