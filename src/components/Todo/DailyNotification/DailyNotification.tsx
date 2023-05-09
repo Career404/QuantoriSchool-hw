@@ -1,5 +1,3 @@
-import { useContext } from 'react';
-import { isPrivateContext } from '../../../pages/ToDo/context/context';
 import {
 	selectDailyLastShown,
 	selectDailyLastShownPrivate,
@@ -11,8 +9,13 @@ import Modal from '../Modal/Modal';
 
 import './DailyNotification.css';
 
-export default function DailyNotification({ tasks }: { tasks: Task[] }) {
-	const isPrivate = useContext(isPrivateContext);
+export default function DailyNotification({
+	tasks,
+	isPrivate = true,
+}: {
+	tasks: Task[];
+	isPrivate?: boolean;
+}) {
 	const showDailyDate = useAppSelector(
 		isPrivate ? selectDailyLastShownPrivate : selectDailyLastShown
 	);

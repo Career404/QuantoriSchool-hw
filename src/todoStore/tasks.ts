@@ -16,7 +16,7 @@ const initialState: { tasks: Task[]; privateTasks: Task[] } = {
 	],
 	privateTasks: [
 		{
-			title: 'Default state',
+			title: 'Default private state',
 			isCompleted: false,
 			dateDueJson: '2023-04-20T00:00:00.000Z',
 			tag: 'health',
@@ -47,11 +47,9 @@ export const tasksSlice = createSlice({
 			state,
 			action: PayloadAction<{ task: Task; isPrivate: boolean }>
 		) => {
-			if (action.payload.isPrivate) {
-				state.privateTasks.push(action.payload.task);
-			} else {
-				state.tasks.push(action.payload.task);
-			}
+			action.payload.isPrivate
+				? state.privateTasks.push(action.payload.task)
+				: state.tasks.push(action.payload.task);
 		},
 		checkTask: (
 			state,
