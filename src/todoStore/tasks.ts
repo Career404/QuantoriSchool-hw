@@ -51,43 +51,97 @@ export const tasksSlice = createSlice({
 				return newPayload;
 			},
 		},
-		setAllTasks: (
-			state,
-			action: PayloadAction<{ tasks: Task[]; isPrivate: boolean }>
-		) => {
-			action.payload.isPrivate
-				? (state.privateTasks = action.payload.tasks)
-				: (state.tasks = action.payload.tasks);
+		setAllTasks: {
+			reducer(
+				state,
+				action: PayloadAction<{ tasks: Task[]; isPrivate: boolean }>
+			) {
+				action.payload.isPrivate
+					? (state.privateTasks = action.payload.tasks)
+					: (state.tasks = action.payload.tasks);
+			},
+			prepare(payload: { tasks: Task[]; isPrivate: boolean }) {
+				const newPayload = payload.isPrivate
+					? { payload }
+					: {
+							payload,
+							meta: {
+								offline: {},
+							},
+					  };
+				return newPayload;
+			},
 		},
-		addTask: (
-			state,
-			action: PayloadAction<{ task: Task; isPrivate: boolean }>
-		) => {
-			action.payload.isPrivate
-				? state.privateTasks.push(action.payload.task)
-				: state.tasks.push(action.payload.task);
+		addTask: {
+			reducer(
+				state,
+				action: PayloadAction<{ task: Task; isPrivate: boolean }>
+			) {
+				action.payload.isPrivate
+					? state.privateTasks.push(action.payload.task)
+					: state.tasks.push(action.payload.task);
+			},
+			prepare(payload: { task: Task; isPrivate: boolean }) {
+				const newPayload = payload.isPrivate
+					? { payload }
+					: {
+							payload,
+							meta: {
+								offline: {},
+							},
+					  };
+				return newPayload;
+			},
 		},
-		checkTask: (
-			state,
-			action: PayloadAction<{ id: string; isPrivate: boolean }>
-		) => {
-			const tasks = action.payload.isPrivate ? state.privateTasks : state.tasks;
-			const task = tasks.find((task) => task.id === action.payload.id);
-			if (task) {
-				task.isCompleted = !task.isCompleted;
-			}
+		checkTask: {
+			reducer(
+				state,
+				action: PayloadAction<{ id: string; isPrivate: boolean }>
+			) {
+				const tasks = action.payload.isPrivate
+					? state.privateTasks
+					: state.tasks;
+				const task = tasks.find((task) => task.id === action.payload.id);
+				if (task) {
+					task.isCompleted = !task.isCompleted;
+				}
+			},
+			prepare(payload: { id: string; isPrivate: boolean }) {
+				const newPayload = payload.isPrivate
+					? { payload }
+					: {
+							payload,
+							meta: {
+								offline: {},
+							},
+					  };
+				return newPayload;
+			},
 		},
-		deleteTask: (
-			state,
-			action: PayloadAction<{ id: string; isPrivate: boolean }>
-		) => {
-			action.payload.isPrivate
-				? (state.privateTasks = state.privateTasks.filter(
-						(task) => task.id !== action.payload.id
-				  ))
-				: (state.tasks = state.tasks.filter(
-						(task) => task.id !== action.payload.id
-				  ));
+		deleteTask: {
+			reducer(
+				state,
+				action: PayloadAction<{ id: string; isPrivate: boolean }>
+			) {
+				action.payload.isPrivate
+					? (state.privateTasks = state.privateTasks.filter(
+							(task) => task.id !== action.payload.id
+					  ))
+					: (state.tasks = state.tasks.filter(
+							(task) => task.id !== action.payload.id
+					  ));
+			},
+			prepare(payload: { id: string; isPrivate: boolean }) {
+				const newPayload = payload.isPrivate
+					? { payload }
+					: {
+							payload,
+							meta: {
+								offline: {},
+							},
+					  };
+				return newPayload;
+			},
 		},
 	},
 });
