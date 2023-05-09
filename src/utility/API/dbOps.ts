@@ -44,7 +44,7 @@ export async function getAllTasks() {
 	const tasks = await response.json();
 	return tasks;
 }
-
+export async function getAllTasksEffect() {}
 /* export async function updateAllTasks(taskArray: Task[]) {
 	//!
 	//* it's a mess

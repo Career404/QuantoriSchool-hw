@@ -14,8 +14,6 @@ import {
 
 import { store } from '../../todoStore/store';
 
-import { tasksManager } from '../../todoLogic/AppDataManagers';
-
 import ListItem from './ListItem/ListItem';
 import Modal from './Modal/Modal';
 import TaskCreator from './taskCreator/taskCreator';
@@ -38,8 +36,6 @@ export default function Todo(
 
 	const [isOnline, setIsOnline] = useState(false);
 	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
-
-	tasksManager.sayHi();
 
 	const handleNewTask = (task: Task) => {
 		const tasksBeforeNew = tasks;

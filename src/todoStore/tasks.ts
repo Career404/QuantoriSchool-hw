@@ -35,8 +35,21 @@ export const tasksSlice = createSlice({
 	initialState,
 	reducers: {
 		// Redux Toolkit (Immer) allows 'mutating' the reducers.
-		initTodo: (state, action: PayloadAction<{ isPrivate: boolean }>) => {
-			console.log(state);
+		initTodo: {
+			reducer(state, action: PayloadAction<{ isPrivate: boolean }>) {
+				console.log(state);
+			},
+			prepare(payload: { isPrivate: boolean }) {
+				const newPayload = payload.isPrivate
+					? { payload }
+					: {
+							payload,
+							meta: {
+								offline: {},
+							},
+					  };
+				return newPayload;
+			},
 		},
 		setAllTasks: (
 			state,

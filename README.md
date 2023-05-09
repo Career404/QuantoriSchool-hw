@@ -69,18 +69,13 @@ Not to brag, but useLocalStorage hook works flawlessly, all PWA features transfe
 
 ## HW9 - React Router, Redux
 -------------------------
-[This would have been so much easier](https://redux-offline.github.io/redux-offline/)
+Currently implementing [this library](https://redux-offline.github.io/redux-offline/)
 ### Done:
 * Installed react-router, configured it to only work in the Todo Task page, used HashRouter for GitHub-pages
 * Transferred the App component to routes (private and server)
 * Implemented search with URL queries
+* Set up Redux store with reducers (via redux-toolkit configureStore and createSlice)
 ### TODO:
-* REFACTOR TO THE PLANNED ARCHITECTURE:
-  1. remove loaders
-  2. extract Todo loadData()
-  3. write a Collector
-* Set up Redux store
-* Refactor API calls to use redux-thunk
 * Implement filtering by tags
 * Add edit task functionality with separate route
 * Look into synching data
@@ -103,30 +98,3 @@ A user should be able to edit an existing task. You can use the “New task” m
 4. Extra task - Add a synchronization mechanism between browser tabs - 2 points
 When the user opens the application in two browser tabs, the tasks are always in sync in both tabs so, for example, when the user removes, adds or edits a task in one tab, the same change happens to the second tab without refreshing it manually.
 There can be various approaches to achieve this result but in all cases it should be a purely frontend solution - don’t try to use any additional web server besides json-server and try to avoid additional server calls for data that is already on the client.
-
-
-### General idea of the ToDo app architecture:
-
-```
-+-----------------+  +-----------------+
-|   LocalStorage  |  |     Server      |
-+-----------------+  +-----------------+
-          |              .
-          |              .
-          v       await  v
-+--------------------------------------+
-|   Collector function/Service Worker  | - compares LS to recieved server data
-+--------------------------------------+
-          |      .
-          |      .  - send server data when ready, if needed
-          v      v
-    +-----------------+
-    |    App State    | - Redux lives here
-    +-----------------+
-             |   .
-             |   .
-             v   v
-    +-----------------+
-    |       View      |
-    +-----------------+
- ```
