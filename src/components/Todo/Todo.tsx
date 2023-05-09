@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { isPrivateContext } from '../../pages/ToDo/context/context';
 import { useLocation } from 'react-router';
 import { Form, Outlet, useSubmit } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../todoStore/hooks';
@@ -16,16 +17,8 @@ import Modal from './Modal/Modal';
 import TaskCreator from './taskCreator/taskCreator';
 import WeatherWidget from './Weather/WeatherWidget';
 
-import {
-	lastUpdatedManager,
-	tasksManager,
-} from '../../todoLogic/AppDataManagers';
+import { tasksManager } from '../../todoLogic/AppDataManagers';
 import DailyNotification from './DailyNotification/DailyNotification';
-import { isPrivateContext } from '../../pages/todo/context/context';
-import {
-	selectDailyLastShown,
-	selectDailyLastShownPrivate,
-} from '../../todoStore/daily';
 
 export default function Todo(
 	{ offlineInstance = false } /* : {
@@ -35,9 +28,6 @@ export default function Todo(
 	const isPrivate = useContext(isPrivateContext);
 	const submit = useSubmit();
 	const tasks = useAppSelector(isPrivate ? selectPrivateTasks : selectTasks);
-	const lastUpdated = useAppSelector(
-		isPrivate ? selectDailyLastShownPrivate : selectDailyLastShown
-	);
 	const dispatch = useAppDispatch();
 
 	const location = useLocation();
@@ -46,16 +36,25 @@ export default function Todo(
 	const [isOnline, setIsOnline] = useState(false);
 	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
 
-	const notcompletedItems = tasks.filter((item) => !item.isCompleted);
-	const completedItems = tasks.filter((item) => item.isCompleted);
+	useEffect(() => console.log('yeah, ', tasks), [tasks]);
 
 	const handleNewTask = (task: Task) => {
 		const tasksBeforeNew = tasks;
 		dispatch(addTask({ task, isPrivate }));
-		if (!isPrivate) {
+		if (isPrivate) {
+			tasksManager.newData(tasks);
+		} else {
 			tasksManager.serverOps
 				.addNewTask({ body: JSON.stringify(task) })
+				.then(() => {
+					if (!isOnline) {
+						setIsOnline(true);
+					}
+				})
 				.catch((err) => {
+					if (isOnline) {
+						setIsOnline(false);
+					}
 					//display 'no connection'
 					dispatch(setAllTasks({ tasks: tasksBeforeNew, isPrivate }));
 				});
@@ -65,37 +64,73 @@ export default function Todo(
 	const handleCheckbox = (id: string) => {
 		const tasksBeforeCheck = tasks;
 		dispatch(checkTask({ id, isPrivate }));
-		if (!isPrivate) {
-			tasksManager.serverOps.deleteTaskById({ params: id }).catch((err) => {
-				console.log(err);
-				dispatch(setAllTasks({ tasks: tasksBeforeCheck, isPrivate }));
-				alert('unable to update the server');
-			});
+		if (isPrivate) {
+			tasksManager.newData(tasks);
+		} else {
+			tasksManager.serverOps
+				.deleteTaskById({ params: id })
+				.then(() => {
+					if (!isOnline) {
+						setIsOnline(true);
+					}
+				})
+				.catch((err) => {
+					if (isOnline) {
+						setIsOnline(false);
+					}
+					dispatch(setAllTasks({ tasks: tasksBeforeCheck, isPrivate }));
+				});
 		}
 	};
 	const handleRemove = (id: string) => {
 		const tasksBeforeDelete = tasks;
 		dispatch(deleteTask({ id, isPrivate }));
-		if (!isPrivate) {
-			tasksManager.serverOps.deleteTaskById({ params: id }).catch((err) => {
-				console.log(err);
-				dispatch(setAllTasks({ tasks: tasksBeforeDelete, isPrivate }));
-				alert('unable to update the server');
-			});
+		if (isPrivate) {
+			tasksManager.newData(tasks);
+		} else {
+			tasksManager.serverOps
+				.deleteTaskById({ params: id })
+				.then(() => {
+					if (!isOnline) {
+						setIsOnline(true);
+					}
+				})
+				.catch((err) => {
+					if (isOnline) {
+						setIsOnline(false);
+					}
+					dispatch(setAllTasks({ tasks: tasksBeforeDelete, isPrivate }));
+				});
 		}
 	};
 
 	const loadItems = async () => {
-		console.log(tasksManager);
-		if (!isPrivate) {
-			dispatch(setAllTasks(await tasksManager.serverOps.getAllTasks()));
+		if (isPrivate) {
+			tasksManager
+				.getData()
+				.then((data) => {
+					console.log(data);
+					dispatch(setAllTasks(data));
+				})
+				.catch((err) => console.log(err));
+		} else {
+			const tasks = await tasksManager.serverOps.getAllTasks();
+			dispatch(setAllTasks({ tasks, isPrivate }));
 		}
 	};
+
 	useEffect(() => {
-		if (!isPrivate) {
-			loadItems();
-		}
+		loadItems();
 	}, []);
+
+	const notcompletedItems = useMemo(
+		() => tasks.filter((item) => !item.isCompleted),
+		[tasks, q]
+	);
+	const completedItems = useMemo(
+		() => tasks.filter((item) => item.isCompleted),
+		[tasks, q]
+	);
 
 	return (
 		<div className="main">

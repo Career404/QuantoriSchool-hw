@@ -26,6 +26,7 @@ const router = createHashRouter(
 						<Todo offlineInstance />
 					</isPrivateContext.Provider>
 				}
+				errorElement={<NotFound />}
 			>
 				<Route path="/private/*" element={<div>Hello there!</div>} />
 			</Route>
@@ -36,6 +37,7 @@ const router = createHashRouter(
 						<Todo />
 					</isPrivateContext.Provider>
 				}
+				errorElement={<NotFound />}
 			>
 				<Route path="/server/*" element={<div>Hello there!</div>} />
 			</Route>

@@ -39,11 +39,9 @@ export const tasksSlice = createSlice({
 			state,
 			action: PayloadAction<{ tasks: Task[]; isPrivate: boolean }>
 		) => {
-			if (action.payload.isPrivate) {
-				state.privateTasks = action.payload.tasks;
-			} else {
-				state.tasks = action.payload.tasks;
-			}
+			action.payload.isPrivate
+				? (state.privateTasks = action.payload.tasks)
+				: (state.tasks = action.payload.tasks);
 		},
 		addTask: (
 			state,
@@ -69,8 +67,13 @@ export const tasksSlice = createSlice({
 			state,
 			action: PayloadAction<{ id: string; isPrivate: boolean }>
 		) => {
-			const tasks = action.payload.isPrivate ? state.privateTasks : state.tasks;
-			state.tasks = tasks.filter((task) => task.id !== action.payload.id);
+			action.payload.isPrivate
+				? (state.privateTasks = state.privateTasks.filter(
+						(task) => task.id !== action.payload.id
+				  ))
+				: (state.tasks = state.tasks.filter(
+						(task) => task.id !== action.payload.id
+				  ));
 		},
 	},
 });

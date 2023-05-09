@@ -1,11 +1,11 @@
-import { GENERIC_USER_ID } from '../utility/auth/auth';
-
 interface httpRequest {
 	//? add typing with generics to body
 	url: string;
 	method?: string;
 	methodAlias?: string;
 	headers?: Record<string, string>;
+	cacheResponse?: boolean;
+	responseCallback?: (data: any) => void;
 }
 interface serverFunctionProps {
 	params?: string;
@@ -15,22 +15,9 @@ interface serverFunctionProps {
 interface StorageManagerOptions {
 	id: string;
 	server?: httpRequest[];
-	localStorage?: boolean;
-	defaultData?: any;
 }
 
-//! any?
-const localStorable = (id: string) => {
-	const set = (newData: any) => {
-		localStorage.setItem(id, JSON.stringify(newData));
-	};
-	const get = () => JSON.parse(localStorage.getItem(id) ?? 'null');
-	return { set, get };
-};
-
-function createServerFunction(
-	request: httpRequest
-): (serverFunctionProps?: serverFunctionProps) => Promise<any> {
+function createServerFunction(request: httpRequest) {
 	const { url, method, headers } = request;
 	return async function (serverFunctionProps?: serverFunctionProps) {
 		const { body, params } = serverFunctionProps ?? {};
@@ -38,48 +25,79 @@ function createServerFunction(
 		const response = await fetch(fullUrl, {
 			method,
 			headers: headers ?? { 'Content-Type': 'application/json' },
-			body: body ? JSON.stringify(body) : undefined,
+			body: body ? body : undefined,
 		});
 		if (!response.ok) {
 			throw new Error(`server failed to ${method} ${url}`);
 		}
-		return response.json();
+		const data = await response.json();
+		return data;
 	};
-}
-
-function serverStorable(server: httpRequest[]) {
-	const serverOps: Record<string, (a?: serverFunctionProps) => Promise<any>> =
-		{};
-	for (const request of server) {
-		request.method = request.method || 'GET';
-		const alias = request.methodAlias ?? request.method.toLowerCase();
-		serverOps[alias] = createServerFunction(request);
-	}
-	return serverOps;
 }
 
 export default class DataManager {
 	private id: string;
-	currentData: any;
-	localStorageOps?: { set: (newData: any) => void; get: () => any };
-	serverOps: Record<string, (a?: serverFunctionProps) => Promise<any>> = {};
+	serverOps: Record<
+		string,
+		(serverFunctionProps?: serverFunctionProps) => Promise<any>
+	> = {};
+	newData = (data: any, name?: string) => {
+		localStorage.setItem(name || this.id, JSON.stringify(data));
+	};
+	getData = async (name?: string) =>
+		await JSON.parse(
+			localStorage.getItem(name || this.id) ??
+				`{
+			"title": "No active tasks",
+			"isCompleted": false,
+			"dateDueJson": "2023-04-20T00:00:00.000Z",
+			"tag": "health",
+			"id": "1682004086244",
+			"dateCreated": "2023-04-20T00:00:00.000Z",
+			"lastUpdated": "1682004086244"
+		}`
+		);
 
 	constructor(options: StorageManagerOptions) {
 		this.id = options.id;
-		this.currentData = options.defaultData ?? undefined;
-		if (options.localStorage) {
-			this.localStorageOps = localStorable(options.id);
-		}
 		if (options.server) {
-			this.serverOps = serverStorable(options.server) || {};
+			for (const request of options.server) {
+				request.method = request.method || 'GET';
+				const alias = request.methodAlias ?? request.method.toLowerCase();
+				const serverFunction = createServerFunction(request);
+				if (request.cacheResponse) {
+					this.serverOps[alias] = async () => {
+						let data;
+						try {
+							data = await serverFunction();
+							this.newData(data, this.id + '-' + alias);
+						} catch (err) {
+							console.log(err);
+							data = JSON.parse(localStorage.getItem(options.id) ?? 'null');
+						}
+						if (request.responseCallback) {
+							request.responseCallback(data);
+						}
+						return data;
+					};
+				} else {
+					this.serverOps[alias] = async () => {
+						try {
+							const data = await serverFunction();
+							if (request.responseCallback) {
+								request.responseCallback(data);
+							}
+							return data;
+						} catch (err) {
+							console.log(err);
+						}
+					};
+				}
+			}
 		}
 	}
-	current(): any {
-		return this.currentData;
-	}
-	getFilteredData = (callback: (item: any) => any) =>
-		this.currentData.filter(callback);
 }
+//const get = () =>
 
 /* export async function todoLoader({ request }: LoaderFunctionArgs) {
 	const url = new URL(request.url);
@@ -109,15 +127,6 @@ export function getItems(userId: string, q?: string | null) {
 				item.title.toLowerCase().includes(q.toLowerCase())
 		  )
 		: result;
-}
-export function setItems(userId: string, updates: Object) {
-	localStorage.setItem(`${userId}-Items`, JSON.stringify(updates));
-}
-export function getLastUpdated(userId: string) {
-	return localStorage.getItem(`${userId}-lastUpdated`);
-}
-export function setLastUpdated(userId: string, date = Date.now()) {
-	localStorage.setItem(`${userId}-lastUpdated`, date.toString());
 }
 
 

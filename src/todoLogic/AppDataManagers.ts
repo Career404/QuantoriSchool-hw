@@ -1,17 +1,8 @@
 import { AUTH } from '../utility/auth/auth';
 import DataManager from './DataManager';
 
-export const lastUpdatedManager = new DataManager({
-	id: AUTH + '-lastUpdated',
-	server: [
-		{ url: 'http://localhost:3004/lastUpdated' },
-		{
-			url: 'http://localhost:3004/lastUpdated',
-			method: 'PUT',
-			methodAlias: 'setToNow',
-		},
-	],
-	localStorage: true,
+export const dailyManager = new DataManager({
+	id: AUTH + '-daily',
 });
 
 export const tasksManager = new DataManager({
@@ -20,6 +11,7 @@ export const tasksManager = new DataManager({
 		{
 			url: 'http://localhost:3004/tasks',
 			methodAlias: 'getAllTasks',
+			cacheResponse: true,
 		},
 		{
 			url: 'http://localhost:3004/tasks',
@@ -32,5 +24,4 @@ export const tasksManager = new DataManager({
 			method: 'DELETE',
 		},
 	],
-	localStorage: true,
 });

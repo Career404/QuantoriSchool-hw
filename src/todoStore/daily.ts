@@ -1,17 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
+import { AUTH, GENERIC_USER_ID } from '../utility/auth/auth';
 
 //! add typing to prefernces
 
 interface DailyStore {
-	lastShown: string;
+	lastShown: number;
 	preferences: Record<string, any>;
 }
 
 const initialState: { server: DailyStore; private: DailyStore } = {
 	server: {
-		lastShown: '0',
+		//! THIS MUST BE DONE BY DATAMANAGER
+		lastShown: Number(localStorage.getItem(AUTH + '-daily')) || 0,
 		preferences: {
 			show: true,
 			showAsModal: true,
@@ -19,7 +21,7 @@ const initialState: { server: DailyStore; private: DailyStore } = {
 		},
 	},
 	private: {
-		lastShown: '0',
+		lastShown: Number(localStorage.getItem(GENERIC_USER_ID + '-daily')) || 0,
 		preferences: {
 			show: true,
 			showAsModal: true,
@@ -34,7 +36,7 @@ export const tasksSlice = createSlice({
 	reducers: {
 		updateDailyLastShown: (
 			state,
-			action: PayloadAction<{ lastShown: string; isPrivate: boolean }>
+			action: PayloadAction<{ lastShown: number; isPrivate: boolean }>
 		) => {
 			if (action.payload.isPrivate) {
 				state.private.lastShown = action.payload.lastShown;

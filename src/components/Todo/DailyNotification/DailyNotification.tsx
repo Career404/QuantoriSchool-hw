@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { isPrivateContext } from '../../../pages/todo/context/context';
+import { isPrivateContext } from '../../../pages/ToDo/context/context';
 import {
 	selectDailyLastShown,
 	selectDailyLastShownPrivate,
@@ -25,21 +25,25 @@ export default function DailyNotification({ tasks }: { tasks: Task[] }) {
 			new Date(task.dateDueJson).toLocaleDateString() ===
 				today.toLocaleDateString() && !task.isCompleted
 	);
+
 	const showDaily =
 		Number(showDailyDate) <= Date.now() - ONE_DAY_IN_MS &&
 		todaysTasks.length > 0;
 
-	const closeDaily = () =>
-		dispatch(
-			updateDailyLastShown({ lastShown: Date.now().toString(), isPrivate })
-		);
-	const showDailyNow = () =>
+	const closeDaily = () => {
+		dispatch(updateDailyLastShown({ lastShown: Date.now(), isPrivate }));
+	};
+
+	//this function has no business setting localStorage only to immediately reset it again (from a user perspective, it seems useless)
+	const showDailyNow = () => {
+		const dateToShowNow = Date.now() - ONE_DAY_IN_MS;
 		dispatch(
 			updateDailyLastShown({
-				lastShown: (Date.now() - ONE_DAY_IN_MS).toString(),
+				lastShown: dateToShowNow,
 				isPrivate,
 			})
 		);
+	};
 
 	return (
 		<>
