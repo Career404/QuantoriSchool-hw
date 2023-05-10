@@ -28,6 +28,9 @@ function Main() {
 						{sound ? <HiSpeakerWave /> : <HiSpeakerXMark />}
 					</div>
 				</li>
+				<li>
+					<a href="src\pages\todo\todo.html">ToDo App</a>
+				</li>
 			</ol>
 			{showDVD && (
 				<DVDOverlay sound={sound} clickCallback={() => setShowDVD(false)} />

@@ -11,6 +11,7 @@ export default defineConfig({
 			input: {
 				main: resolve(__dirname, 'index.html'),
 				phone: resolve(__dirname, 'src/pages/1phone/1phone.html'),
+				todo: resolve(__dirname, 'src/pages/todo/todo.html'),
 			},
 		},
 	},
