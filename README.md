@@ -86,11 +86,4 @@ All filtering exists only in the View
 ### TODO:
 * Add edit task functionality with separate route
 * Add redux-thunk for server fetches
-* Work on syncing the stores in separate sessions (with store.subscribe()?)
-
-1. Add a missing functionality - edit tasks
-A user should be able to edit an existing task. You can use the “New task” modal window for editing. This part of the homework doesn’t include working with the router, it is just some additional functionality. - 1 point
-
-4. Extra task - Add a synchronization mechanism between browser tabs - 2 points
-When the user opens the application in two browser tabs, the tasks are always in sync in both tabs so, for example, when the user removes, adds or edits a task in one tab, the same change happens to the second tab without refreshing it manually.
-There can be various approaches to achieve this result but in all cases it should be a purely frontend solution - don’t try to use any additional web server besides json-server and try to avoid additional server calls for data that is already on the client.
+* Work on syncing the stores in separate sessions (with store.subscribe(), [web worker](https://www.youtube.com/watch?v=tq4vXRT7TU0&ab_channel=ReactConf) or redux-state-sync?)
