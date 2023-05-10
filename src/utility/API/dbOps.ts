@@ -1,4 +1,8 @@
-import { AUTH } from '../utility/auth/auth';
+const GET = 'GET';
+const POST = 'POST';
+const PUT = 'PUT';
+const DELETE = 'DELETE';
+type HTTPMETHODS = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 //* Every function needs more testing (JSON-server occasionally crashes with EADDRINUSE)
 // Possibly too many calls at once? click fast to replicate
@@ -36,15 +40,22 @@ export async function getLastUpdatedServer() {
 	}
 } */
 
-export async function getAllTasks() {
-	const response = await fetch('http://localhost:3004/tasks');
-	if (!response.ok) {
-		throw new Error('server failed to load ALL TASKS');
+export async function addNewTask(task: Task) {
+	try {
+		const response = await fetch('http://localhost:3004/tasks', {
+			method: POST,
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(task),
+		});
+		if (!response.ok) {
+			throw new Error('server failed to ADD NEW TASK');
+		}
+		return await response.json();
+	} catch (err) {
+		throw { message: 'failed addNewTask', err };
 	}
-	const tasks = await response.json();
-	return tasks;
 }
-export async function getAllTasksEffect() {}
+
 /* export async function updateAllTasks(taskArray: Task[]) {
 	//!
 	//* it's a mess
@@ -80,21 +91,6 @@ export async function getAllTasksEffect() {}
 } */
 
 /*
-export async function addNewTask(task: Task) {
-	try {
-		const response = await fetch('http://localhost:3004/tasks', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(task),
-		});
-		if (!response.ok) {
-			throw new Error('server failed to ADD NEW TASK');
-		}
-		return await response.json();
-	} catch (err) {
-		throw { message: 'failed addNewTask', err };
-	}
-}
 export async function deleteTaskById(id: string) {
 	try {
 		const response = await fetch(`http://localhost:3004/tasks/${id}`, {

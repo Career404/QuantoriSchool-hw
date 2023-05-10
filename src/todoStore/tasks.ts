@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
+import { addNewTaskEffect } from '../utility/API/dbOps';
 
 const initialState: { tasks: Task[]; privateTasks: Task[] } = {
 	tasks: [
@@ -28,120 +29,53 @@ const initialState: { tasks: Task[]; privateTasks: Task[] } = {
 };
 // 2 separate stores seems to be a better solution, but it's not recommended by Redux team and absolutely everybody else
 // https://stackoverflow.com/questions/33619775/redux-multiple-stores-why-not
-//? Make 'private' radically simpler, remove Redux store and so on
+// Though here it sataes otherwise: https://redux.js.org/usage/isolating-redux-sub-apps
 
 export const tasksSlice = createSlice({
 	name: 'tasks',
 	initialState,
 	reducers: {
-		// Redux Toolkit (Immer) allows 'mutating' the reducers.
-		initTodo: {
-			reducer(state, action: PayloadAction<{ isPrivate: boolean }>) {
-				console.log(state);
-			},
-			prepare(payload: { isPrivate: boolean }) {
-				const newPayload = payload.isPrivate
-					? { payload }
-					: {
-							payload,
-							meta: {
-								offline: {},
-							},
-					  };
-				return newPayload;
-			},
+		// Redux Toolkit (Immer) allows mutating in reducers.
+		initTodo: (state, action: PayloadAction<{ isPrivate: boolean }>) => {
+			console.log(state);
 		},
-		setAllTasks: {
-			reducer(
-				state,
-				action: PayloadAction<{ tasks: Task[]; isPrivate: boolean }>
-			) {
-				action.payload.isPrivate
-					? (state.privateTasks = action.payload.tasks)
-					: (state.tasks = action.payload.tasks);
-			},
-			prepare(payload: { tasks: Task[]; isPrivate: boolean }) {
-				const newPayload = payload.isPrivate
-					? { payload }
-					: {
-							payload,
-							meta: {
-								offline: {},
-							},
-					  };
-				return newPayload;
-			},
+		setAllTasks: (
+			state,
+			action: PayloadAction<{ tasks: Task[]; isPrivate: boolean }>
+		) => {
+			action.payload.isPrivate
+				? (state.privateTasks = action.payload.tasks)
+				: (state.tasks = action.payload.tasks);
 		},
-		addTask: {
-			reducer(
-				state,
-				action: PayloadAction<{ task: Task; isPrivate: boolean }>
-			) {
-				action.payload.isPrivate
-					? state.privateTasks.push(action.payload.task)
-					: state.tasks.push(action.payload.task);
-			},
-			prepare(payload: { task: Task; isPrivate: boolean }) {
-				const newPayload = payload.isPrivate
-					? { payload }
-					: {
-							payload,
-							meta: {
-								offline: {},
-							},
-					  };
-				return newPayload;
-			},
+		addTask: (
+			state,
+			action: PayloadAction<{ task: Task; isPrivate: boolean }>
+		) => {
+			action.payload.isPrivate
+				? state.privateTasks.push(action.payload.task)
+				: state.tasks.push(action.payload.task);
 		},
-		checkTask: {
-			reducer(
-				state,
-				action: PayloadAction<{ id: string; isPrivate: boolean }>
-			) {
-				const tasks = action.payload.isPrivate
-					? state.privateTasks
-					: state.tasks;
-				const task = tasks.find((task) => task.id === action.payload.id);
-				if (task) {
-					task.isCompleted = !task.isCompleted;
-				}
-			},
-			prepare(payload: { id: string; isPrivate: boolean }) {
-				const newPayload = payload.isPrivate
-					? { payload }
-					: {
-							payload,
-							meta: {
-								offline: {},
-							},
-					  };
-				return newPayload;
-			},
+		checkTask: (
+			state,
+			action: PayloadAction<{ id: string; isPrivate: boolean }>
+		) => {
+			const tasks = action.payload.isPrivate ? state.privateTasks : state.tasks;
+			const task = tasks.find((task) => task.id === action.payload.id);
+			if (task) {
+				task.isCompleted = !task.isCompleted;
+			}
 		},
-		deleteTask: {
-			reducer(
-				state,
-				action: PayloadAction<{ id: string; isPrivate: boolean }>
-			) {
-				action.payload.isPrivate
-					? (state.privateTasks = state.privateTasks.filter(
-							(task) => task.id !== action.payload.id
-					  ))
-					: (state.tasks = state.tasks.filter(
-							(task) => task.id !== action.payload.id
-					  ));
-			},
-			prepare(payload: { id: string; isPrivate: boolean }) {
-				const newPayload = payload.isPrivate
-					? { payload }
-					: {
-							payload,
-							meta: {
-								offline: {},
-							},
-					  };
-				return newPayload;
-			},
+		deleteTask: (
+			state,
+			action: PayloadAction<{ id: string; isPrivate: boolean }>
+		) => {
+			action.payload.isPrivate
+				? (state.privateTasks = state.privateTasks.filter(
+						(task) => task.id !== action.payload.id
+				  ))
+				: (state.tasks = state.tasks.filter(
+						(task) => task.id !== action.payload.id
+				  ));
 		},
 	},
 });
