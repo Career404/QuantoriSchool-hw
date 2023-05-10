@@ -69,31 +69,27 @@ Not to brag, but useLocalStorage hook works flawlessly, all PWA features transfe
 
 ## HW9 - React Router, Redux
 -------------------------
-Currently implementing [this library](https://redux-offline.github.io/redux-offline/)
+Redux, with all the infrastructure that was born of it, and being opinionated on the data flow and other things, was not too easy to get a grip on. Plus, marrying Redux Toolkit with some of those (old and unmaintained) libraries was quite a headache
+React-router was a breese, so that's cool.
+My original idea of separating all the data management (server and localStorage) into a separate entity was a total waste of time, unfortunately. I wanted to write basically [this library](https://www.npmjs.com/package/redux-offline), but with a hard time constraint, no experience of making libraries beforehand and with my tiny junior brain. It felt nice while it lasted, so I'll probably come back to this idea one day
+
+Store is saved in it's entirety in localStorage
+All filtering exists only in the View
 ### Done:
 * Installed react-router, configured it to only work in the Todo Task page, used HashRouter for GitHub-pages
 * Transferred the App component to routes (private and server)
-* Implemented search with URL queries
+* Implemented search with URL queries - the feature is broken by introducing redux
 * Set up Redux store with reducers (via redux-toolkit configureStore and createSlice)
+* Used redux-persist to save and load Redux store to and from localStorage
+* Fixed search feature
+* Implemented filtering by tags with URL queries
 ### TODO:
-* Implement filtering by tags
 * Add edit task functionality with separate route
-* Look into synching data
+* Add redux-thunk for server fetches
+* Work on syncing the stores in separate sessions (with store.subscribe()?)
 
-Main task
-Improve To-Do application by adding Redux store and react-router:
-
-1. Use Redux to store tasks
-Tasks are handled by Redux store - 1 point
-Use redux-thunk to download from server - 1 point (optional)
-1. Use react-router and add app paths
-Implement tags - `health`, `work`, `home`, `other`. (see the design in Figma). The list of tags is predefined and not editable. Implement filtering tasks by a tag (The UI for filtering is missing in Figma and up to you). When users select a tag they should see only tasks with that tag and the URI should show the selected tag (e.g. localhost:3000/tasks/home). When a user opens a page localhost:3000/tasks/home they should see only tasks with `home` tag. - 1 point
-When the user searches for tasks by a substring the URI should change accordingly. Use query string - localhost:3000/tasks?q=search-term. When user opens url with a query string the search input field should be filled with query and the task list should be filtered - 1 point
-Note that searching by substring should preserve the state when the user refreshes the page and it should work correctly even with strings containing symbols “ : / ? & = # ” - 1 point
-For the sake of simplicity you can make mutually exclusive searching for tasks by a substring and filtering tasks by a tag - when tasks are filtered by a tag switch off searching and vice versa. If you implement simultaneous filtering and searching you will get 1 point. (optional)
 1. Add a missing functionality - edit tasks
 A user should be able to edit an existing task. You can use the “New task” modal window for editing. This part of the homework doesn’t include working with the router, it is just some additional functionality. - 1 point
-
 
 4. Extra task - Add a synchronization mechanism between browser tabs - 2 points
 When the user opens the application in two browser tabs, the tasks are always in sync in both tabs so, for example, when the user removes, adds or edits a task in one tab, the same change happens to the second tab without refreshing it manually.
