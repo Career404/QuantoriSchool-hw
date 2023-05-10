@@ -136,11 +136,11 @@ Tabs
 	justify-content: space-between;
 	gap: min(20px, 2vw);
 }
-.search-bar .search-form {
+.search-form {
 	height: 100%;
 	flex: 1 1 85%;
 }
-.search-bar .search-input {
+.search-input {
 	height: 100%;
 	width: 100%;
 	border-radius: 12px;
@@ -151,7 +151,7 @@ Tabs
 	font-size: 1rem;
 	font-weight: 500;
 }
-.search-bar .search-button {
+.search-button {
 	flex: 1 1 15%;
 	min-width: 90px;
 	border-radius: 12px;
@@ -239,7 +239,7 @@ Tabs
 		flex-flow: column nowrap;
 		margin: 0 0 88px;
 	}
-	.search-bar input[type='text'] {
-		min-height: 54px;
+	.search-input {
+		height: 54px;
 	}
 }

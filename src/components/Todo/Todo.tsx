@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Form, Outlet, useLoaderData, useSubmit } from 'react-router-dom';
+import { Form, useLoaderData, useSubmit } from 'react-router-dom';
 import { LoaderReturnType } from '../../pages/ToDo/loaders/todoLoader';
 import { useAppDispatch, useAppSelector } from '../../todoStore/hooks';
 
@@ -12,6 +12,7 @@ import {
 	addTask,
 	checkTask,
 	deleteTask,
+	editTask,
 	selectTasks,
 } from '../../todoStore/tasks';
 import { useNavigate, useParams } from 'react-router';
@@ -36,6 +37,9 @@ export default function Todo({ offlineInstance = false }) {
 	const [isOnline, setIsOnline] = useState(false);
 	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
 	const [editTaskIsOpen, setEditTaskIsOpen] = useState(false);
+	const [selectedForEdit, setSelectedForEdit] = useState(
+		undefined as Task | undefined
+	);
 
 	const handleTagSelect = (tag: AvailableTags | undefined) =>
 		/* navigate(
@@ -51,18 +55,37 @@ export default function Todo({ offlineInstance = false }) {
 			navigate(baseRoute + tagParam + queryParam);
 		};
 
-	const handleNewTask = (task: Task) => {
-		const tasksBeforeNew = tasks;
+	const handleNewTask = (
+		task: Task = {
+			id: '',
+			title: '',
+			tag: '',
+			isCompleted: false,
+			dateDueJson: Date.now().toString(),
+		}
+	) => {
+		//const tasksBeforeNew = tasks;
 		dispatch(addTask(taskStoreName)({ task }));
 	};
 
 	const handleCheckbox = (id: string) => {
-		const tasksBeforeCheck = tasks;
+		//const tasksBeforeCheck = tasks;
 		dispatch(checkTask(taskStoreName)({ id }));
 	};
 	const handleRemove = (id: string) => {
-		const tasksBeforeDelete = tasks;
+		//const tasksBeforeDelete = tasks;
 		dispatch(deleteTask(taskStoreName)({ id }));
+	};
+
+	const handleClickEdit = (task: Task) => {
+		setSelectedForEdit(task);
+		console.log(selectedForEdit);
+		setEditTaskIsOpen(true);
+	};
+
+	const handleEditTask = (task?: Task) => {
+		console.log('edited');
+		dispatch(editTask(taskStoreName)({ task }));
 	};
 
 	/* 	const loadItems = async () => {
@@ -127,8 +150,9 @@ export default function Todo({ offlineInstance = false }) {
 					<ListItem
 						key={item.id}
 						item={item}
-						clickCheckbox={() => handleCheckbox(item.id)}
-						removeItem={() => handleRemove(item.id)}
+						clickCheckbox={handleCheckbox}
+						clickRemove={handleRemove}
+						clickEdit={() => handleClickEdit(item)}
 					/>
 				))}
 			</ul>
@@ -151,6 +175,16 @@ export default function Todo({ offlineInstance = false }) {
 					<TaskCreator
 						onCancel={() => setNewTaskIsOpen(false)}
 						onAccept={handleNewTask}
+					/>
+				</Modal>
+			)}
+			{editTaskIsOpen && (
+				<Modal onClose={() => setEditTaskIsOpen(false)}>
+					<h3>Edit Task</h3>
+					<TaskCreator
+						onCancel={() => setEditTaskIsOpen(false)}
+						onAccept={handleEditTask}
+						editTask={selectedForEdit}
 					/>
 				</Modal>
 			)}

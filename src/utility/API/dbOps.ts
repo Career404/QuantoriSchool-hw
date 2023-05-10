@@ -10,7 +10,7 @@ type HTTPMETHODS = 'GET' | 'POST' | 'PUT' | 'DELETE';
 // JSON-server to blame? no EADDRINUSE after the addition of --host flag
 
 //these catch blocks are only here to stop the error propagation to where the functions are called
-/*
+
 export async function getLastUpdatedServer() {
 	try {
 		const response = await fetch('http://localhost:3004/lastUpdated');
@@ -23,8 +23,8 @@ export async function getLastUpdatedServer() {
 		throw { message: 'failed getLastUpdatedServer', err };
 	}
 }
- */
-/* export async function setLastUpdatedServer(date: number) {
+
+export async function setLastUpdatedServer(date: number) {
 	try {
 		const response = await fetch(`http://localhost:3004/lastUpdated`, {
 			method: 'PUT',
@@ -38,7 +38,19 @@ export async function getLastUpdatedServer() {
 	} catch (err) {
 		throw { message: 'failed setLastUpdatedServer', err };
 	}
-} */
+}
+
+export async function getAllTasks() {
+	try {
+		const response = await fetch('http://localhost:3004/tasks');
+		if (!response.ok) {
+			throw new Error('server failed to GET ALL TASK');
+		}
+		return await response.json();
+	} catch (err) {
+		throw { message: 'failed getAllTasks', err };
+	}
+}
 
 export async function addNewTask(task: Task) {
 	try {
@@ -56,7 +68,7 @@ export async function addNewTask(task: Task) {
 	}
 }
 
-/* export async function updateAllTasks(taskArray: Task[]) {
+export async function updateAllTasks(taskArray: Task[]) {
 	//!
 	//* it's a mess
 	try {
@@ -88,9 +100,8 @@ export async function addNewTask(task: Task) {
 	} catch (err) {
 		throw { message: 'failed getAllTasks', err };
 	}
-} */
+}
 
-/*
 export async function deleteTaskById(id: string) {
 	try {
 		const response = await fetch(`http://localhost:3004/tasks/${id}`, {
@@ -119,4 +130,3 @@ export async function updateTaskById(id: string, updates: Task) {
 		throw { message: 'failed updateTaskById', err };
 	}
 }
- */

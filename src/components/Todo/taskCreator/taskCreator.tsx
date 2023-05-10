@@ -3,21 +3,32 @@ import TagSelector, { AvailableTags } from '../TagSelector/TagSelector';
 
 import './TaskCreator.css';
 
+interface TaskCreatorProps {
+	onCancel: () => void;
+	onAccept: (task?: Task) => void;
+	editTask?: Task;
+}
+
 export default function TaskCreator({
 	onCancel = () => {
 		console.log('No close behaviour specified');
 	},
-	onAccept = (placeholder?: any) => {
+	onAccept = () => {
 		console.log('No accept behaviour specified');
 	},
-}) {
-	const [newTaskTitle, setNewTaskTitle] = useState('');
+	editTask,
+}: TaskCreatorProps) {
+	const [newTaskTitle, setNewTaskTitle] = useState(editTask?.title || '');
+	const [taskDate, setTaskDate] = useState(
+		editTask?.dateDueJson.slice(0, 10) || new Date().toJSON().slice(0, 10)
+	);
 
-	let selectedTag: AvailableTags = 'health';
-	let selectedDate: string = new Date().toJSON().slice(0, 10);
+	const [selectedTag, setSelectedTag] = useState(
+		(editTask?.tag as AvailableTags) ?? 'health'
+	);
 
 	const tagClickHandler = (tag: AvailableTags) => {
-		selectedTag = tag;
+		setSelectedTag(tag);
 	};
 
 	return (
@@ -30,6 +41,7 @@ export default function TaskCreator({
 					placeholder="Task Title"
 					minLength={1}
 					autoFocus
+					value={newTaskTitle}
 					onChange={(e) => {
 						setNewTaskTitle(e.target.value);
 					}}
@@ -37,14 +49,14 @@ export default function TaskCreator({
 				<div className="newTask-more">
 					<TagSelector
 						onTagSelect={(tag) => tagClickHandler(tag!)}
-						defaultTag="health"
+						defaultTag={selectedTag}
 					/>
 					<input
 						type="date"
 						className="datePicker"
-						defaultValue={selectedDate}
+						defaultValue={taskDate}
 						onChange={(e) => {
-							selectedDate = e.target.value;
+							setTaskDate(e.target.value);
 						}}
 					/>
 				</div>
@@ -56,18 +68,20 @@ export default function TaskCreator({
 				<button
 					className="button agree-button"
 					onClick={() => {
-						onAccept({
+						const newTask = {
 							title: newTaskTitle,
 							isCompleted: false,
-							dateDueJson: new Date(selectedDate).toJSON(),
+							dateDueJson: new Date(taskDate).toJSON(),
 							tag: selectedTag,
 							id: new Date().getTime().toString(),
-						});
+						};
+						console.log(newTask);
+						onAccept(newTask);
 						onCancel();
 					}}
 					disabled={!Boolean(newTaskTitle)}
 				>
-					Add Task
+					{editTask ? 'Save changes' : 'Add Task'}
 				</button>
 			</div>
 		</>

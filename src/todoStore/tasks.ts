@@ -49,6 +49,14 @@ const createTasksSlice = (sliceName: string, initialState: initialState) => {
 			addTask: (state, action: PayloadAction<{ task: Task }>) => {
 				state.tasks.push(action.payload.task);
 			},
+			editTask: (state, action: PayloadAction<{ task: Task }>) => {
+				const index = state.tasks.findIndex(
+					(task) => task.id === action.payload.task.id
+				);
+				if (index !== -1) {
+					state.tasks[index] = action.payload.task;
+				}
+			},
 			checkTask: (state, action: PayloadAction<{ id: string }>) => {
 				const task = state.tasks.find((task) => task.id === action.payload.id);
 				if (task) {
@@ -73,6 +81,8 @@ export const setAllTasks = (taskName: string) =>
 	tasksByName[taskName].actions.setAllTasks;
 export const addTask = (taskName: string) =>
 	tasksByName[taskName].actions.addTask;
+export const editTask = (taskName: string) =>
+	tasksByName[taskName].actions.editTask;
 export const checkTask = (taskName: string) =>
 	tasksByName[taskName].actions.checkTask;
 export const deleteTask = (taskName: string) =>
