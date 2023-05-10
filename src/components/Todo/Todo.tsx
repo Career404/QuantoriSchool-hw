@@ -2,32 +2,27 @@ import { useEffect, useMemo, useState } from 'react';
 import { Form, Outlet, useLoaderData, useSubmit } from 'react-router-dom';
 import { LoaderReturnType } from '../../pages/ToDo/loaders/todoLoader';
 import { useAppDispatch, useAppSelector } from '../../todoStore/hooks';
-import {
-	addTask,
-	checkTask,
-	deleteTask,
-	initTodo,
-	selectPrivateTasks,
-	selectTasks,
-	setAllTasks,
-} from '../../todoStore/tasks';
-
-import { store } from '../../todoStore/store';
 
 import ListItem from './ListItem/ListItem';
 import Modal from './Modal/Modal';
 import TaskCreator from './taskCreator/taskCreator';
 import DailyNotification from './DailyNotification/DailyNotification';
 import WeatherWidget from './Weather/WeatherWidget';
+import {
+	addTask,
+	checkTask,
+	deleteTask,
+	selectTasks,
+} from '../../todoStore/tasks';
 
 export default function Todo(
 	{ offlineInstance = false } /* : {
 	offlineInstance?: boolean;
 } */
 ) {
+	const taskStoreName = offlineInstance ? 'privateTasks' : 'tasks';
 	const { q, url } = useLoaderData() as Awaited<ReturnType<LoaderReturnType>>;
-	const isPrivate = offlineInstance;
-	const tasks = useAppSelector(isPrivate ? selectPrivateTasks : selectTasks);
+	const tasks = useAppSelector((state) => selectTasks(taskStoreName)(state));
 	const submit = useSubmit();
 	const dispatch = useAppDispatch();
 	useEffect(() => {
@@ -39,16 +34,16 @@ export default function Todo(
 
 	const handleNewTask = (task: Task) => {
 		const tasksBeforeNew = tasks;
-		dispatch(addTask({ task, isPrivate }));
+		dispatch(addTask(taskStoreName)({ task }));
 	};
 
 	const handleCheckbox = (id: string) => {
 		const tasksBeforeCheck = tasks;
-		dispatch(checkTask({ id, isPrivate }));
+		dispatch(checkTask(taskStoreName)({ id }));
 	};
 	const handleRemove = (id: string) => {
 		const tasksBeforeDelete = tasks;
-		dispatch(deleteTask({ id, isPrivate }));
+		dispatch(deleteTask(taskStoreName)({ id }));
 	};
 
 	/* 	const loadItems = async () => {

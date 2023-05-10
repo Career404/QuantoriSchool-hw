@@ -1,6 +1,5 @@
 import {
 	selectDailyLastShown,
-	selectDailyLastShownPrivate,
 	updateDailyLastShown,
 } from '../../../todoStore/daily';
 import { useAppDispatch, useAppSelector } from '../../../todoStore/hooks';
@@ -16,8 +15,9 @@ export default function DailyNotification({
 	tasks: Task[];
 	isPrivate?: boolean;
 }) {
-	const showDailyDate = useAppSelector(
-		isPrivate ? selectDailyLastShownPrivate : selectDailyLastShown
+	const dailyStoreName = isPrivate ? 'privateDaily' : 'daily';
+	const showDailyDate = useAppSelector((state) =>
+		selectDailyLastShown(dailyStoreName)(state)
 	);
 	const dispatch = useAppDispatch();
 
@@ -34,14 +34,16 @@ export default function DailyNotification({
 		todaysTasks.length > 0;
 
 	const closeDaily = () => {
-		dispatch(updateDailyLastShown({ lastShown: Date.now(), isPrivate }));
+		dispatch(
+			updateDailyLastShown(dailyStoreName)({ lastShown: Date.now(), isPrivate })
+		);
 	};
 
 	//this function has no business setting localStorage only to immediately reset it again (from a user perspective, it seems useless)
 	const showDailyNow = () => {
 		const dateToShowNow = Date.now() - ONE_DAY_IN_MS;
 		dispatch(
-			updateDailyLastShown({
+			updateDailyLastShown(dailyStoreName)({
 				lastShown: dateToShowNow,
 				isPrivate,
 			})

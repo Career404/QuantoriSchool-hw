@@ -81,7 +81,7 @@ export default function TaskCreator({
 						});
 						onCancel();
 					}}
-					disabled={!!!newTaskTitle}
+					disabled={!Boolean(newTaskTitle)}
 				>
 					Add Task
 				</button>

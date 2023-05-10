@@ -1,9 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { addNewTaskEffect } from '../utility/API/dbOps';
 
-const initialState: { tasks: Task[]; privateTasks: Task[] } = {
+interface initialState {
+	tasks: Task[];
+}
+
+const initialState: initialState = {
 	tasks: [
 		{
 			title: 'Default state',
@@ -15,9 +18,11 @@ const initialState: { tasks: Task[]; privateTasks: Task[] } = {
 			lastUpdated: '1682004086244',
 		},
 	],
-	privateTasks: [
+};
+const privateInitialState: initialState = {
+	tasks: [
 		{
-			title: 'Default private state',
+			title: 'Default PRIVATE state',
 			isCompleted: false,
 			dateDueJson: '2023-04-20T00:00:00.000Z',
 			tag: 'health',
@@ -27,63 +32,65 @@ const initialState: { tasks: Task[]; privateTasks: Task[] } = {
 		},
 	],
 };
-// 2 separate stores seems to be a better solution, but it's not recommended by Redux team and absolutely everybody else
-// https://stackoverflow.com/questions/33619775/redux-multiple-stores-why-not
-// Though here it sataes otherwise: https://redux.js.org/usage/isolating-redux-sub-apps
 
-export const tasksSlice = createSlice({
-	name: 'tasks',
-	initialState,
-	reducers: {
-		// Redux Toolkit (Immer) allows mutating in reducers.
-		initTodo: (state, action: PayloadAction<{ isPrivate: boolean }>) => {
-			console.log(state);
+const createTasksSlice = (sliceName: string, initialState: initialState) => {
+	return createSlice({
+		name: sliceName,
+		initialState,
+		reducers: {
+			//createSlice creates actions from reducers as 'domain/eventName'
+			// Redux Toolkit (Immer) allows mutating in reducers.
+			initTodo: (state, action: PayloadAction) => {
+				console.log(state);
+			},
+			setAllTasks: (state, action: PayloadAction<{ tasks: Task[] }>) => {
+				state.tasks = action.payload.tasks;
+			},
+			addTask: (state, action: PayloadAction<{ task: Task }>) => {
+				state.tasks.push(action.payload.task);
+			},
+			checkTask: (state, action: PayloadAction<{ id: string }>) => {
+				const task = state.tasks.find((task) => task.id === action.payload.id);
+				if (task) {
+					task.isCompleted = !task.isCompleted;
+				}
+			},
+			deleteTask: (state, action: PayloadAction<{ id: string }>) => {
+				state.tasks = state.tasks.filter(
+					(task) => task.id !== action.payload.id
+				);
+			},
 		},
-		setAllTasks: (
-			state,
-			action: PayloadAction<{ tasks: Task[]; isPrivate: boolean }>
-		) => {
-			action.payload.isPrivate
-				? (state.privateTasks = action.payload.tasks)
-				: (state.tasks = action.payload.tasks);
-		},
-		addTask: (
-			state,
-			action: PayloadAction<{ task: Task; isPrivate: boolean }>
-		) => {
-			action.payload.isPrivate
-				? state.privateTasks.push(action.payload.task)
-				: state.tasks.push(action.payload.task);
-		},
-		checkTask: (
-			state,
-			action: PayloadAction<{ id: string; isPrivate: boolean }>
-		) => {
-			const tasks = action.payload.isPrivate ? state.privateTasks : state.tasks;
-			const task = tasks.find((task) => task.id === action.payload.id);
-			if (task) {
-				task.isCompleted = !task.isCompleted;
-			}
-		},
-		deleteTask: (
-			state,
-			action: PayloadAction<{ id: string; isPrivate: boolean }>
-		) => {
-			action.payload.isPrivate
-				? (state.privateTasks = state.privateTasks.filter(
-						(task) => task.id !== action.payload.id
-				  ))
-				: (state.tasks = state.tasks.filter(
-						(task) => task.id !== action.payload.id
-				  ));
-		},
-	},
-});
-export const selectTasks = (state: RootState) => state.tasks.tasks;
-export const selectPrivateTasks = (state: RootState) =>
-	state.tasks.privateTasks;
+	});
+};
 
-//createSlice creates actions as 'domain/eventName'
-export const { initTodo, setAllTasks, addTask, checkTask, deleteTask } =
-	tasksSlice.actions;
-export default tasksSlice.reducer;
+//<Record<string, {actions: SliceActions<>}> https://stackoverflow.com/questions/64576133/get-action-types-from-redux-toolkits-createslice
+const tasksByName: any = {};
+
+export const initTodo = (taskName: string) =>
+	tasksByName[taskName].actions.initTodo;
+export const setAllTasks = (taskName: string) =>
+	tasksByName[taskName].actions.setAllTasks;
+export const addTask = (taskName: string) =>
+	tasksByName[taskName].actions.addTask;
+export const checkTask = (taskName: string) =>
+	tasksByName[taskName].actions.checkTask;
+export const deleteTask = (taskName: string) =>
+	tasksByName[taskName].actions.deleteTask;
+
+const createTasks = (name: string, initialState: initialState) => {
+	const slice = createTasksSlice(name, initialState);
+	tasksByName[name] = {
+		actions: slice.actions,
+	};
+	return slice;
+};
+export const tasksSlice = createTasks('tasks', initialState);
+export const privateTasksSlice = createTasks(
+	'privateTasks',
+	privateInitialState
+);
+
+export const selectTasks =
+	(taskName: 'tasks' | 'privateTasks') => (state: RootState) =>
+		state[taskName].tasks;

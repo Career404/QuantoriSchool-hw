@@ -8,7 +8,8 @@ import {
 	Route,
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from '../../todoStore/store';
+import { persistor, store } from '../../todoStore/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import Layout from './routes/Layout';
 import Todo from '../../components/Todo/Todo';
@@ -37,7 +38,9 @@ const router = createHashRouter(
 ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<RouterProvider router={router} />
+			<PersistGate loading={null} persistor={persistor}>
+				<RouterProvider router={router} />
+			</PersistGate>
 		</Provider>
 	</React.StrictMode>
 );

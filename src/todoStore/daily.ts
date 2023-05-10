@@ -2,56 +2,58 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-//! add typing to prefernces
-
 interface DailyStore {
 	lastShown: number;
-	preferences: Record<string, any>;
+	//preferences: Record<string, any>;
 }
 
-const initialState: { server: DailyStore; private: DailyStore } = {
-	server: {
-		lastShown: 0,
-		preferences: {
-			show: true,
-			showAsModal: true,
-			showAt: [],
+const initialState: DailyStore = {
+	lastShown: 0,
+	/* preferences: {
+		show: true,
+		showAsModal: true,
+		showAt: [],
+	}, */
+};
+//
+export const createDailySlice = (
+	sliceName: string,
+	initialState: DailyStore
+) => {
+	return createSlice({
+		name: sliceName,
+		initialState,
+		reducers: {
+			updateDailyLastShown: (
+				state,
+				action: PayloadAction<{ lastShown: number; isPrivate: boolean }>
+			) => {
+				if (action.payload.isPrivate) {
+					state.lastShown = action.payload.lastShown;
+				} else {
+					state.lastShown = action.payload.lastShown;
+				}
+			},
+			//preferences:()=>{}
 		},
-	},
-	private: {
-		lastShown: 0,
-		preferences: {
-			show: true,
-			showAsModal: true,
-			showAt: [],
-		},
-	},
+	});
 };
 
-export const tasksSlice = createSlice({
-	name: 'tasks',
-	initialState,
-	reducers: {
-		updateDailyLastShown: (
-			state,
-			action: PayloadAction<{ lastShown: number; isPrivate: boolean }>
-		) => {
-			if (action.payload.isPrivate) {
-				state.private.lastShown = action.payload.lastShown;
-			} else {
-				state.server.lastShown = action.payload.lastShown;
-			}
-		},
-	},
-});
-export const selectDailyLastShown = (state: RootState) =>
-	state.daily.server.lastShown;
-export const selectDailyPreferences = (state: RootState) =>
-	state.daily.server.preferences;
-export const selectDailyLastShownPrivate = (state: RootState) =>
-	state.daily.private.lastShown;
-export const selectDailyPreferencesPrivate = (state: RootState) =>
-	state.daily.private.preferences;
+const dailyByName: any = {};
 
-export const { updateDailyLastShown } = tasksSlice.actions;
-export default tasksSlice.reducer;
+export const updateDailyLastShown = (dailyName: string) =>
+	dailyByName[dailyName].actions.updateDailyLastShown;
+
+const createDaily = (name: string, initialState: DailyStore) => {
+	const slice = createDailySlice(name, initialState);
+	dailyByName[name] = {
+		actions: slice.actions,
+	};
+	return slice;
+};
+export const dailySlice = createDaily('daily', initialState);
+export const privateDailySlice = createDaily('privateDaily', initialState);
+
+export const selectDailyLastShown =
+	(dailyName: 'daily' | 'privateDaily') => (state: RootState) =>
+		state[dailyName].lastShown;
