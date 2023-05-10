@@ -83,9 +83,9 @@ export default function Todo({ offlineInstance = false }) {
 		setEditTaskIsOpen(true);
 	};
 
-	const handleEditTask = (task?: Task) => {
-		console.log('edited');
-		dispatch(editTask(taskStoreName)({ task }));
+	const handleEditTask = (editedTask: Task) => {
+		console.log('handleEdit', editedTask);
+		dispatch(editTask(taskStoreName)({ task: editedTask }));
 	};
 
 	/* 	const loadItems = async () => {

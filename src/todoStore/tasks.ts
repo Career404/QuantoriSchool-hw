@@ -50,12 +50,9 @@ const createTasksSlice = (sliceName: string, initialState: initialState) => {
 				state.tasks.push(action.payload.task);
 			},
 			editTask: (state, action: PayloadAction<{ task: Task }>) => {
-				const index = state.tasks.findIndex(
-					(task) => task.id === action.payload.task.id
+				state.tasks = state.tasks.map((task) =>
+					task.id === action.payload.task.id ? action.payload.task : task
 				);
-				if (index !== -1) {
-					state.tasks[index] = action.payload.task;
-				}
 			},
 			checkTask: (state, action: PayloadAction<{ id: string }>) => {
 				const task = state.tasks.find((task) => task.id === action.payload.id);

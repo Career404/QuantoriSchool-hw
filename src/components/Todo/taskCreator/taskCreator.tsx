@@ -73,7 +73,7 @@ export default function TaskCreator({
 							isCompleted: false,
 							dateDueJson: new Date(taskDate).toJSON(),
 							tag: selectedTag,
-							id: new Date().getTime().toString(),
+							id: editTask?.id ?? new Date().getTime().toString(),
 						};
 						console.log(newTask);
 						onAccept(newTask);
