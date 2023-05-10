@@ -20,15 +20,25 @@ const router = createHashRouter(
 	createRoutesFromElements(
 		<Route path="/" element={<Layout />} errorElement={<NotFound />}>
 			<Route index element={<Navigate to="/server" />} />
-			<Route
-				loader={todoLoader}
-				path="/private"
-				element={<Todo offlineInstance />}
-			>
-				<Route path="/private/*" element={<div>Hello there!</div>} />
+			<Route path="/private">
+				<Route
+					index
+					loader={todoLoader}
+					element={<Todo key="private" offlineInstance />}
+				/>
+				<Route
+					path="/private/:tag"
+					loader={todoLoader}
+					element={<Todo key="private" offlineInstance />}
+				/>
 			</Route>
-			<Route loader={todoLoader} path="/server" element={<Todo />}>
-				<Route path="/server/*" element={<div>Hello there!</div>} />
+			<Route path="/server">
+				<Route index loader={todoLoader} element={<Todo key={'server'} />} />
+				<Route
+					path="/server/:tag"
+					loader={todoLoader}
+					element={<Todo key={'server'} />}
+				/>
 			</Route>
 			<Route path="/*" element={<NotFound />} />
 		</Route>

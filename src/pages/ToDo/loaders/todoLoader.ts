@@ -3,6 +3,7 @@ import { LoaderFunctionArgs } from 'react-router';
 export default async function todoLoader({ request }: LoaderFunctionArgs) {
 	const url = new URL(request.url);
 	const q = url.searchParams.get('q');
+	/* console.log('loader: ', url); */
 	return { q, url };
 }
 

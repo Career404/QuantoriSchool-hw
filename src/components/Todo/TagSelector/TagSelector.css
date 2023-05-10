@@ -1,0 +1,54 @@
+html {
+	--health-accent: #0053cf;
+	--work-accent: #9747ff;
+	--home-accent: #639462;
+	--other-accent: #ea8c00;
+}
+.tagSelector {
+	display: flex;
+	gap: 12px;
+}
+
+.li-tag {
+	width: fit-content;
+	padding: 2px 8px;
+	border: none;
+	border-radius: 6px;
+	background: #eee;
+	font-size: 12px;
+}
+.li-tag-home {
+	background: #e2f7e2;
+	color: var(--home-accent);
+}
+.li-tag-work {
+	background: #e8d7ff;
+	color: var(--work-accent);
+}
+.li-tag-health {
+	background: rgba(60, 134, 244, 0.31);
+	color: var(--health-accent);
+}
+.li-tag-other {
+	background: #ffecc7;
+	color: var(--other-accent);
+}
+
+.li-tag:has(.radioTab:checked) {
+	outline: 2px solid black;
+}
+.li-tag-other:has(.radioTab:checked) {
+	outline: 2px solid var(--other-accent);
+}
+.li-tag-health:has(.radioTab:checked) {
+	outline: 2px solid var(--health-accent);
+}
+.li-tag-work:has(.radioTab:checked) {
+	outline: 2px solid var(--work-accent);
+}
+.li-tag-home:has(.radioTab:checked) {
+	outline: 2px solid var(--home-accent);
+}
+.li-tag:focus {
+	box-shadow: 0 0 3px 2px black;
+}

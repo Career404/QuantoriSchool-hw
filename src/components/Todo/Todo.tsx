@@ -14,23 +14,42 @@ import {
 	deleteTask,
 	selectTasks,
 } from '../../todoStore/tasks';
+import { useNavigate, useParams } from 'react-router';
+import TagSelector, { AvailableTags } from './TagSelector/TagSelector';
+import { useLocation } from 'react-router';
 
-export default function Todo(
-	{ offlineInstance = false } /* : {
-	offlineInstance?: boolean;
-} */
-) {
+export default function Todo({ offlineInstance = false }) {
 	const taskStoreName = offlineInstance ? 'privateTasks' : 'tasks';
-	const { q, url } = useLoaderData() as Awaited<ReturnType<LoaderReturnType>>;
 	const tasks = useAppSelector((state) => selectTasks(taskStoreName)(state));
 	const submit = useSubmit();
 	const dispatch = useAppDispatch();
+
+	const { q, url } = useLoaderData() as Awaited<ReturnType<LoaderReturnType>>;
+	const params = useParams();
+	const location = useLocation();
+	const navigate = useNavigate();
+
 	useEffect(() => {
 		(document.getElementById('q') as HTMLInputElement).value = q ?? '';
 	}, [q]);
 
 	const [isOnline, setIsOnline] = useState(false);
 	const [newTaskIsOpen, setNewTaskIsOpen] = useState(false);
+	const [editTaskIsOpen, setEditTaskIsOpen] = useState(false);
+
+	const handleTagSelect = (tag: AvailableTags | undefined) =>
+		/* navigate(
+			(offlineInstance ? '/private/' : '/server/') +
+				(tag ? tag : '') +
+				(q ? '?q=' + q : ' ')
+		); */
+		//To my eye both of these are understandable, which one should I actually write?
+		{
+			const baseRoute = offlineInstance ? '/private/' : '/server/';
+			const tagParam = tag ? tag : '';
+			const queryParam = q ? '?q=' + q : '';
+			navigate(baseRoute + tagParam + queryParam);
+		};
 
 	const handleNewTask = (task: Task) => {
 		const tasksBeforeNew = tasks;
@@ -53,22 +72,27 @@ export default function Todo(
 	useEffect(() => {
 		loadItems();
 	}, []); */
-	/*
-	const filteredTasks = q
-		? tasks.filter((item: Task) =>
-				item.title.toLowerCase().includes(q.toLowerCase())
-		  )
-		: tasks; */
 
-	const notcompletedItems = tasks.filter((item) => !item.isCompleted);
-
-	const completedItems = tasks.filter((item) => item.isCompleted);
+	const tagFilteredItems = useMemo(() => {
+		return params.tag ? tasks.filter((item) => item.tag === params.tag) : tasks;
+	}, [params.tag, tasks]);
+	const searchedItems = useMemo(() => {
+		return q
+			? tagFilteredItems.filter((item) => item.title.includes(q))
+			: tagFilteredItems;
+	}, [q, tagFilteredItems]);
+	const notcompletedItems = useMemo(() => {
+		return searchedItems.filter((item) => !item.isCompleted);
+	}, [searchedItems]);
+	const completedItems = useMemo(() => {
+		return searchedItems.filter((item) => item.isCompleted);
+	}, [searchedItems]);
 
 	return (
 		<div className="main">
 			<div className="title">
 				<h1>To Do List</h1>
-				{/* <WeatherWidget /> */}
+				<WeatherWidget />
 			</div>
 			<div className="search-bar">
 				<Form className="search-form" id="search-form" role="search">
@@ -92,6 +116,11 @@ export default function Todo(
 					+ New Task
 				</button>
 			</div>
+			<TagSelector
+				onTagSelect={handleTagSelect}
+				supportDeselect
+				defaultTag={(params.tag as AvailableTags) || undefined}
+			/>
 			<h2>All Tasks</h2>
 			<ul>
 				{notcompletedItems.map((item) => (
@@ -113,7 +142,6 @@ export default function Todo(
 					/>
 				))}
 			</ul>
-			<Outlet />
 			{!offlineInstance && (
 				<StatusIcon isOnline={isOnline} /* clickCallback={loadItems} */ />
 			)}

@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import TagSelector, { AvailableTags } from '../TagSelector/TagSelector';
+
+import './TaskCreator.css';
 
 export default function TaskCreator({
 	onCancel = () => {
@@ -10,9 +13,12 @@ export default function TaskCreator({
 }) {
 	const [newTaskTitle, setNewTaskTitle] = useState('');
 
-	const availableTags = ['health', 'work', 'home', 'other'];
-	let selectedTag: string = 'health';
+	let selectedTag: AvailableTags = 'health';
 	let selectedDate: string = new Date().toJSON().slice(0, 10);
+
+	const tagClickHandler = (tag: AvailableTags) => {
+		selectedTag = tag;
+	};
 
 	return (
 		<>
@@ -29,32 +35,10 @@ export default function TaskCreator({
 					}}
 				/>
 				<div className="newTask-more">
-					<div className="tagSelector">
-						{availableTags.map((tag, index) => (
-							<label
-								className={`li-tag newTaskTag li-tag-${tag}`}
-								tabIndex={0}
-								key={tag}
-								onClick={() => {
-									selectedTag = tag;
-								}}
-								onKeyDown={(e) => {
-									if (e.code === 'Space' || e.key === 'Enter') {
-										(e.target as HTMLElement).click();
-									}
-								}}
-							>
-								<input
-									type="radio"
-									id="tag"
-									name="tag"
-									className="radioTab"
-									defaultChecked={index === 0}
-								></input>
-								{tag}
-							</label>
-						))}
-					</div>
+					<TagSelector
+						onTagSelect={(tag) => tagClickHandler(tag!)}
+						defaultTag="health"
+					/>
 					<input
 						type="date"
 						className="datePicker"
