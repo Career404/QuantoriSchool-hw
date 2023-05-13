@@ -1,6 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from './store';
+
+//I have a strong feeling that creating slices dynamically was a lot of time wasted for nothing.
 
 interface initialState {
 	tasks: Task[];
@@ -33,16 +36,19 @@ const privateInitialState: initialState = {
 	],
 };
 
-const createTasksSlice = (sliceName: string, initialState: initialState) => {
-	return createSlice({
+const createTasksSlice = (
+	sliceName: string,
+	initialState: initialState,
+	extraReducers?: {
+		[key: string]: (state: any, action: PayloadAction<any>) => void;
+	}
+) =>
+	createSlice({
 		name: sliceName,
 		initialState,
 		reducers: {
 			//createSlice creates actions from reducers as 'domain/eventName'
 			// Redux Toolkit (Immer) allows mutating in reducers.
-			initTodo: (state, action: PayloadAction) => {
-				console.log(state);
-			},
 			setAllTasks: (state, action: PayloadAction<{ tasks: Task[] }>) => {
 				state.tasks = action.payload.tasks;
 			},
@@ -66,14 +72,18 @@ const createTasksSlice = (sliceName: string, initialState: initialState) => {
 				);
 			},
 		},
+		extraReducers: extraReducers
+			? (builder) => {
+					Object.entries(extraReducers).forEach(([actionType, reducer]) => {
+						builder.addCase(actionType, reducer);
+					});
+			  }
+			: undefined,
 	});
-};
 
 //<Record<string, {actions: SliceActions<>}> https://stackoverflow.com/questions/64576133/get-action-types-from-redux-toolkits-createslice
 const tasksByName: any = {};
 
-export const initTodo = (taskName: string) =>
-	tasksByName[taskName].actions.initTodo;
 export const setAllTasks = (taskName: string) =>
 	tasksByName[taskName].actions.setAllTasks;
 export const addTask = (taskName: string) =>
@@ -85,14 +95,43 @@ export const checkTask = (taskName: string) =>
 export const deleteTask = (taskName: string) =>
 	tasksByName[taskName].actions.deleteTask;
 
-const createTasks = (name: string, initialState: initialState) => {
-	const slice = createTasksSlice(name, initialState);
+const createTasks = (
+	name: string,
+	initialState: initialState,
+	extraReducers?: {
+		[key: string]: (state: any, action: PayloadAction<any>) => void;
+	}
+) => {
+	let slice = createTasksSlice(name, initialState, extraReducers!);
+
 	tasksByName[name] = {
 		actions: slice.actions,
 	};
 	return slice;
 };
-export const tasksSlice = createTasks('tasks', initialState);
+
+const tasksExtraReducers = {
+	setAllTasks: createAsyncThunk('tasks/setAllTasks', async () => {
+		const response = await fetch('http://localhost:3004/tasks');
+		return await response.json();
+	}),
+	addTask: createAsyncThunk('tasks/addTask', async (task) => {
+		console.log('adding task to server via thunk');
+		const response = await fetch('http://localhost:3004/tasks', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(task),
+		});
+		return await response.json();
+	}),
+};
+console.log(tasksExtraReducers);
+
+export const tasksSlice = createTasks(
+	'tasks',
+	initialState,
+	tasksExtraReducers
+);
 export const privateTasksSlice = createTasks(
 	'privateTasks',
 	privateInitialState
