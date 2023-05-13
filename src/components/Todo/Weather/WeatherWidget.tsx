@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { getGeo, getWeather } from '../../../utility/API/Weather';
-import useLocalStorage from '../../../utility/localStorage/localstorage';
+import useLocalStorage from '../../../utility/localStorage/useLocalstorage';
 
 import './WeatherWidget.css';
 

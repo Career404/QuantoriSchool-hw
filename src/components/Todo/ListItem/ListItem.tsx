@@ -1,19 +1,21 @@
-//import Icon from '../Icon/Icon';
 import { formatDate } from '../../../utility/helpers';
 
 import './ListItem.css';
 
-interface ListItemProps extends Props {
+interface ListItemProps {
 	item: Task;
-	clickCheckbox: Function;
-	removeItem?: Function;
+	clickCheckbox: () => void;
+	clickRemove?: () => void;
+	clickEdit?: () => void;
 }
 
 export default function ListItem({
 	item,
 	clickCheckbox,
-	removeItem,
+	clickRemove,
+	clickEdit,
 }: ListItemProps) {
+	const props = { item, clickCheckbox, clickRemove };
 	return (
 		<li className="list-item">
 			<label className="label">
@@ -32,14 +34,28 @@ export default function ListItem({
 					</div>
 				</div>
 			</label>
-			{removeItem ? (
+			{clickEdit ? (
+				<div
+					className="icon-interactive"
+					tabIndex={0}
+					onClick={() => clickEdit()}
+					onKeyDown={(e) => {
+						if (e.code === 'Space' || e.key === 'Enter') {
+							clickEdit();
+						}
+					}}
+				>
+					Edit
+				</div>
+			) : null}
+			{clickRemove ? (
 				<div
 					className="delete-icon icon-interactive"
 					tabIndex={0}
-					onClick={() => removeItem(item.id)}
+					onClick={() => clickRemove()}
 					onKeyDown={(e) => {
 						if (e.code === 'Space' || e.key === 'Enter') {
-							removeItem(item.id);
+							clickRemove();
 						}
 					}}
 				></div>

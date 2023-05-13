@@ -24,6 +24,7 @@ Latest tasks have me working on a classic to-do task tracker. I made it a PWA by
 * Personalization (dark theme, user background, colors and fonts, layout options)
 * More task field options (textarea with md support, custom notifications for tasks)
 * Caching with a service worker, background sync and push notifications for a native-like feel
+* switch to IndexedDB - larger capacite and ?better performance?, use complex queries
 ## HW6 - Async, promises, API calls
 -------------------------------
 
@@ -65,3 +66,24 @@ Not to brag, but useLocalStorage hook works flawlessly, all PWA features transfe
 * Cleanup: removed 5Tasks folder
 ### TODO:
 * ?work on auth feature
+
+## HW9 - React Router, Redux
+-------------------------
+Redux, with all the infrastructure that was born of it, and being opinionated on the data flow and other things, was not too easy to get a grip on. Plus, marrying Redux Toolkit with some of those (old and unmaintained) libraries was quite a headache
+React-router was a breese, so that's cool.
+My original idea of separating all the data management (server and localStorage) into a separate entity was a total waste of time, unfortunately. I wanted to write basically [this library](https://www.npmjs.com/package/redux-offline), but with a hard time constraint, no experience of making libraries beforehand and with my tiny junior brain. It felt nice while it lasted, so I'll probably come back to this idea one day
+
+Store is saved in it's entirety in localStorage
+All filtering exists only in the View
+### Done:
+* Installed react-router, configured it to only work in the Todo Task page, used HashRouter for GitHub-pages
+* Transferred the App component to routes (private and server)
+* Implemented search with URL queries - the feature is broken by introducing redux
+* Set up Redux store with reducers (via redux-toolkit configureStore and createSlice)
+* Used redux-persist to save and load Redux store to and from localStorage
+* Fixed search feature
+* Implemented filtering by tags with URL queries
+### TODO:
+* Add edit task functionality with separate route
+* Add redux-thunk for server fetches
+* Work on syncing the stores in separate sessions (with store.subscribe(), [web worker](https://www.youtube.com/watch?v=tq4vXRT7TU0&ab_channel=ReactConf) or redux-state-sync?)

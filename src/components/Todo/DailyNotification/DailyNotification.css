@@ -1,0 +1,9 @@
+.daily-overlay {
+	cursor: pointer;
+	position: absolute;
+	top: 0;
+	right: 15%;
+	max-width: 200px;
+	height: 15px;
+	text-align: center;
+}

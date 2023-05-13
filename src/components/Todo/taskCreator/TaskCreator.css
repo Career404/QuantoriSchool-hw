@@ -1,0 +1,44 @@
+.taskCreator {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: start;
+	gap: 18px;
+}
+
+.newTaskTitle {
+	min-height: 52px;
+	padding: 1rem 21px;
+	border-radius: 12px;
+	border: 1px solid #d2d2d2;
+	background-color: #f5f5f5;
+}
+.newTask-more {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.datePicker {
+	position: relative;
+	width: max(20%, 117px);
+	height: 40px;
+	display: flex;
+	text-align: center;
+	border: 2px solid rgba(60, 134, 244, 0.6);
+	border-radius: 12px;
+	font-weight: 500;
+}
+.datePicker::-webkit-calendar-picker-indicator {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 20%;
+	height: 100%;
+	border-color: black;
+	opacity: 0.1;
+	/*current solution makes manual input not very comfortable (adjustable by width)*/
+	/* display: none; */
+	/* would remove the element as per mockup, but why have input type=date without the calendar dropdown */
+	/* did not find the element used by moz browser :( */
+}

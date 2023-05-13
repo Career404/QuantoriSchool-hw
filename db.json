@@ -8,22 +8,8 @@
       "id": 1682004086244
     },
     {
-      "title": "tasks are also saved in localStorage",
-      "isCompleted": true,
-      "dateDueJson": "2023-04-20T00:00:00.000Z",
-      "tag": "health",
-      "id": 1682008336582
-    },
-    {
-      "title": "tasks are saved via json-server",
-      "isCompleted": true,
-      "dateDueJson": "2023-04-20T00:00:00.000Z",
-      "tag": "health",
-      "id": 1682008366680
-    },
-    {
       "title": "If weather is not displayed correctly, click it to load new data",
-      "isCompleted": true,
+      "isCompleted": false,
       "dateDueJson": "2023-04-13T16:11:22.697Z",
       "tag": "home",
       "id": "16813158826971"
@@ -44,6 +30,6 @@
     }
   ],
   "lastUpdated": {
-    "date": 1683054664436
+    "date": 1683215914799
   }
 }
