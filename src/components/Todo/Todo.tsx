@@ -79,12 +79,10 @@ export default function Todo({ offlineInstance = false }) {
 
 	const handleClickEdit = (task: Task) => {
 		setSelectedForEdit(task);
-		console.log(selectedForEdit);
 		setEditTaskIsOpen(true);
 	};
 
 	const handleEditTask = (editedTask: Task) => {
-		console.log('handleEdit', editedTask);
 		dispatch(editTask(taskStoreName)({ task: editedTask }));
 	};
 
@@ -150,8 +148,8 @@ export default function Todo({ offlineInstance = false }) {
 					<ListItem
 						key={item.id}
 						item={item}
-						clickCheckbox={handleCheckbox}
-						clickRemove={handleRemove}
+						clickCheckbox={() => handleCheckbox(item.id)}
+						clickRemove={() => handleRemove(item.id)}
 						clickEdit={() => handleClickEdit(item)}
 					/>
 				))}

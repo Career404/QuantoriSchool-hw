@@ -4,8 +4,8 @@ import './ListItem.css';
 
 interface ListItemProps {
 	item: Task;
-	clickCheckbox: Function;
-	clickRemove?: Function;
+	clickCheckbox: () => void;
+	clickRemove?: () => void;
 	clickEdit?: () => void;
 }
 
@@ -24,7 +24,7 @@ export default function ListItem({
 					name={`is${item.id}Completed`}
 					id={`is${item.id}Completed`}
 					checked={item.isCompleted}
-					onChange={() => clickCheckbox(item.id)}
+					onChange={() => clickCheckbox()}
 				/>
 				<div className="item-info">
 					<p>{item.title}</p>
@@ -38,24 +38,24 @@ export default function ListItem({
 				<div
 					className="icon-interactive"
 					tabIndex={0}
-					onClick={clickEdit}
+					onClick={() => clickEdit()}
 					onKeyDown={(e) => {
 						if (e.code === 'Space' || e.key === 'Enter') {
 							clickEdit();
 						}
 					}}
 				>
-					Edit Task
+					Edit
 				</div>
 			) : null}
 			{clickRemove ? (
 				<div
 					className="delete-icon icon-interactive"
 					tabIndex={0}
-					onClick={() => clickRemove(item.id)}
+					onClick={() => clickRemove()}
 					onKeyDown={(e) => {
 						if (e.code === 'Space' || e.key === 'Enter') {
-							clickRemove(item.id);
+							clickRemove();
 						}
 					}}
 				></div>

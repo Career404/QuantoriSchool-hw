@@ -5,7 +5,7 @@ import './TaskCreator.css';
 
 interface TaskCreatorProps {
 	onCancel: () => void;
-	onAccept: (task?: Task) => void;
+	onAccept: (task: Task) => void;
 	editTask?: Task;
 }
 
@@ -68,15 +68,13 @@ export default function TaskCreator({
 				<button
 					className="button agree-button"
 					onClick={() => {
-						const newTask = {
+						onAccept({
 							title: newTaskTitle,
 							isCompleted: false,
 							dateDueJson: new Date(taskDate).toJSON(),
 							tag: selectedTag,
 							id: editTask?.id ?? new Date().getTime().toString(),
-						};
-						console.log(newTask);
-						onAccept(newTask);
+						});
 						onCancel();
 					}}
 					disabled={!Boolean(newTaskTitle)}
